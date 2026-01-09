@@ -1,6 +1,5 @@
 import { Injectable, signal, effect, computed } from '@angular/core';
 import { GameState } from '../interfaces/game-state.interface';
-import { Item } from '../interfaces/item.interface'; // Assuming Item interface is needed for inventory manipulation
 
 @Injectable({
   providedIn: 'root'

@@ -1,12 +1,14 @@
-import { Injectable, computed } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { GameStateService } from './game-state.service';
-import { Item, ItemCategory } from '../interfaces/item.interface';
+import { ItemCategory, EquippableItemCategory } from '../interfaces/item.interface'; // Import EquippableItemCategory
 import { masterItemList } from '../data/item-database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharacterService {
+  private gameStateService = inject(GameStateService); // Use inject()
+
   // Expose equipped items and expression as computed signals from GameStateService
   public equipped = computed(() => this.gameStateService.equipped());
   public expression = computed(() => this.gameStateService.gameState().expression);
@@ -19,17 +21,26 @@ export class CharacterService {
     { level: 75, eyes: './assets/img/expressions/eyes_happy.png', mouth: './assets/img/expressions/mouth_happy.png', text: { es: "¡Me gusta que me acaricies!", en: "I like it when you pet me!" } }
   ];
 
-  constructor(private gameStateService: GameStateService) { }
+  // Constructor can be empty if using inject()
+  constructor() { }
 
   /**
    * Equips an item to the character.
    * @param itemId The ID of the item to equip.
-   * @returns True if the item was equipped, false otherwise (e.g., insufficient affinity).
+   * @returns True if the item was equipped, false otherwise (e.g., insufficient affinity, non-equippable item).
    */
   equipItem(itemId: string): boolean {
     const itemData = masterItemList[itemId];
     if (!itemData) {
       console.error(`Attempted to equip non-existent item: ${itemId}`);
+      return false;
+    }
+
+    // Check if the item is actually equippable
+    const equippableTypes: ItemCategory[] = ['bra', 'pantsus', 'top', 'bottom', 'suit', 'head', 'stockings', 'hands', 'weapon'];
+    if (!equippableTypes.includes(itemData.type)) {
+      console.warn(`Item ${itemData.name.en} is not an equippable type.`);
+      // TODO: Notify user
       return false;
     }
 
@@ -40,7 +51,7 @@ export class CharacterService {
       return false;
     }
 
-    const itemType = itemData.type;
+    const itemType = itemData.type as EquippableItemCategory; // Cast to EquippableItemCategory
     const currentEquipped = { ...this.gameStateService.equipped() };
 
     // Handle conflict rules
@@ -62,7 +73,7 @@ export class CharacterService {
    * Unequips an item of a specific type from the character.
    * @param itemType The type of item to unequip.
    */
-  unequipItem(itemType: ItemCategory): void {
+  unequipItem(itemType: EquippableItemCategory): void { // Use EquippableItemCategory
     const currentEquipped = { ...this.gameStateService.equipped() };
     currentEquipped[itemType] = null;
     this.gameStateService.updateEquipped(currentEquipped);

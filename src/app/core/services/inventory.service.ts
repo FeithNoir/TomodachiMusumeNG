@@ -1,6 +1,5 @@
 import { Injectable, computed } from '@angular/core';
 import { GameStateService } from './game-state.service';
-import { Item } from '../interfaces/item.interface';
 import { masterItemList } from '../data/item-database';
 
 @Injectable({

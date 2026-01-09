@@ -1,1 +1,79 @@
-<p>crafting works!</p>
+<div class="modal">
+  <div class="modal-content-panel !max-w-2xl">
+    <h3 class="text-xl font-bold mb-4">{{ getText('craftingTitle') }}</h3>
+
+    <div class="flex flex-col md:flex-row gap-4">
+
+      <!-- Columna de Crafteo -->
+      <div class="flex-1">
+        <h4 class="text-lg mb-2">{{ getText('craftingSlots') }}</h4>
+
+        <div id="craftingSlotsGrid"
+             class="grid grid-cols-2 gap-2 bg-black bg-opacity-20 p-2 rounded min-h-[160px]">
+
+          <!--
+            CAMBIOS:
+            1. Usamos @for. Es obligatorio definir 'track'. Como son slots posicionales, usamos $index.
+            2. Usamos 'let i = $index' para obtener el índice actual.
+          -->
+          @for (slot of craftingSlots(); track $index; let i = $index) {
+            <div class="inventory-item h-24 flex items-center justify-center"
+                 (click)="removeFromCraftingSlot(i)">
+
+              <!-- CAMBIOS: @if y @else reemplazan a ng-container/ng-template -->
+              @if (slot) {
+                <img [src]="getItemData(slot).path"
+                     class="w-16 h-16"
+                     [title]="getItemName(slot)">
+              } @else {
+                <span class="text-gray-500 text-xs">{{ getText('emptySlot') }}</span>
+              }
+
+            </div>
+          }
+        </div>
+
+        <button id="attemptCraftButton"
+                class="action-button w-full justify-center mt-4 bg-green-600 hover:bg-green-700"
+                (click)="attemptCraft()">
+          {{ getText('craftItem') }}
+        </button>
+      </div>
+
+      <!-- Columna de Materiales -->
+      <div class="flex-1">
+        <h4 class="text-lg mb-2">{{ getText('availableMaterials') }}</h4>
+
+        <div id="craftingMaterialsGrid"
+             class="grid grid-cols-3 gap-2 bg-black bg-opacity-20 p-2 rounded max-h-64 overflow-y-auto">
+
+          <!--
+            CAMBIOS:
+            1. Usamos @for con 'track item.id' (mejor rendimiento).
+            2. Eliminamos el *ngIf que comprobaba el length > 0.
+            3. Usamos el bloque @empty, que se renderiza automáticamente si el array está vacío.
+          -->
+          @for (item of materialsInInventory(); track item.id) {
+            <div class="inventory-item text-center p-1 cursor-pointer"
+                 (click)="addToCraftingSlot(item.id)">
+
+              <img [src]="getItemData(item.id).path" class="w-12 h-12 mx-auto">
+              <p class="text-xs">{{ getItemName(item.id) }} (x{{ item.quantity }})</p>
+
+            </div>
+          } @empty {
+            <p class="col-span-full text-center text-gray-400">{{ getText('noMaterials') }}</p>
+          }
+
+        </div>
+      </div>
+
+    </div>
+
+    <button id="closeCraftingModal"
+            class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full"
+            (click)="onClose()">
+      {{ getText('close') }}
+    </button>
+  </div>
+</div>

@@ -3,11 +3,12 @@
 export interface LocalizedText {
   es: string;
   en: string;
+  [key: string]: string; // Add index signature
 }
 
 // Definimos un tipo cerrado para las categorías.
 // Esto evita errores tipográficos (ej: escribir 'wepon' en lugar de 'weapon').
-export type ItemCategory =
+export type EquippableItemCategory =
   | 'bra'
   | 'pantsus'
   | 'top'
@@ -16,10 +17,9 @@ export type ItemCategory =
   | 'head'
   | 'stockings'
   | 'hands'
-  | 'weapon'
-  | 'consumable'
-  | 'material'
-  | 'recipe';
+  | 'weapon';
+
+export type ItemCategory = EquippableItemCategory | 'consumable' | 'material' | 'recipe';
 
 // Interfaz para los efectos (opcional)
 export interface ItemEffects {

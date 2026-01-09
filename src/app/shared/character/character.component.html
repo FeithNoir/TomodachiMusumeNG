@@ -1,1 +1,49 @@
-<p>character works!</p>
+<div id="characterContainer" class="character-container" (click)="onCharacterClick()">
+  <!-- Base Layer -->
+  <img id="characterBody" src="assets/img/character/base.png" alt="" class="character-layer">
+
+  <!-- Equipped items: Usando @if en lugar de *ngIf -->
+  @if (equipped().pantsus) {
+    <img [src]="equipped().pantsus" alt="Pantsus" class="character-layer">
+  }
+
+  @if (equipped().stockings) {
+    <img [src]="equipped().stockings" alt="Stockings" class="character-layer">
+  }
+
+  @if (equipped().bottom) {
+    <img [src]="equipped().bottom" alt="Bottom" class="character-layer">
+  }
+
+  @if (equipped().bra) {
+    <img [src]="equipped().bra" alt="Bra" class="character-layer">
+  }
+
+  @if (equipped().suit) {
+    <img [src]="equipped().suit" alt="Suit" class="character-layer">
+  }
+
+  @if (equipped().top) {
+    <img [src]="equipped().top" alt="Top" class="character-layer">
+  }
+
+  @if (equipped().hands) {
+    <img [src]="equipped().hands" alt="Hands" class="character-layer">
+  }
+
+  @if (equipped().head) {
+    <img [src]="equipped().head" alt="Head" class="character-layer">
+  }
+
+  <!-- Expressions (Siempre presentes, no necesitan if) -->
+  <img [src]="expression().eyes" alt="Eyes" class="character-layer">
+  <img [src]="expression().mouth" alt="Mouth" class="character-layer">
+
+  <!-- Reaction Dialogue -->
+  @if (showReactionDialogue) {
+    <div class="bg-black bg-opacity-80 px-3 py-1 rounded-full whitespace-nowrap opacity-0 transition-opacity duration-300"
+         [class.opacity-100]="showReactionDialogue">
+      {{ reactionText }}
+    </div>
+  }
+</div>

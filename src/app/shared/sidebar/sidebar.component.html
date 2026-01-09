@@ -1,1 +1,38 @@
-<p>sidebar works!</p>
+<!-- Iconos de Acciones (Responsive) -->
+<div id="actionsMenu"
+     class="fixed z-30
+            bottom-0 left-0 right-0 p-2 bg-amber-600 bg-opacity-90 backdrop-blur-sm
+            flex flex-row justify-around items-center
+            md:top-1/2 md:right-4 md:left-auto md:bottom-auto md:transform md:-translate-y-1/2
+            md:flex-col md:space-y-3 md:p-3 md:rounded-lg md:bg-opacity-80">
+
+  <!--
+    CAMBIO PRINCIPAL:
+    Usamos @for para generar los botones dinámicamente.
+    track btn.id: Mejora el rendimiento indicando una clave única.
+  -->
+  @for (btn of menuActions; track btn.id) {
+    <button [id]="btn.id"
+            class="action-button"
+            (click)="btn.action()">
+
+      <!-- Icono SVG -->
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           viewBox="0 0 24 24"
+           stroke-width="1.5"
+           stroke="currentColor"
+           class="w-6 h-6 md:mr-2">
+        <!-- Vinculamos dinámicamente el atributo 'd' del path -->
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              [attr.d]="btn.icon"/>
+      </svg>
+
+      <!-- Texto Traducido -->
+      <span class="hidden md:inline">{{ getText(btn.label) }}</span>
+
+    </button>
+  }
+
+</div>
