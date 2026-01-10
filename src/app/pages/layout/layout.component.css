@@ -1,0 +1,82 @@
+/* --- Mobile First: Estilos base para dispositivos móviles --- */
+
+.game-layout-container {
+  /* En móvil, usamos un layout de bloque simple. Los componentes se posicionarán
+     de forma fija o absoluta sobre el 'layout-main'. */
+  display: block;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout-main {
+  width: 100%;
+  height: 100%;
+}
+
+/* Los wrappers de layout no necesitan estilos en móvil, ya que sus hijos
+   (los componentes) se posicionan de forma independiente. */
+.layout-menu,
+.layout-info,
+.layout-sidebar {
+  /* z-index se gestiona en los componentes hijos */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  padding: 1rem; /* Añade padding para que los modales no toquen los bordes en móvil */
+}
+
+.modal-overlay.hidden {
+  opacity: 0;
+  pointer-events: none; /* Evita interacción cuando está oculto */
+}
+
+
+/* --- Tablet and Desktop: Estilos para pantallas más grandes (a partir de 768px) --- */
+
+@media (min-width: 768px) {
+  .game-layout-container {
+    /* Reintroducimos el grid layout para pantallas grandes */
+    display: grid;
+    grid-template-areas:
+      "menu main-content info"
+      "menu main-content sidebar";
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  /* Asignamos cada zona a su área de grid */
+  .layout-menu {
+    grid-area: menu;
+    z-index: 50;
+  }
+
+  .layout-info {
+    grid-area: info;
+    z-index: 20;
+  }
+
+  .layout-sidebar {
+    grid-area: sidebar;
+    z-index: 30;
+  }
+
+  .layout-main {
+    grid-area: main-content;
+    position: relative;
+    overflow: hidden;
+  }
+}

@@ -1,1 +1,44 @@
-<p>layout works!</p>
+<div class="game-layout-container">
+  <!-- Menú lateral hamburguesa -->
+  <div class="layout-menu">
+    <app-menu (menuAction)="handleMenuAction($event)"></app-menu>
+  </div>
+
+  <!-- Indicadores de estado (dinero, afinidad...) -->
+  <div class="layout-info">
+    <app-info></app-info>
+  </div>
+
+  <!-- Barra de acciones principal (hablar, misión, etc.) -->
+  <div class="layout-sidebar">
+    <app-sidebar (action)="handleSidebarAction($event)"></app-sidebar>
+  </div>
+
+  <!-- Área principal donde se renderizarán las páginas (como 'main') -->
+  <main class="layout-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- ========= MODALES ========= -->
+<!-- Su visibilidad se controla desde el .ts del layout -->
+
+<!-- Modal de Diálogo -->
+@if (isDialogueVisible()) {
+  <app-dialogue [dialogue]="currentDialogue()" (optionSelected)="handleDialogueOption($event)"></app-dialogue>
+}
+
+<!-- Modal de Inventario/Equipamiento -->
+@if (isInventoryVisible()) {
+  <div class="modal-overlay">
+    <app-inventory (close)="closeActiveModal()"></app-inventory>
+  </div>
+}
+
+<!-- Modal de Crafteo -->
+@if (isCraftingVisible()) {
+  <div class="modal-overlay">
+    <app-crafting (close)="closeActiveModal()"></app-crafting>
+  </div>
+}
+

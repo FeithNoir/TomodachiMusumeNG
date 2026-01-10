@@ -1,1 +1,21 @@
-<p>title works!</p>
+<!-- Fondo de la pantalla de título, reutiliza el estilo de 'main' -->
+<div class="title-background"></div>
+
+<!-- Contenedor principal para centrar el contenido -->
+<div class="title-container">
+  <h1 class="game-title">Tomodachi Musume</h1>
+
+  <!-- Menú de opciones -->
+  <div class="title-menu">
+    <button class="menu-button" (click)="newGame()">
+      Nueva Partida
+    </button>
+    <button class="menu-button" (click)="loadGame()" [disabled]="!canLoadGame()">
+      Cargar Partida
+    </button>
+    <button class="menu-button disabled-link">
+      Opciones
+    </button>
+  </div>
+</div>
+

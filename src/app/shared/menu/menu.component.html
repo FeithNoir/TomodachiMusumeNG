@@ -1,1 +1,24 @@
-<p>menu works!</p>
+<!-- Panel de Menú Lateral (antes #menu-panel) -->
+<div class="fixed top-0 left-0 h-full w-64 p-4 bg-amber-800 bg-opacity-90 backdrop-blur-sm z-40 flex flex-col transition-transform duration-300"
+     [class.-translate-x-full]="!isOpen()">
+
+  <h2 class="text-xl font-semibold mb-4 text-center text-white">{{ getText('menuTitle') }}</h2>
+
+  <div class="flex flex-col space-y-2">
+    <button (click)="onOptionClick('options')" class="menu-item">{{ getText('options') }}</button>
+    <button (click)="onOptionClick('save')" class="menu-item">{{ getText('save') }}</button>
+    <button (click)="onOptionClick('gallery')" class="menu-item disabled-link">{{ getText('gallery') }}</button>
+    <a href="https://www.patreon.com/c/genericfactoryint" target="_blank" id="patreonButton" class="menu-item">Patreon</a>
+  </div>
+
+</div>
+
+<!-- Botón Hamburguesa para abrir/cerrar -->
+<div class="fixed top-4 left-4 z-50">
+  <button (click)="toggle()" class="p-2 bg-amber-500 rounded-md text-amber-950 hover:bg-amber-600 shadow-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+  </button>
+</div>
+

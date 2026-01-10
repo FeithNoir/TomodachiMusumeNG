@@ -6,9 +6,8 @@ import { GameState } from '../interfaces/game-state.interface';
 })
 export class GameStateService {
   private readonly SAVE_KEY = 'tomodachiMusumeSave';
-  private readonly GAME_VERSION = "0.0.1"; // Should match the version in main.js
+  private readonly GAME_VERSION = "0.0.1";
 
-  // Initial game state
   private initialGameState: GameState = {
     version: this.GAME_VERSION,
     language: 'en',
@@ -36,10 +35,9 @@ export class GameStateService {
     characterName: "Eleanora",
   };
 
-  // Game state as a Signal
   public gameState = signal<GameState>(this.initialGameState);
 
-  // Computed signals for easier access to specific state parts
+  // Computed signals
   public money = computed(() => this.gameState().money);
   public affinity = computed(() => this.gameState().affinity);
   public energy = computed(() => this.gameState().energy);
@@ -52,18 +50,41 @@ export class GameStateService {
 
 
   constructor() {
-    // Effect to save game state whenever it changes
     effect(() => {
-      // console.log('Game state changed:', this.gameState());
       this.saveGame();
     });
-    this.loadGame(); // Load game state on service initialization
+    this.loadGame();
+  }
+
+  // --- MÉTODOS AÑADIDOS PARA TITLE COMPONENT ---
+
+  /**
+   * Comprueba si existe una partida guardada válida en el LocalStorage.
+   * Verifica también que la versión coincida.
+   */
+  hasSaveData(): boolean {
+    const savedData = localStorage.getItem(this.SAVE_KEY);
+    if (!savedData) return false;
+
+    try {
+      const parsedState = JSON.parse(savedData);
+      // Solo devolvemos true si existe y la versión es compatible
+      return parsedState.version === this.GAME_VERSION;
+    } catch (e) {
+      return false;
+    }
   }
 
   /**
-   * Loads the game state from local storage.
-   * If no saved game or an incompatible version is found, starts a new game.
+   * Borra los datos guardados e inicia un estado limpio.
+   * Es esencialmente un alias o wrapper para newGame().
    */
+  clearSaveData(): void {
+    this.newGame();
+  }
+
+  // ---------------------------------------------
+
   loadGame(): void {
     try {
       const savedData = localStorage.getItem(this.SAVE_KEY);
@@ -83,34 +104,26 @@ export class GameStateService {
       }
     } catch (error) {
       console.error('Error loading game state:', error);
-      this.newGame(); // Fallback to new game on error
+      this.newGame();
     }
   }
 
-  /**
-   * Saves the current game state to local storage.
-   */
   saveGame(): void {
     try {
       localStorage.setItem(this.SAVE_KEY, JSON.stringify(this.gameState()));
-      // console.log('Game saved.');
     } catch (error) {
       console.error('Error saving game state:', error);
-      // TODO: Implement a user-facing notification for save errors
     }
   }
 
-  /**
-   * Resets the game state to its initial values.
-   */
   newGame(): void {
-    this.gameState.set({ ...this.initialGameState });
-    localStorage.removeItem(this.SAVE_KEY); // Clear old save
+    // Restauramos el estado inicial clonándolo para evitar referencias
+    this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)));
+    localStorage.removeItem(this.SAVE_KEY);
     console.log('New game started.');
   }
 
   // --- State Update Methods ---
-
   updateMoney(amount: number): void {
     this.gameState.update(state => ({ ...state, money: state.money + amount }));
   }
@@ -147,10 +160,6 @@ export class GameStateService {
   setHasCompletedIntro(completed: boolean): void {
     this.gameState.update(state => ({ ...state, hasCompletedIntro: completed }));
   }
-
-  // Inventory and Equipped items will be updated by InventoryService and CharacterService,
-  // which will then call methods on GameStateService to update the central state signal.
-  // For now, we'll add placeholder methods.
 
   updateInventory(newInventory: { id: string; quantity: number }[]): void {
     this.gameState.update(state => ({ ...state, inventory: newInventory }));
