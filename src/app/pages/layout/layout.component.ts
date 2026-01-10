@@ -33,6 +33,9 @@ type ActiveModal = SidebarAction | 'options' | null;
 export class LayoutComponent {
   private gameStateService = inject(GameStateService);
   private characterService = inject(CharacterService);
+  constructor() {
+    this.gameStateService.syncCharacterState(this.characterService);
+  }
 
   private activeModal = signal<ActiveModal>(null);
   public currentDialogue = signal<Dialogue | null>(null);
@@ -108,7 +111,7 @@ export class LayoutComponent {
 
   handleDialogueOption(option: DialogueOption): void {
     if (option.affinityChange) {
-      this.gameStateService.updateAffinity(option.affinityChange);
+      this.characterService.updateAffinity(option.affinityChange);
       console.log(`Affinity changed by: ${option.affinityChange}`);
     }
     this.closeActiveModal();

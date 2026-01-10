@@ -98,13 +98,13 @@ export class InventoryComponent {
     const affinityReq = itemData.requiredAffinity || 0;
 
     if (isCurrentlyEquipped) {
-      if ((itemType === 'bra' || itemType === 'pantsus') && this.gameStateService.affinity() < affinityReq) {
+      if ((itemType === 'bra' || itemType === 'pantsus') && this.characterService.affinity() < affinityReq) {
         console.warn(this.getText('braPantsusUnequipMsg', affinityReq));
         return;
       }
       this.characterService.unequipItem(itemType as EquippableItemCategory);
     } else {
-      if (itemType !== 'bra' && itemType !== 'pantsus' && this.gameStateService.affinity() < affinityReq) {
+      if (itemType !== 'bra' && itemType !== 'pantsus' && this.characterService.affinity() < affinityReq) {
         console.warn(this.getText('insufficientAffinityMsg', affinityReq));
         return;
       }

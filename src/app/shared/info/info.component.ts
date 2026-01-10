@@ -1,6 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameStateService } from '../../core/services/game-state.service';
+import { CharacterService } from '../../core/services/character.service';
 import { LocalizedText } from '../../core/interfaces/item.interface'; // Import LocalizedText
 
 // 1. Tipamos explícitamente el diccionario para evitar el error de "implicit any"
@@ -20,8 +21,9 @@ const UI_TEXTS: Record<string, LocalizedText> = {
 })
 export class InfoComponent {
   private gameStateService = inject(GameStateService); // Use inject()
+  private characterService = inject(CharacterService);
 
-  public affinity = this.gameStateService.affinity;
+  public affinity = this.characterService.affinity;
   public money = this.gameStateService.money;
   public energy = this.gameStateService.energy;
   public satiety = this.gameStateService.satiety;

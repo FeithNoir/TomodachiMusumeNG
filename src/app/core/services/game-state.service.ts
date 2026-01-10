@@ -37,13 +37,10 @@ export class GameStateService {
 
   public gameState = signal<GameState>(this.initialGameState);
 
-  // Computed signals
   public money = computed(() => this.gameState().money);
-  public affinity = computed(() => this.gameState().affinity);
   public energy = computed(() => this.gameState().energy);
   public satiety = computed(() => this.gameState().satiety);
   public inventory = computed(() => this.gameState().inventory);
-  public equipped = computed(() => this.gameState().equipped);
   public language = computed(() => this.gameState().language);
   public playerName = computed(() => this.gameState().playerName);
   public hasCompletedIntro = computed(() => this.gameState().hasCompletedIntro);
@@ -54,6 +51,30 @@ export class GameStateService {
       this.saveGame();
     });
     this.loadGame();
+  }
+
+  // Método para sincronizar desde el exterior (p.ej. desde un AppInitializer o Layout)
+  public syncCharacterState(charService: any): void {
+    effect(() => {
+      const affinity = charService.affinity();
+      const equipped = charService.equipped();
+      const expression = charService.expression();
+
+      // Actualizamos el estado interno sin disparar efectos innecesarios si es posible,
+      // pero aquí el set() es lo más sencillo.
+      this.gameState.update(state => ({
+        ...state,
+        affinity,
+        equipped,
+        expression
+      }));
+    }, { allowSignalWrites: true });
+
+    // Carga inicial HACIA el CharacterService
+    const current = this.gameState();
+    charService.affinity.set(current.affinity);
+    charService.equipped.set(current.equipped);
+    charService.expression.set(current.expression);
   }
 
   // --- MÉTODOS AÑADIDOS PARA TITLE COMPONENT ---
@@ -123,16 +144,8 @@ export class GameStateService {
     console.log('New game started.');
   }
 
-  // --- State Update Methods ---
   updateMoney(amount: number): void {
     this.gameState.update(state => ({ ...state, money: state.money + amount }));
-  }
-
-  updateAffinity(amount: number): void {
-    this.gameState.update(state => {
-      const newAffinity = Math.max(0, Math.min(100, state.affinity + amount));
-      return { ...state, affinity: newAffinity };
-    });
   }
 
   updateEnergy(amount: number): void {
@@ -165,10 +178,6 @@ export class GameStateService {
     this.gameState.update(state => ({ ...state, inventory: newInventory }));
   }
 
-  updateEquipped(newEquipped: GameState['equipped']): void {
-    this.gameState.update(state => ({ ...state, equipped: newEquipped }));
-  }
-
   addKnownRecipe(recipeId: string): void {
     this.gameState.update(state => {
       if (!state.knownRecipes.includes(recipeId)) {
@@ -176,9 +185,5 @@ export class GameStateService {
       }
       return state;
     });
-  }
-
-  updateExpression(eyes: string, mouth: string): void {
-    this.gameState.update(state => ({ ...state, expression: { eyes, mouth } }));
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { GameStateService } from './game-state.service';
+import { CharacterService } from './character.service';
 import { InventoryService } from './inventory.service';
 import { masterItemList } from '../data/item-database';
 import { shopInventory } from '../data/shop-data';
@@ -13,6 +14,7 @@ type TextFunction = (...args: any[]) => LocalizedText;
 export class ShopService {
   private gameStateService = inject(GameStateService);
   private inventoryService = inject(InventoryService);
+  private characterService = inject(CharacterService);
 
   // 1. Textos movidos al servicio
   private readonly UI_TEXTS: Record<string, LocalizedText | TextFunction> = {
@@ -97,7 +99,7 @@ export class ShopService {
     const currentQuantity = this.inventoryService.getItemQuantity(itemId);
     if (currentQuantity < quantity) return false;
 
-    const equippedItems = Object.values(this.gameStateService.equipped());
+    const equippedItems = Object.values(this.characterService.equipped());
     if (equippedItems.includes(itemId) && currentQuantity === quantity) return false;
 
     if (!this.inventoryService.removeItem(itemId, quantity)) return false;

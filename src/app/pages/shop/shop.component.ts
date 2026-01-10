@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ShopService } from '../../core/services/shop.service';
 import { GameStateService } from '../../core/services/game-state.service';
+import { CharacterService } from '../../core/services/character.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { masterItemList } from '../../core/data/item-database';
 import { Item, LocalizedText } from '../../core/interfaces/item.interface';
@@ -20,6 +21,7 @@ export class ShopComponent {
   private shopService = inject(ShopService);
   private gameStateService = inject(GameStateService);
   private inventoryService = inject(InventoryService);
+  private characterService = inject(CharacterService);
 
   @Output() closeShop = new EventEmitter<void>();
 
@@ -74,7 +76,7 @@ export class ShopComponent {
     if (!itemInInventory || !itemData.sellPrice) return;
 
     let maxQuantity = itemInInventory.quantity;
-    const equippedItems = Object.values(this.gameStateService.equipped());
+    const equippedItems = Object.values(this.characterService.equipped());
     if (equippedItems.includes(itemId)) {
       maxQuantity--;
     }
