@@ -17,10 +17,14 @@
 
 /* Los wrappers de layout no necesitan estilos en móvil, ya que sus hijos
    (los componentes) se posicionan de forma independiente. */
+/* Los wrappers de layout no necesitan estilos en móvil */
 .layout-menu,
 .layout-info,
 .layout-sidebar {
-  /* z-index se gestiona en los componentes hijos */
+  pointer-events: none; /* Dejar pasar clicks si no tienen contenido activo */
+}
+.layout-menu > *, .layout-info > *, .layout-sidebar > * {
+  pointer-events: auto; /* Reactivar para los componentes hijos */
 }
 
 .modal-overlay {
@@ -41,7 +45,18 @@
 
 .modal-overlay.hidden {
   opacity: 0;
-  pointer-events: none; /* Evita interacción cuando está oculto */
+  pointer-events: none;
+}
+
+/* Overlay específico para diálogos: alinear al fondo */
+.dialogue-overlay-container {
+  align-items: flex-end;
+  background-color: transparent; /* No oscurecer fondo para diálogos */
+  pointer-events: none; /* Permitir clickear detrás si no se clickea el diálogo */
+}
+
+.dialogue-overlay-container > * {
+  pointer-events: auto; /* El diálogo en sí sí recibe eventos */
 }
 
 
