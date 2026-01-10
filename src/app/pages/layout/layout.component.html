@@ -25,7 +25,9 @@
 
 <!-- Modal de Diálogo -->
 @if (isDialogueVisible()) {
-  <app-dialogue [dialogue]="currentDialogue()" (optionSelected)="handleDialogueOption($event)"></app-dialogue>
+  <div class="modal-overlay">
+    <app-dialogue [dialogue]="currentDialogue()" (optionSelected)="handleDialogueOption($event)"></app-dialogue>
+  </div>
 }
 
 <!-- Modal de Inventario/Equipamiento -->
@@ -44,11 +46,15 @@
 
 <!-- Modal de Tienda -->
 @if (isMarketVisible()) {
-  <app-shop (closeShop)="closeActiveModal()"></app-shop>
+  <div class="modal-overlay">
+    <app-shop (closeShop)="closeActiveModal()"></app-shop>
+  </div>
 }
 
 <!-- Modal de Misión -->
 @if (isMissionVisible()) {
-  <app-mission (close)="closeActiveModal()"></app-mission>
+  <div class="modal-overlay">
+    <app-mission (close)="closeActiveModal()"></app-mission>
+  </div>
 }
 

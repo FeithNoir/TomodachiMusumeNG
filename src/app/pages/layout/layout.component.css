@@ -32,8 +32,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.7); /* Oscurecemos un poco más para mejor contraste */
+  z-index: 1000;
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
   padding: 1rem; /* Añade padding para que los modales no toquen los bordes en móvil */

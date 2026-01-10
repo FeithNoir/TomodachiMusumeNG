@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CharacterService } from '../../core/services/character.service';
 import { GameStateService } from '../../core/services/game-state.service';
 import { LocalizedText } from '../../core/interfaces/item.interface';
+import { masterItemList } from '../../core/data/item-database';
 
 @Component({
   selector: 'app-character',
@@ -19,6 +20,15 @@ export class CharacterComponent implements OnInit, OnDestroy {
   public expression = this.characterService.expression;
   public playerName = this.gameStateService.playerName;
 
+  /**
+   * Resuelve el ID de un objeto a su ruta de imagen.
+   */
+  getItemPath(itemId: string | null): string {
+    if (!itemId) return '';
+    const item = masterItemList[itemId];
+    return item?.path || '';
+  }
+
   private blinkingInterval: any;
   public showReactionDialogue = false;
   public reactionText = '';
@@ -34,10 +44,10 @@ export class CharacterComponent implements OnInit, OnDestroy {
   private startBlinking(): void {
     // Usamos window.setInterval para evitar confusión con los tipos de Node.js si existen
     this.blinkingInterval = setInterval(() => {
-      if (this.expression().eyes === 'assets/img/expressions/eyes_1.png') {
-        this.characterService.updateExpression('assets/img/expressions/eyes_2.png', this.expression().mouth);
+      if (this.expression().eyes === '/assets/img/expressions/eyes_1.png') {
+        this.characterService.updateExpression('/assets/img/expressions/eyes_2.png', this.expression().mouth);
         setTimeout(() => {
-          this.characterService.updateExpression('assets/img/expressions/eyes_1.png', this.expression().mouth);
+          this.characterService.updateExpression('/assets/img/expressions/eyes_1.png', this.expression().mouth);
         }, 150);
       }
     }, Math.random() * 4000 + 3000);
