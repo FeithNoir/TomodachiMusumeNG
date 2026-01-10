@@ -1,13 +1,17 @@
+:host {
+  display: block;
+}
+
 .info-top-bar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 60px;
-  background: rgba(120, 53, 15, 0.4); /* amber-900 with transparency */
+  background: rgba(120, 53, 15, 0.4);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(251, 191, 36, 0.2); /* amber-400 */
+  border-bottom: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,39 +25,36 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(253, 230, 138, 0.1); /* amber-100 */
-  padding: 0.4rem 0.8rem;
+  background: var(--gold-accent-muted);
+  padding: 0.4rem 1rem;
   border-radius: 9999px;
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  border: 1px solid var(--glass-border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
 .info-pill:hover {
-  background: rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.4);
   transform: translateY(-2px);
-  border-color: rgba(251, 191, 36, 0.6);
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 15px var(--gold-accent-muted);
 }
 
 .info-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+  font-size: 1.25rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .info-value {
   color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+  font-size: 1rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
 }
 
-/* Specific Pill Highlights */
-.affinity .info-icon { color: #f43f5e; } /* rose-500 */
-.money .info-icon { color: #10b981; } /* emerald-500 */
-.energy .info-icon { color: #f59e0b; } /* amber-500 */
-.satiety .info-icon { color: #f97316; } /* orange-500 */
+/* Specific Pill Highlights if needed */
+.affinity .info-icon { filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.5)); }
 
 /* Mobile Responsiveness */
 @media (max-width: 640px) {
@@ -64,26 +65,29 @@
   }
 
   .info-pill {
-    padding: 0.3rem 0.6rem;
+    padding: 0.3rem 0.75rem;
   }
 
   .info-value {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .info-icon {
-    width: 1rem;
-    height: 1rem;
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .info-top-bar {
     justify-content: flex-start;
     overflow-x: auto;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    scrollbar-width: none;
+    padding-left: 1rem;
   }
   .info-top-bar::-webkit-scrollbar {
-    display: none; /* Hide scrollbar Chrome/Safari */
+    display: none;
+  }
+  .info-pill {
+    flex-shrink: 0;
   }
 }

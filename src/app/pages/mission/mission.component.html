@@ -1,22 +1,43 @@
-<div class="modal-overlay">
-  <div class="modal-content-panel">
-    <h3 class="text-xl font-bold mb-4">{{ title() }}</h3>
+<div class="glass-panel mission-container fade-in">
 
-    @if (!isComplete()) {
-      <div class="progress-bar-container rounded my-4">
-        <div class="progress-bar" [style.width.%]="progress()">
-          {{ progress() | number:'1.0-0' }}%
-        </div>
-      </div>
-    }
+  @if (isComplete()) {
+  <button class="close-btn-round" (click)="onClose()">
+    <span>✕</span>
+  </button>
+  }
 
-    <p class="mt-4 text-center min-h-[40px]" [innerHTML]="resultText()"></p>
-
-    @if (isComplete()) {
-      <button class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full" (click)="onClose()">
-        Cerrar
-      </button>
-    }
+  <div class="mission-header">
+    <h3 class="mission-title">{{ title() }}</h3>
   </div>
-</div>
 
+  <div class="mission-content">
+    @if (!isComplete()) {
+    <div class="mission-status-container">
+      <div class="spinner-container">
+        <div class="glass-spinner"></div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" [style.width.%]="progress()">
+            <div class="progress-glare"></div>
+          </div>
+        </div>
+        <p class="progress-percentage">{{ progress() | number:'1.0-0' }}%</p>
+      </div>
+    </div>
+    }
+
+    <div class="mission-result" [class.visible]="isComplete()">
+      <p class="result-text" [innerHTML]="resultText()"></p>
+    </div>
+  </div>
+
+  @if (isComplete()) {
+  <div class="mission-footer">
+    <button class="finish-btn" (click)="onClose()">
+      {{ getText('close') || 'Cerrar' }}
+    </button>
+  </div>
+  }
+</div>

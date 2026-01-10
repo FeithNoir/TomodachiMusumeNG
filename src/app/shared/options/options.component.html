@@ -1,4 +1,9 @@
-<div class="options-container glass-panel fade-in">
+<div class="glass-panel options-container fade-in">
+
+    <button class="close-btn-round" (click)="onClose()">
+        <span>✕</span>
+    </button>
+
     <div class="options-header">
         <img src="/assets/icons/gear.svg" alt="" class="header-icon">
         <h2 class="options-title">{{ getText('optionsTitle') }}</h2>
@@ -22,7 +27,7 @@
     </div>
 
     <div class="options-footer">
-        <button class="close-btn" (click)="onClose()">
+        <button class="finish-btn" (click)="onClose()">
             <span>{{ getText('closeBtn') }}</span>
         </button>
     </div>

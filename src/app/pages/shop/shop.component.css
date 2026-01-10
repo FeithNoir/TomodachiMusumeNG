@@ -1,111 +1,282 @@
 :host {
-  display: contents; /* Deja que el contenido se reparta libremente en el overlay */
+  display: contents;
 }
 
-/* ================================================================================= */
-/* COMPONENT: GenericModalComponent */
-/* Responsabilidad: Estilos genéricos para todos los modales. */
-/* ================================================================================= */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.shop-container {
+  width: 95%;
+  max-width: 600px;
+  max-height: 90vh;
+  padding: 2.5rem;
+  overflow: hidden;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+}
+
+.shop-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.shop-view.full-height {
+  height: 100%;
+}
+
+.shop-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 50;
-  transition: opacity 0.3s ease-in-out;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
 }
 
-.modal-content-panel {
-  background-color: #78350f;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  width: 90%;
-  max-width: 300px;
+.shop-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--gold-accent);
+  margin: 0;
+}
+
+.shop-wallet {
+  background: var(--gold-accent-muted);
+  border: 1px solid var(--glass-border);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--gold-accent);
+}
+
+.shop-prompt {
   text-align: center;
-  color: white;
+  color: var(--text-dim);
+  font-size: 1.1rem;
 }
 
-/* ================================================================================= */
-/* COMPONENT: InventoryModalComponent & MarketModalComponent */
-/* Responsabilidad: Estilos para los items en el inventario, tienda y crafteo. */
-/* ================================================================================= */
-.inventory-item {
-  position: relative;
-  background-color: #92400e;
-  border: 2px solid #b45309;
-  border-radius: 0.25rem;
+.button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shop-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.shop-action-btn.primary {
+  background: var(--gold-accent);
+  color: #000;
+  border-color: var(--gold-accent);
+}
+
+.shop-action-btn.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4);
+}
+
+.shop-action-btn.secondary {
+  background: var(--gold-accent-muted);
+  color: var(--text-white);
+}
+
+.shop-action-btn.secondary:hover {
+  background: rgba(251, 191, 36, 0.3);
+  border-color: var(--gold-accent);
+}
+
+/* Items Grid */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1.25rem;
+  overflow-y: auto;
   padding: 0.5rem;
+}
+
+.items-grid::-webkit-scrollbar {
+  width: 6px;
+}
+.items-grid::-webkit-scrollbar-track { background: transparent; }
+.items-grid::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+
+.shop-item-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.shop-item-card:hover {
+  background: rgba(251, 191, 36, 0.05);
+  border-color: var(--gold-accent);
+}
+
+.item-visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+.qty-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #000;
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.item-info {
   text-align: center;
+  width: 100%;
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-price {
+  color: var(--gold-accent);
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.buy-btn, .sell-btn {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--gold-accent);
+  background: transparent;
+  color: var(--gold-accent);
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.inventory-item:hover {
-  border-color: #f59e0b;
-  transform: scale(1.05);
+.buy-btn:hover:not(:disabled), .sell-btn:hover {
+  background: var(--gold-accent);
+  color: #000;
 }
 
-.item-quantity {
-  position: absolute;
-  bottom: 2px;
-  right: 4px;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 0.75rem;
-  padding: 0 4px;
-  border-radius: 99px;
+.buy-btn:disabled {
+  opacity: 0.3;
+  border-color: var(--text-dim);
+  color: var(--text-dim);
+  cursor: not-allowed;
 }
 
-/* ================================================================================= */
-/* COMPONENT: ActionsComponent & MenuComponent */
-/* Responsabilidad: Estilos para los botones de acción y botones de menú. */
-/* =================================com================================================= */
-.action-button {
-  background-color: #b45309;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+.back-link {
+  background: none;
+  border: none;
+  color: var(--gold-accent);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Confirmation View */
+.centered-content {
+  align-items: center;
+  text-align: center;
+}
+
+.confirm-item-preview {
+  background: var(--gold-accent-muted);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  margin-bottom: 1rem;
+}
+
+.preview-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.qty-selector {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s;
-  flex-grow: 1;
-  margin: 0 0.25rem;
-  border: none; /* Reset button border */
+  gap: 1rem;
+  background: rgba(0,0,0,0.3);
+  padding: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+}
+
+.qty-adjust {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--gold-accent);
+  color: #000;
+  font-weight: 800;
   cursor: pointer;
 }
 
-.action-button:hover {
-  background-color: #c35b11;
+.qty-input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  text-align: center;
+  width: 4rem;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
-/* Estilos para tablets y más grandes */
-@media (min-width: 768px) {
-  .modal-content-panel {
-    padding: 2rem;
-    max-width: 400px;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+  .shop-container {
+    padding: 1.5rem;
   }
-
-  .action-button {
-    padding: 0.75rem;
-    font-size: 1rem;
-    width: 100%;
-    flex-grow: 0;
-    margin: 0;
+  
+  .items-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
-}
-
-/* Specific overrides for this component */
-.modal-content-panel.\!max-w-lg {
-    max-width: 32rem; /* 512px */
-}
-
-input[type="number"] {
-    background-color: #d97706; /* amber-600 */
-    color: white;
+  
+  .shop-title {
+    font-size: 1.25rem;
+  }
 }

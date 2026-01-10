@@ -14,6 +14,7 @@ const UI_TEXTS: Record<string, LocalizedText> = {
   returnedNothing: { es: 'No encontró nada esta vez...', en: 'She did not find anything this time...' },
   gains: { es: 'Ganancias', en: 'Earnings' },
   items: { es: 'Objetos', en: 'Items' },
+  close: { es: 'Cerrar', en: 'Close' },
 };
 
 @Component({
@@ -112,7 +113,7 @@ export class MissionComponent implements OnInit, OnDestroy {
     return text;
   }
 
-  private getText(key: string): string {
+  public getText(key: string): string {
     const lang = this.language() as keyof LocalizedText;
     const entry = UI_TEXTS[key];
     return entry ? (entry[lang] || entry['en']) : key;

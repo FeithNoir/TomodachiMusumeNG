@@ -40,6 +40,7 @@ export class ShopComponent {
   // Mantenemos language aquí porque se usa en los helpers locales (getItemName)
   public language = this.gameStateService.language;
   public money = this.gameStateService.money;
+  public Math = Math;
 
   constructor() { }
 

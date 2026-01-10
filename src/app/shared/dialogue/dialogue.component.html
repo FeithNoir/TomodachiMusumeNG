@@ -1,27 +1,24 @@
-<!--
-  Este componente se muestra u oculta desde el componente padre (layout)
-  usando @if, por lo que no necesita su propio control de visibilidad interno.
--->
-<div class="fixed bottom-0 left-0 right-0 z-50 mb-12">
-  <div
-    class="bg-amber-800 p-4 sm:p-5 rounded-t-lg shadow-2xl text-amber-50 w-full mx-auto max-w-2xl border-4 border-amber-900">
+<div class="dialogue-floating-container fade-in">
+  <div class="glass-panel dialogue-box">
 
-    <!-- Nombre del Personaje -->
-    <span
-      class="bg-amber-900 text-center text-md sm:text-lg font-bold p-2 rounded-t-md -mt-4 sm:-mt-5 mx-auto w-fit px-4 shadow-md absolute -top-4 left-1/2 transform -translate-x-1/2">
+    <!-- Character Name Tag -->
+    <div class="name-tag">
       {{ dialogue()?.character || '???' }}
-    </span>
+    </div>
 
-    <!-- Texto del Diálogo -->
-    <p class="my-4 text-center text-sm sm:text-base min-h-[40px] sm:min-h-[50px]">
-      {{ processedText }}
-    </p>
+    <!-- Dialogue Text -->
+    <div class="dialogue-content">
+      <p class="dialogue-text">
+        {{ processedText }}
+      </p>
+    </div>
 
-    <!-- Opciones del Diálogo -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+    <!-- Dialogue Options -->
+    <div class="options-grid">
       @for (option of dialogue()?.options; track option.text) {
       <button class="dialogue-option-button" (click)="onOptionClick(option)">
-        {{ getLocalizedOptionText(option) }}
+        <span class="option-text">{{ getLocalizedOptionText(option) }}</span>
+        <span class="option-arrow">→</span>
       </button>
       }
     </div>

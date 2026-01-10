@@ -61,3 +61,10 @@
   <app-mission (close)="closeActiveModal()"></app-mission>
 </div>
 }
+
+<!-- Modal de Opciones -->
+@if (isOptionsVisible()) {
+<div class="modal-overlay">
+  <app-options (close)="closeActiveModal()"></app-options>
+</div>
+}

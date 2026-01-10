@@ -19,7 +19,12 @@ export class GameStateService {
     playerName: "Jefe",
     guildName: "Oniriums",
     hasCompletedIntro: false,
-    inventory: [],
+    inventory: [
+      { id: 'cheap_shirt', quantity: 1 },
+      { id: 'cheap_pants', quantity: 1 },
+      { id: 'bra_1', quantity: 1 },
+      { id: 'pantsus_1', quantity: 1 },
+    ],
     equipped: {
       top: 'cheap_shirt',
       bottom: 'cheap_pants',

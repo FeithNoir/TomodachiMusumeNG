@@ -1,7 +1,21 @@
-<div
-  class="fixed top-4 right-4 z-20 bg-amber-500 bg-opacity-80 backdrop-blur-sm p-3 rounded-lg shadow-lg text-sm space-y-1">
-  <div><span class="font-semibold">{{ getText('affinity') }}: </span><span>{{ affinity() }}</span></div>
-  <div><span class="font-semibold">{{ getText('money') }}: $</span><span>{{ money() }}</span></div>
-  <div><span class="font-semibold">{{ getText('energy') }}: ⚡</span><span>{{ energy() | number:'1.0-0' }}</span></div>
-  <div><span class="font-semibold">{{ getText('satiety') }}: 🧡</span><span>{{ satiety() | number:'1.0-0' }}</span></div>
+<div class="info-top-bar">
+  <div class="info-pill affinity" [title]="getText('affinity')">
+    <span class="info-icon">❤️</span>
+    <span class="info-value">{{ affinity() }}</span>
+  </div>
+
+  <div class="info-pill money" [title]="getText('money')">
+    <span class="info-icon">💰</span>
+    <span class="info-value">${{ money() }}</span>
+  </div>
+
+  <div class="info-pill energy" [title]="getText('energy')">
+    <span class="info-icon">⚡</span>
+    <span class="info-value">{{ energy() | number:'1.0-0' }}</span>
+  </div>
+
+  <div class="info-pill satiety" [title]="getText('satiety')">
+    <span class="info-icon">🍱</span>
+    <span class="info-value">{{ satiety() | number:'1.0-0' }}</span>
+  </div>
 </div>

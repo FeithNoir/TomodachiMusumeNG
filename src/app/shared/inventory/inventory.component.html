@@ -1,36 +1,37 @@
-<div class="modal">
-  <div class="modal-content-panel !max-w-md">
-    <h3 class="text-xl font-bold mb-4">
-      {{ getText('inventoryTitle') }} ({{ inventory().length }}/{{ maxInventorySlots }})
+<div class="glass-panel inventory-container fade-in">
+
+  <button class="close-btn-round" (click)="onClose()">
+    <span>✕</span>
+  </button>
+
+  <div class="inventory-header">
+    <h3 class="inventory-title">
+      {{ getText('inventoryTitle') }}
     </h3>
-
-    <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 bg-black bg-opacity-20 p-2 rounded max-h-64 overflow-y-auto">
-
-      <!--
-         CAMBIOS PRINCIPALES:
-         1. @for: Reemplaza a *ngFor.
-         2. track item.id: Obligatorio en Angular 17+ para optimizar el rendimiento (re-rendering).
-         3. @empty: Reemplaza la lógica de *ngIf/else. Se muestra automáticamente si inventory() está vacío.
-      -->
-      @for (item of inventory(); track item.id) {
-        <div class="inventory-item"
-             [class.equipped]="isEquipped(item.id)"
-             (click)="handleItemClick(item.id)">
-
-          <img [src]="getItemData(item.id).path"
-               [alt]="getItemName(item.id)"
-               class="w-full h-auto object-contain">
-
-          <span class="item-quantity">{{ item.quantity }}</span>
-        </div>
-      } @empty {
-        <p class="col-span-full text-center text-gray-400">No tienes objetos en el inventario.</p>
-      }
-
+    <div class="inventory-stats">
+      <span class="slots-pill">{{ inventory().length }} / {{ maxInventorySlots }}</span>
     </div>
-
-    <button class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full" (click)="onClose()">
-      {{ getText('close') }}
-    </button>
   </div>
+
+  <div class="inventory-grid">
+    @for (item of inventory(); track item.id) {
+    <div class="inventory-item-card" [class.equipped]="isEquipped(item.id)" (click)="handleItemClick(item.id)">
+
+      <div class="item-img-container">
+        <img [src]="getItemData(item.id).path" [alt]="getItemName(item.id)" class="item-img">
+      </div>
+
+      <div class="item-quantity-tag">{{ item.quantity }}</div>
+
+      @if (isEquipped(item.id)) {
+      <div class="equipped-tag">E</div>
+      }
+    </div>
+    } @empty {
+    <div class="empty-inventory">
+      <p>{{ getText('noItemsMsg') || 'No tienes objetos en el inventario.' }}</p>
+    </div>
+    }
+  </div>
+
 </div>
