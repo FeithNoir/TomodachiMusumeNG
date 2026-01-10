@@ -31,7 +31,7 @@ export class GameStateService {
       weapon: null,
     },
     knownRecipes: [],
-    expression: { eyes: './assets/img/expressions/eyes_1.png', mouth: './assets/img/expressions/mouth_1.png' },
+    expression: { eyes: '/assets/img/expressions/eyes_1.png', mouth: '/assets/img/expressions/mouth_1.png' },
     characterName: "Eleanora",
   };
 

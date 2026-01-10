@@ -42,3 +42,13 @@
   </div>
 }
 
+<!-- Modal de Tienda -->
+@if (isMarketVisible()) {
+  <app-shop (closeShop)="closeActiveModal()"></app-shop>
+}
+
+<!-- Modal de Misión -->
+@if (isMissionVisible()) {
+  <app-mission (close)="closeActiveModal()"></app-mission>
+}
+

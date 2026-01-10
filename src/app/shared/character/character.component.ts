@@ -34,10 +34,10 @@ export class CharacterComponent implements OnInit, OnDestroy {
   private startBlinking(): void {
     // Usamos window.setInterval para evitar confusión con los tipos de Node.js si existen
     this.blinkingInterval = setInterval(() => {
-      if (this.expression().eyes === './assets/img/expressions/eyes_1.png') {
-        this.characterService.updateExpression('./assets/img/expressions/eyes_2.png', this.expression().mouth);
+      if (this.expression().eyes === '/assets/img/expressions/eyes_1.png') {
+        this.characterService.updateExpression('/assets/img/expressions/eyes_2.png', this.expression().mouth);
         setTimeout(() => {
-          this.characterService.updateExpression('./assets/img/expressions/eyes_1.png', this.expression().mouth);
+          this.characterService.updateExpression('/assets/img/expressions/eyes_1.png', this.expression().mouth);
         }, 150);
       }
     }, Math.random() * 4000 + 3000);

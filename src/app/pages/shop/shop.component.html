@@ -1,1 +1,102 @@
-<p>shop works!</p>
+<!-- Main Modal Container -->
+<div class="modal">
+
+  <!-- Content Panel: Usamos @switch en lugar de [ngSwitch] -->
+  <div class="modal-content-panel">
+
+    @switch (viewMode()) {
+
+      <!-- Market View -->
+      @case ('market') {
+        <div>
+          <h3 class="text-xl font-bold mb-4">{{ getText('marketTitle') }}</h3>
+          <p class="mb-4">{{ getText('marketPrompt') }}</p>
+          <div class="space-y-2">
+            <button (click)="openBuy()" class="action-button w-full justify-center">{{ getText('buy') }}</button>
+            <button (click)="openSell()" class="action-button w-full justify-center">{{ getText('sell') }}</button>
+          </div>
+          <button (click)="onClose()" class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full">{{ getText('close') }}</button>
+        </div>
+      }
+
+      <!-- Buy View -->
+      @case ('buy') {
+        <div class="!max-w-lg">
+          <h3 class="text-xl font-bold mb-4">{{ getText('buyTitle') }}</h3>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-black bg-opacity-20 p-2 rounded max-h-72 overflow-y-auto">
+            <!-- CORRECCIÓN AQUÍ: itemId ya es el string, no un objeto -->
+            @for (itemId of availableShopItems(); track itemId) {
+              <div class="inventory-item p-2 flex flex-col justify-between">
+                <div>
+                  <!-- Antes: getItemData(itemId.id) -> Ahora: getItemData(itemId) -->
+                  <img [src]="getItemData(itemId).path"
+                       [alt]="getItemName(itemId)"
+                       class="w-16 h-16 mx-auto mb-2">
+
+                  <p class="text-sm font-semibold">{{ getItemName(itemId) }}</p>
+
+                  <p class="text-xs text-amber-300">${{ getItemData(itemId).buyPrice }}</p>
+                </div>
+                <!-- Antes: buyItem(itemId.id) -> Ahora: buyItem(itemId) -->
+                <button (click)="buyItem(itemId)" class="action-button !text-sm !py-1 mt-2">{{ getText('buy') }}</button>
+              </div>
+            }
+          </div>
+          <button (click)="openMarket()" class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full">{{ getText('back') }}</button>
+        </div>
+      }
+
+      <!-- Sell View (Este estaba bien, porque aquí 'item' sí es un objeto con propiedad id) -->
+      @case ('sell') {
+        <div class="!max-w-lg">
+          <h3 class="text-xl font-bold mb-4">{{ getText('sellTitle') }}</h3>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-black bg-opacity-20 p-2 rounded max-h-72 overflow-y-auto">
+            @for (item of sellableInventoryItems(); track item.id) {
+              <div class="inventory-item p-2 flex flex-col justify-between">
+                <div>
+                  <img [src]="getItemData(item.id).path"
+                       [alt]="getItemName(item.id)"
+                       class="w-16 h-16 mx-auto mb-2">
+
+                  <p class="text-sm font-semibold">{{ getItemName(item.id) }} (x{{ item.quantity }})</p>
+
+                  <p class="text-xs text-green-400">Vender por: ${{ getItemData(item.id).sellPrice }}</p>
+                </div>
+                <button (click)="openSellConfirmation(item.id)" class="action-button !text-sm !py-1 mt-2">{{ getText('sell') }}</button>
+              </div>
+            } @empty {
+              <p class="col-span-full text-center text-gray-400">{{ getText('noItemsToSell') }}</p>
+            }
+          </div>
+          <button (click)="openMarket()" class="mt-6 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded w-full">{{ getText('back') }}</button>
+        </div>
+      }
+
+      <!-- Sell Confirmation View -->
+      @case ('sell-confirm') {
+        <div>
+          @if (selectedItemToSell(); as selection) {
+            <h3 class="text-xl font-bold mb-2">{{ getText('sellConfirmTitle') }}: {{ getItemName(selection.item.id) }}</h3>
+            <p class="mb-4">{{ getText('sellConfirmPrompt') }}</p>
+
+            <input type="number"
+                   [ngModel]="sellQuantityInput()"
+                   (ngModelChange)="sellQuantityInput.set($event)"
+                   class="w-full p-2 rounded bg-amber-950 text-center mb-4"
+                   min="1"
+                   [max]="maxSellQuantity()">
+
+            <div class="space-y-2">
+              <button (click)="confirmSell()" class="action-button w-full justify-center bg-green-600 hover:bg-green-700">{{ getText('confirmSell') }}</button>
+              <button (click)="openSell()" class="action-button w-full justify-center bg-red-600 hover:bg-red-700">{{ getText('cancel') }}</button>
+            </div>
+          }
+        </div>
+      }
+
+    }
+
+  </div>
+</div>

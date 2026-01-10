@@ -8,6 +8,8 @@ import { InfoComponent } from '../../shared/info/info.component';
 import { InventoryComponent } from '../../shared/inventory/inventory.component';
 import { MenuComponent } from '../../shared/menu/menu.component';
 import { SidebarComponent, SidebarAction } from '../../shared/sidebar/sidebar.component';
+import { ShopComponent } from '../shop/shop.component';
+import { MissionComponent } from '../mission/mission.component'; // 1. Importar
 
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterService } from '../../core/services/character.service';
@@ -22,7 +24,8 @@ type ActiveModal = SidebarAction | 'options' | null;
   standalone: true,
   imports: [
     CommonModule, RouterOutlet, CraftingComponent, DialogueComponent,
-    InfoComponent, InventoryComponent, MenuComponent, SidebarComponent
+    InfoComponent, InventoryComponent, MenuComponent, SidebarComponent,
+    ShopComponent, MissionComponent // 2. Añadir a imports
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
