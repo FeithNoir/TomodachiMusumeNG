@@ -19,6 +19,9 @@ export class DialogueComponent {
   // Evento que se emite cuando el jugador selecciona una opción.
   @Output() optionSelected = new EventEmitter<DialogueOption>();
 
+  // Evento que se emite cuando se cierra el diálogo.
+  @Output() close = new EventEmitter<void>();
+
   /**
    * Obtiene el texto del diálogo procesado (ejecuta la función con el nombre del jugador)
    * y traducido al idioma actual.
@@ -50,5 +53,13 @@ export class DialogueComponent {
    */
   onOptionClick(option: DialogueOption): void {
     this.optionSelected.emit(option);
+  }
+
+  /**
+   * Maneja el clic en el botón de cerrar.
+   * Emite el evento `close`.
+   */
+  onClose(): void {
+    this.close.emit();
   }
 }

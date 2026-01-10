@@ -1,6 +1,10 @@
 <div class="dialogue-floating-container fade-in">
   <div class="glass-panel dialogue-box">
 
+    <button class="close-btn-round" (click)="onClose()">
+      <span>✕</span>
+    </button>
+
     <!-- Character Name Tag -->
     <div class="name-tag">
       {{ dialogue()?.character || '???' }}

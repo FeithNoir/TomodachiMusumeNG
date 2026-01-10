@@ -30,7 +30,8 @@
 <!-- Modal de Diálogo -->
 @if (isDialogueVisible()) {
 <div class="modal-overlay dialogue-overlay-container">
-  <app-dialogue [dialogue]="currentDialogue()" (optionSelected)="handleDialogueOption($event)"></app-dialogue>
+  <app-dialogue [dialogue]="currentDialogue()" (optionSelected)="handleDialogueOption($event)"
+    (close)="closeActiveModal()"></app-dialogue>
 </div>
 }
 
