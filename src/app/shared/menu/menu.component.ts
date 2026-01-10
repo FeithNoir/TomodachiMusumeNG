@@ -1,6 +1,8 @@
 import { Component, inject, signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { GameStateService } from '../../core/services/game-state.service';
+import { PersistenceService } from '../../core/services/persistence.service';
 import { LocalizedText } from '../../core/interfaces/item.interface';
 
 // Textos de UI para este componente
@@ -9,6 +11,7 @@ const UI_TEXTS: Record<string, LocalizedText> = {
   options: { es: "Opciones", en: "Options" },
   save: { es: "Guardar", en: "Save" },
   gallery: { es: "Galería (Próximamente)", en: "Gallery (Coming Soon)" },
+  exit: { es: "Salir", en: "Exit" },
 };
 
 @Component({
@@ -20,6 +23,8 @@ const UI_TEXTS: Record<string, LocalizedText> = {
 })
 export class MenuComponent {
   private gameStateService = inject(GameStateService);
+  private persistenceService = inject(PersistenceService);
+  private router = inject(Router);
 
   @Output() menuAction = new EventEmitter<string>();
 
@@ -47,6 +52,12 @@ export class MenuComponent {
   onOptionClick(action: string): void {
     if (action === 'save') {
       this.gameStateService.saveGame();
+    } else if (action === 'exit') {
+      if (this.persistenceService.isElectron) {
+        this.persistenceService.quit();
+      } else {
+        this.router.navigate(['/']);
+      }
     } else {
       // Para otras acciones como 'options', emitimos un evento
       this.menuAction.emit(action);

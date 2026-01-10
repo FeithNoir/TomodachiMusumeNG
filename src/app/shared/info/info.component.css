@@ -1,0 +1,89 @@
+.info-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(120, 53, 15, 0.4); /* amber-900 with transparency */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2); /* amber-400 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 1rem;
+  z-index: 100;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.info-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(253, 230, 138, 0.1); /* amber-100 */
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+}
+
+.info-pill:hover {
+  background: rgba(251, 191, 36, 0.2);
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+}
+
+.info-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+}
+
+.info-value {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Specific Pill Highlights */
+.affinity .info-icon { color: #f43f5e; } /* rose-500 */
+.money .info-icon { color: #10b981; } /* emerald-500 */
+.energy .info-icon { color: #f59e0b; } /* amber-500 */
+.satiety .info-icon { color: #f97316; } /* orange-500 */
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .info-top-bar {
+    height: 50px;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+  }
+
+  .info-pill {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .info-value {
+    font-size: 0.8rem;
+  }
+
+  .info-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .info-top-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .info-top-bar::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+}

@@ -1,0 +1,29 @@
+<div class="options-container glass-panel fade-in">
+    <div class="options-header">
+        <img src="/assets/icons/gear.svg" alt="" class="header-icon">
+        <h2 class="options-title">{{ getText('optionsTitle') }}</h2>
+    </div>
+
+    <div class="options-content">
+        <!-- Language Selection -->
+        <div class="options-section">
+            <h3 class="section-label">{{ getText('languageLabel') }}</h3>
+            <div class="language-grid">
+                <button class="lang-btn" [class.active]="currentLang() === 'en'" (click)="setLanguage('en')">
+                    <span class="flag">🇺🇸</span>
+                    <span class="label">{{ getText('english') }}</span>
+                </button>
+                <button class="lang-btn" [class.active]="currentLang() === 'es'" (click)="setLanguage('es')">
+                    <span class="flag">ES</span>
+                    <span class="label">{{ getText('spanish') }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="options-footer">
+        <button class="close-btn" (click)="onClose()">
+            <span>{{ getText('closeBtn') }}</span>
+        </button>
+    </div>
+</div>

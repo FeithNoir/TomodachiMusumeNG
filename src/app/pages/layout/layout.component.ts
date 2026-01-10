@@ -8,8 +8,10 @@ import { InfoComponent } from '../../shared/info/info.component';
 import { InventoryComponent } from '../../shared/inventory/inventory.component';
 import { MenuComponent } from '../../shared/menu/menu.component';
 import { SidebarComponent, SidebarAction } from '../../shared/sidebar/sidebar.component';
+import { OptionsComponent } from '../../shared/options/options.component';
 import { ShopComponent } from '../shop/shop.component';
-import { MissionComponent } from '../mission/mission.component'; // 1. Importar
+import { MissionComponent } from '../mission/mission.component';
+import { TutorialComponent } from '../tutorial/tutorial.component';
 
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterService } from '../../core/services/character.service';
@@ -25,7 +27,7 @@ type ActiveModal = SidebarAction | 'options' | null;
   imports: [
     CommonModule, RouterOutlet, CraftingComponent, DialogueComponent,
     InfoComponent, InventoryComponent, MenuComponent, SidebarComponent,
-    ShopComponent, MissionComponent // 2. Añadir a imports
+    ShopComponent, MissionComponent, TutorialComponent, OptionsComponent
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
@@ -48,6 +50,8 @@ export class LayoutComponent {
   isMarketVisible = computed(() => this.activeModal() === 'market');
   isInteractVisible = computed(() => this.activeModal() === 'interact');
   isOptionsVisible = computed(() => this.activeModal() === 'options');
+
+  public hasCompletedIntro = this.gameStateService.hasCompletedIntro;
 
   // --- HELPERS PARA LA VISTA (HTML) ---
 

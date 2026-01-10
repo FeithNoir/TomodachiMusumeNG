@@ -1,5 +1,6 @@
-import { Injectable, signal, effect, computed } from '@angular/core';
+import { Injectable, signal, effect, computed, inject } from '@angular/core';
 import { GameState } from '../interfaces/game-state.interface';
+import { PersistenceService } from './persistence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,7 @@ export class GameStateService {
   public playerName = computed(() => this.gameState().playerName);
   public hasCompletedIntro = computed(() => this.gameState().hasCompletedIntro);
 
+  private persistenceService = inject(PersistenceService);
 
   constructor() {
     effect(() => {
@@ -101,17 +103,16 @@ export class GameStateService {
    * Es esencialmente un alias o wrapper para newGame().
    */
   clearSaveData(): void {
+    this.persistenceService.clear(this.SAVE_KEY);
     this.newGame();
   }
 
   // ---------------------------------------------
 
-  loadGame(): void {
+  async loadGame(): Promise<void> {
     try {
-      const savedData = localStorage.getItem(this.SAVE_KEY);
-      if (savedData) {
-        const parsedState: GameState = JSON.parse(savedData);
-
+      const parsedState = await this.persistenceService.load(this.SAVE_KEY);
+      if (parsedState) {
         if (parsedState.version === this.GAME_VERSION) {
           this.gameState.set(parsedState);
           console.log('Game loaded successfully.');
@@ -129,19 +130,14 @@ export class GameStateService {
     }
   }
 
-  saveGame(): void {
-    try {
-      localStorage.setItem(this.SAVE_KEY, JSON.stringify(this.gameState()));
-    } catch (error) {
-      console.error('Error saving game state:', error);
-    }
+  async saveGame(): Promise<void> {
+    await this.persistenceService.save(this.SAVE_KEY, this.gameState());
   }
 
   newGame(): void {
     // Restauramos el estado inicial clonándolo para evitar referencias
     this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)));
-    localStorage.removeItem(this.SAVE_KEY);
-    console.log('New game started.');
+    console.log('New game initialized.');
   }
 
   updateMoney(amount: number): void {

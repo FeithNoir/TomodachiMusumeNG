@@ -1,0 +1,120 @@
+.sidebar-dock {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 1rem;
+  background: rgba(120, 53, 15, 0.4); /* amber-900 with transparency */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 60px;
+}
+
+.icon-wrapper {
+  padding: 0.5rem;
+  background: rgba(253, 230, 138, 0.1);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.dock-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.dock-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Interaction Effects */
+.dock-item:hover {
+  transform: translateY(-8px) scale(1.1);
+}
+
+.dock-item:hover .icon-wrapper {
+  background: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+}
+
+.dock-item:active {
+  transform: translateY(-2px) scale(0.95);
+}
+
+/* Responsive Scaling */
+@media (min-width: 768px) {
+  .sidebar-dock {
+    left: auto;
+    right: 1.5rem;
+    bottom: 50%;
+    transform: translateY(50%);
+    flex-direction: column;
+    margin-bottom: 0;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .dock-item {
+    min-width: 70px;
+    gap: 0.4rem;
+  }
+
+  .dock-label {
+    font-size: 0.75rem;
+  }
+
+  .dock-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+/* Small Screens */
+@media (max-width: 480px) {
+  .sidebar-dock {
+    width: 95%;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    border-radius: 1.25rem;
+  }
+
+  .dock-item {
+    min-width: 50px;
+  }
+
+  .dock-label {
+    display: none; /* Hide labels on very small screens to maintain spacing */
+  }
+
+  .icon-wrapper {
+    padding: 0.4rem;
+  }
+}

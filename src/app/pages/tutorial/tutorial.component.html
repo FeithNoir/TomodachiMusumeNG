@@ -1,1 +1,95 @@
-<p>tutorial works!</p>
+<div class="tutorial-overlay">
+    <div class="tutorial-content">
+
+        <!-- STEP: LANGUAGE SELECTION -->
+        @if (step() === steps.LANGUAGE) {
+        <div class="step-container fade-in">
+            <h2 class="title">Choose your language / Elige tu idioma</h2>
+            <div class="button-group">
+                <button (click)="selectLanguage('en')" class="btn-tutorial">English</button>
+                <button (click)="selectLanguage('es')" class="btn-tutorial">Español</button>
+            </div>
+        </div>
+        }
+
+        <!-- STEP: INTRODUCTION -->
+        @if (step() === steps.INTRO) {
+        <div class="step-container fade-in" (click)="nextStep()">
+            <p class="dialogue-text">
+                @if (selectedLang() === 'en') {
+                "Hello... Can you hear me?"
+                <br><br>
+                "I am Eleanora. I've been waiting for someone like you for a long time."
+                } @else {
+                "Hola... ¿Puedes oírme?"
+                <br><br>
+                "Soy Eleanora. He estado esperando a alguien como tú durante mucho tiempo."
+                }
+            </p>
+            <span class="click-hint">{{ selectedLang() === 'en' ? 'Click to continue' : 'Haz clic para continuar'
+                }}</span>
+        </div>
+        }
+
+        <!-- STEP: NAME INPUT -->
+        @if (step() === steps.NAME) {
+        <div class="step-container fade-in">
+            <p class="dialogue-text">
+                @if (selectedLang() === 'en') {
+                "I'd like to know more about you... What is your name?"
+                } @else {
+                "Me gustaría saber más de ti... ¿Cómo te llamas?"
+                }
+            </p>
+            <input type="text" [(ngModel)]="playerNameInput" class="name-input"
+                [placeholder]="selectedLang() === 'en' ? 'Enter your name...' : 'Introduce tu nombre...'"
+                (keyup.enter)="confirmName()">
+            <button (click)="confirmName()" class="btn-tutorial mt-4" [disabled]="!playerNameInput()">
+                {{ selectedLang() === 'en' ? 'Confirm' : 'Confirmar' }}
+            </button>
+        </div>
+        }
+
+        <!-- STEP: CONFIRMATION -->
+        @if (step() === steps.CONFIRM) {
+        <div class="step-container fade-in">
+            <p class="dialogue-text">
+                @if (selectedLang() === 'en') {
+                "So your name is {{ playerNameInput() }}? Is that correct?"
+                } @else {
+                "¿Así que te llamas {{ playerNameInput() }}? ¿Es correcto?"
+                }
+            </p>
+            <div class="button-group">
+                <button (click)="nextStep()" class="btn-tutorial">
+                    {{ selectedLang() === 'en' ? 'Yes, it is' : 'Sí, lo es' }}
+                </button>
+                <button (click)="step.set(steps.NAME)" class="btn-tutorial btn-secondary">
+                    {{ selectedLang() === 'en' ? 'No, let me change it' : 'No, déjame cambiarlo' }}
+                </button>
+            </div>
+        </div>
+        }
+
+        <!-- STEP: OUTRO -->
+        @if (step() === steps.OUTRO) {
+        <div class="step-container fade-in">
+            <p class="dialogue-text">
+                @if (selectedLang() === 'en') {
+                "I see... It's a pleasure to meet you, {{ playerNameInput() }}."
+                <br><br>
+                "I hope we can live great adventures together from now on."
+                } @else {
+                "Ya veo... Es un placer conocerte, {{ playerNameInput() }}."
+                <br><br>
+                "Espero que podamos vivir grandes aventuras juntos de ahora en adelante."
+                }
+            </p>
+            <button (click)="finishTutorial()" class="btn-tutorial btn-start mt-6">
+                {{ selectedLang() === 'en' ? 'Start Adventure' : 'Comenzar Aventura' }}
+            </button>
+        </div>
+        }
+
+    </div>
+</div>

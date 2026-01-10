@@ -1,24 +1,53 @@
-<!-- Panel de Menú Lateral (antes #menu-panel) -->
-<div class="fixed top-0 left-0 h-full w-64 p-4 bg-amber-800 bg-opacity-90 backdrop-blur-sm z-40 flex flex-col transition-transform duration-300"
-     [class.-translate-x-full]="!isOpen()">
+<!-- Menú Lateral Moderno -->
+<div class="menu-overlay" *ngIf="isOpen()" (click)="close()"></div>
 
-  <h2 class="text-xl font-semibold mb-4 text-center text-white">{{ getText('menuTitle') }}</h2>
-
-  <div class="flex flex-col space-y-2">
-    <button (click)="onOptionClick('options')" class="menu-item">{{ getText('options') }}</button>
-    <button (click)="onOptionClick('save')" class="menu-item">{{ getText('save') }}</button>
-    <button (click)="onOptionClick('gallery')" class="menu-item disabled-link">{{ getText('gallery') }}</button>
-    <a href="https://www.patreon.com/c/genericfactoryint" target="_blank" id="patreonButton" class="menu-item">Patreon</a>
+<div class="menu-drawer" [class.open]="isOpen()">
+  <div class="menu-header">
+    <h2 class="menu-title">{{ getText('menuTitle') }}</h2>
+    <div class="menu-divider"></div>
   </div>
 
+  <div class="menu-options">
+    <button (click)="onOptionClick('save')" class="menu-item-btn">
+      <img src="/assets/icons/save.svg" alt="" class="menu-icon">
+      <span>{{ getText('save') }}</span>
+    </button>
+
+    <button (click)="onOptionClick('options')" class="menu-item-btn">
+      <img src="/assets/icons/gear.svg" alt="" class="menu-icon">
+      <span>{{ getText('options') }}</span>
+    </button>
+
+    <button (click)="onOptionClick('gallery')" class="menu-item-btn disabled">
+      <img src="/assets/icons/gallery.svg" alt="" class="menu-icon">
+      <span>{{ getText('gallery') }}</span>
+    </button>
+
+    <a href="https://www.patreon.com/c/genericfactoryint" target="_blank" class="menu-item-btn patreon">
+      <img src="/assets/icons/patreon.svg" alt="" class="menu-icon">
+      <span>Patreon</span>
+    </a>
+
+    <div class="menu-divider"></div>
+
+    <button (click)="onOptionClick('exit')" class="menu-item-btn exit">
+      <img src="/assets/icons/exit.svg" alt="" class="menu-icon">
+      <span>{{ getText('exit') }}</span>
+    </button>
+  </div>
+
+  <div class="menu-footer">
+    <span class="version">v0.1.0</span>
+  </div>
 </div>
 
-<!-- Botón Hamburguesa para abrir/cerrar -->
-<div class="fixed top-4 left-4 z-50">
-  <button (click)="toggle()" class="p-2 bg-amber-500 rounded-md text-amber-950 hover:bg-amber-600 shadow-lg">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
+<!-- Botón de Menú (Hamburguesa) -->
+<div class="menu-toggle-container">
+  <button (click)="toggle()" class="menu-toggle-btn" [class.active]="isOpen()" [title]="getText('menuTitle')">
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </button>
 </div>
-

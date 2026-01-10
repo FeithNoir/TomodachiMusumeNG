@@ -1,0 +1,127 @@
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+.tutorial-content {
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  padding: 2rem;
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.dialogue-text {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.click-hint {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-tutorial {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.btn-tutorial:hover:not(:disabled) {
+  background-color: white;
+  color: black;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.btn-tutorial:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-start {
+  background-color: white;
+  color: black;
+  font-size: 1.2rem;
+  padding: 1rem 3rem;
+}
+
+.name-input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid white;
+  color: white;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  outline: none;
+  transition: border-bottom-color 0.3s;
+}
+
+.name-input:focus {
+  border-bottom-color: #fbbf24; /* amber-400 */
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 2rem; }

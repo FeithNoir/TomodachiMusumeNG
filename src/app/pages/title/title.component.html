@@ -1,21 +1,37 @@
-<!-- Fondo de la pantalla de título, reutiliza el estilo de 'main' -->
-<div class="title-background"></div>
+<div class="title-screen">
+  <!-- Cinematic Background -->
+  <div class="title-background"></div>
+  <div class="title-overlay"></div>
 
-<!-- Contenedor principal para centrar el contenido -->
-<div class="title-container">
-  <h1 class="game-title">Tomodachi Musume</h1>
+  <!-- Content Container -->
+  <div class="title-content fade-in">
+    <div class="logo-container">
+      <h1 class="game-title">Tomodachi Musume</h1>
+      <p class="game-subtitle">A New Bond Awaits</p>
+    </div>
 
-  <!-- Menú de opciones -->
-  <div class="title-menu">
-    <button class="menu-button" (click)="newGame()">
-      Nueva Partida
-    </button>
-    <button class="menu-button" (click)="loadGame()" [disabled]="!canLoadGame()">
-      Cargar Partida
-    </button>
-    <button class="menu-button disabled-link">
-      Opciones
-    </button>
+    <!-- Main Menu -->
+    <div class="title-menu glass-panel">
+      <button class="menu-btn primary" (click)="newGame()">
+        <img src="/assets/icons/talk.svg" alt="" class="btn-icon">
+        <span>Nueva Partida</span>
+      </button>
+
+      <button class="menu-btn" (click)="loadGame()" [disabled]="!canLoadGame()">
+        <img src="/assets/icons/gear.svg" alt="" class="btn-icon">
+        <span>Cargar Partida</span>
+      </button>
+
+      <button class="menu-btn secondary disabled-link">
+        <img src="/assets/icons/craft.svg" alt="" class="btn-icon">
+        <span>Opciones</span>
+      </button>
+    </div>
+
+    <!-- Footer Info -->
+    <div class="title-footer">
+      <span class="version-tag">Alpha v0.1.0</span>
+      <span class="copyright">© 2026 Oniriums</span>
+    </div>
   </div>
 </div>
-
