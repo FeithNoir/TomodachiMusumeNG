@@ -1,6 +1,42 @@
 import { UiStringDictionary } from '@core/interfaces/localized-text.interface';
 
 export const UI_STRINGS: UiStringDictionary = {
+  // Title screen
+  titleGameName: { es: 'Tomodachi Musume', en: 'Tomodachi Musume' },
+  titleSubtitle: { es: 'Un nuevo vínculo te espera', en: 'A New Bond Awaits' },
+  titleNewGame: { es: 'Nueva Partida', en: 'New Game' },
+  titleLoadGame: { es: 'Cargar Partida', en: 'Load Game' },
+  titleVersion: { es: 'Alpha v0.1.0', en: 'Alpha v0.1.0' },
+  titleCopyright: { es: '© 2026 Oniriums', en: '© 2026 Oniriums' },
+
+  // Tutorial
+  tutorialLanguageTitle: {
+    es: 'Elige tu idioma / Choose your language',
+    en: 'Choose your language / Elige tu idioma',
+  },
+  tutorialIntro: {
+    es: '"Hola... ¿Puedes oírme?"\n\n"Soy Eleanora. He estado esperando a alguien como tú durante mucho tiempo."',
+    en: '"Hello... Can you hear me?"\n\n"I am Eleanora. I\'ve been waiting for someone like you for a long time."',
+  },
+  tutorialClickContinue: { es: 'Haz clic para continuar', en: 'Click to continue' },
+  tutorialAskName: {
+    es: '"Me gustaría saber más de ti... ¿Cómo te llamas?"',
+    en: '"I\'d like to know more about you... What is your name?"',
+  },
+  tutorialNamePlaceholder: { es: 'Introduce tu nombre...', en: 'Enter your name...' },
+  tutorialConfirm: { es: 'Confirmar', en: 'Confirm' },
+  tutorialConfirmName: (name: string) => ({
+    es: `¿Así que te llamas ${name}? ¿Es correcto?`,
+    en: `So your name is ${name}? Is that correct?`,
+  }),
+  tutorialYes: { es: 'Sí, lo es', en: 'Yes, it is' },
+  tutorialNo: { es: 'No, déjame cambiarlo', en: 'No, let me change it' },
+  tutorialOutro: (name: string) => ({
+    es: `"Ya veo... Es un placer conocerte, ${name}."\n\n"Espero que podamos vivir grandes aventuras juntos de ahora en adelante."`,
+    en: `"I see... It's a pleasure to meet you, ${name}."\n\n"I hope we can live great adventures together from now on."`,
+  }),
+  tutorialStart: { es: 'Comenzar Aventura', en: 'Start Adventure' },
+
   // Sidebar
   talk: { es: 'Hablar', en: 'Talk' },
   equipment: { es: 'Equipo', en: 'Gear' },
@@ -48,6 +84,26 @@ export const UI_STRINGS: UiStringDictionary = {
   tabAll: { es: 'Todo', en: 'All' },
   tabConsumables: { es: 'Consumibles', en: 'Consumables' },
   tabMaterials: { es: 'Materiales', en: 'Materials' },
+  tabRecipes: { es: 'Recetas', en: 'Recipes' },
+  tabArmor: { es: 'Armaduras', en: 'Armor' },
+  goldLabel: { es: 'Oro', en: 'Gold' },
+  equippedBadge: { es: 'Equipado', en: 'Equipped' },
+  equipModeBanner: {
+    es: 'Modo equipar: toca un objeto equipable para ponérselo al personaje.',
+    en: 'Equip mode: tap an equippable item to wear it on the character.',
+  },
+  enableEquipModeHint: {
+    es: 'Abre Equipo y pulsa el icono de inventario para equipar objetos.',
+    en: 'Open Gear and tap the inventory icon to equip items.',
+  },
+  recipeAtWorkbenchHint: {
+    es: 'Usa la mesa de trabajo para aprender y fabricar con esta receta.',
+    en: 'Use the workbench to craft with this recipe.',
+  },
+  noArmorMsg: { es: 'No tienes armaduras en la mochila.', en: 'You have no armor in your bag.' },
+  noKnownRecipes: { es: 'Aún no conoces ninguna receta.', en: 'You do not know any recipes yet.' },
+  noRecipeItems: { es: 'No tienes objetos de receta.', en: 'You have no recipe items.' },
+  recipeItemsTitle: { es: 'Objetos de receta', en: 'Recipe items' },
   openEquipmentHint: {
     es: 'Abre Equipo para usar objetos equipables.',
     en: 'Open Gear to manage equippable items.',
@@ -67,6 +123,9 @@ export const UI_STRINGS: UiStringDictionary = {
   statMagic: { es: 'Magia', en: 'Magic' },
   statHealth: { es: 'Vida', en: 'Health' },
   statLuck: { es: 'Suerte', en: 'Luck' },
+  statEndurance: { es: 'Aguante', en: 'Endurance' },
+  statStealth: { es: 'Sigilo', en: 'Stealth' },
+  openInventoryEquip: { es: 'Equipar desde inventario', en: 'Equip from inventory' },
   slotHead: { es: 'Cabeza', en: 'Head' },
   slotTop: { es: 'Torso', en: 'Top' },
   slotBottom: { es: 'Piernas', en: 'Bottom' },
@@ -94,6 +153,8 @@ export const UI_STRINGS: UiStringDictionary = {
   noMaterials: { es: 'No tienes materiales.', en: 'You have no materials.' },
   craftSuccessMsg: (name: string) => ({ es: `Has creado ${name}.`, en: `You crafted ${name}.` }),
   craftFailMsg: { es: 'Los ingredientes no producen nada.', en: "The ingredients don't produce anything." },
+  recipesTitle: { es: 'Recetas', en: 'Recipes' },
+  noRecipesUnlocked: { es: 'No hay recetas desbloqueadas.', en: 'No recipes unlocked.' },
 
   // Shop
   marketTitle: { es: 'Mercado', en: 'Market' },

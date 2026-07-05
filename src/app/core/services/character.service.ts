@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { masterItemList } from '@core/data/item-database';
 import { affinityReactionTiers, AffinityReactionTier } from '@core/data/affinity-reactions';
 import { isEquippableCategory } from '@core/data/equippable-categories';
@@ -7,12 +7,15 @@ import { createDefaultExpression, createEmptyEquippedState } from '@core/data/in
 import { EquippableItemCategory } from '@core/interfaces/item.interface';
 import { EquipResult } from '@core/interfaces/notification.interface';
 import { GameState } from '@core/interfaces/game-state.interface';
+import { AffinityEventService } from '@core/services/affinity-event.service';
 import { blinkExpressionPaths, defaultExpressionPaths, normalizeAssetPath, } from '@core/utils/asset.util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CharacterService {
+  private affinityEvents = inject(AffinityEventService);
+
   public affinity = signal<number>(0);
   public equipped = signal<GameState['equipped']>(createEmptyEquippedState());
   public expression = signal<GameState['expression']>(createDefaultExpression());
@@ -71,7 +74,12 @@ export class CharacterService {
   }
 
   updateAffinity(amount: number): void {
-    this.affinity.update(current => Math.max(0, Math.min(AFFINITY_MAX, current + amount)));
+    const previous = this.affinity();
+    const next = Math.max(0, Math.min(AFFINITY_MAX, previous + amount));
+    this.affinity.set(next);
+    if (next !== previous) {
+      this.affinityEvents.emitAffinityChange(previous, next);
+    }
   }
 
   getAffinityReaction(): AffinityReactionTier | undefined {

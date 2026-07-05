@@ -19,11 +19,14 @@ export const INITIAL_GAME_STATE: GameState = {
   playerName: DEFAULT_PLAYER_NAME,
   guildName: DEFAULT_GUILD_NAME,
   hasCompletedIntro: false,
+  knownRecipes: ['wood_sword_recipe', 'leather_shirt_recipe'],
   inventory: [
     { id: 'cheap_shirt', quantity: 1 },
     { id: 'cheap_pants', quantity: 1 },
     { id: 'bra_1', quantity: 1 },
     { id: 'pantsus_1', quantity: 1 },
+    { id: 'wood_plank', quantity: 4 },
+    { id: 'steel_ingot', quantity: 2 },
   ],
   equipped: {
     top: 'cheap_shirt',
@@ -36,7 +39,6 @@ export const INITIAL_GAME_STATE: GameState = {
     hands: null,
     weapon: null,
   },
-  knownRecipes: [],
   expression: { ...DEFAULT_EXPRESSION },
   characterName: DEFAULT_CHARACTER_NAME,
 };

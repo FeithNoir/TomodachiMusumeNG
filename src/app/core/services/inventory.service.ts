@@ -39,7 +39,7 @@ export class InventoryService {
       }
 
       this.notifications.warning(
-        this.localization.t('stackFullMsg', this.itemCatalog.getItemName(itemId))
+        this.localization.t('stackFullMsg', this.localization.itemName(itemId))
       );
       return false;
     }

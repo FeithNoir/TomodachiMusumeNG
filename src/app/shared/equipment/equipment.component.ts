@@ -2,7 +2,6 @@ import { Component, computed, inject, Output, EventEmitter, ChangeDetectionStrat
 
 import { CharacterService } from '@core/services/character.service';
 import { CharacterStatsService } from '@core/services/character-stats.service';
-import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
@@ -10,42 +9,36 @@ import { EQUIPMENT_SLOT_DEFINITIONS } from '@core/data/equipment-slots';
 import { STAT_KEYS, StatKey } from '@core/interfaces/character-stats.interface';
 import { EquipResult } from '@core/interfaces/notification.interface';
 import { EquippableItemCategory } from '@core/interfaces/item.interface';
-import { isEquippableCategory } from '@core/data/equippable-categories';
+import { StatBarComponent } from '@shared/stat-bar/stat-bar.component';
 
 @Component({
   selector: 'app-equipment',
   standalone: true,
-  imports: [],
+  imports: [StatBarComponent],
   templateUrl: './equipment.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './equipment.component.css',
 })
 export class EquipmentComponent {
   private characterService = inject(CharacterService);
   private characterStatsService = inject(CharacterStatsService);
-  private inventoryService = inject(InventoryService);
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
   private notifications = inject(NotificationService);
 
   @Output() close = new EventEmitter<void>();
+  @Output() openInventory = new EventEmitter<void>();
 
   public equipped = this.characterService.equipped;
-  public stats = this.characterStatsService.totalStats;
+  public totalStats = this.characterStatsService.totalStats;
+  public baseStats = this.characterStatsService.baseStats;
   public statKeys = STAT_KEYS;
   public slots = EQUIPMENT_SLOT_DEFINITIONS;
 
   readonly getText = this.localization.t.bind(this.localization);
 
-  public equippableInventoryItems = computed(() =>
-    this.inventoryService.inventory().filter(entry => {
-      const type = this.itemCatalog.getItem(entry.id)?.type;
-      return type ? isEquippableCategory(type) : false;
-    })
-  );
-
   getItemName(itemId: string | null): string {
-    return this.itemCatalog.getItemName(itemId);
+    return this.localization.itemName(itemId);
   }
 
   getItemPath(itemId: string | null): string {
@@ -54,10 +47,6 @@ export class EquipmentComponent {
 
   getStatLabel(key: StatKey): string {
     return this.getText(`stat${key.charAt(0).toUpperCase()}${key.slice(1)}`);
-  }
-
-  isEquipped(itemId: string): boolean {
-    return Object.values(this.equipped()).includes(itemId);
   }
 
   handleEquippedSlotClick(slot: EquippableItemCategory): void {
@@ -81,27 +70,8 @@ export class EquipmentComponent {
     this.notifications.info(this.getText('itemUnequippedMsg', this.getItemName(itemId)));
   }
 
-  handleInventoryEquip(itemId: string): void {
-    const result = this.characterService.equipItem(itemId);
-    this.showEquipResult(result, itemId);
-  }
-
-  private showEquipResult(result: EquipResult, itemId: string): void {
-    if (result.ok) {
-      this.notifications.success(this.getText('itemEquippedMsg', this.getItemName(itemId)));
-      return;
-    }
-
-    switch (result.reason) {
-      case 'not_equippable':
-        this.notifications.warning(this.getText('cannotEquipMsg'));
-        break;
-      case 'insufficient_affinity':
-        this.notifications.warning(this.getText('insufficientAffinityMsg', result.requiredAffinity ?? 0));
-        break;
-      default:
-        this.notifications.error(this.getText('itemNotFoundMsg'));
-    }
+  onOpenInventory(): void {
+    this.openInventory.emit();
   }
 
   onClose(): void {

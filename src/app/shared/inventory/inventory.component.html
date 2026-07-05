@@ -6,8 +6,15 @@
 
   <div class="panel-header">
     <h3 class="modal-title">{{ getText('inventoryTitle') }}</h3>
-    <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots }}</span>
+    <div class="inventory-meta">
+      <span class="pill pill--gold">{{ getText('goldLabel') }}: {{ money() }}</span>
+      <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots }}</span>
+    </div>
   </div>
+
+  @if (equipMode()) {
+    <p class="equip-mode-banner">{{ getText('equipModeBanner') }}</p>
+  }
 
   <div class="inventory-toolbar">
     <input type="search"
@@ -26,21 +33,90 @@
       <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'material'" (click)="setTab('material')">
         {{ getText('tabMaterials') }}
       </button>
+      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'recipe'" (click)="setTab('recipe')">
+        {{ getText('tabRecipes') }}
+      </button>
+      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'armor'" (click)="setTab('armor')">
+        {{ getText('tabArmor') }}
+      </button>
     </div>
   </div>
 
-  <div class="inventory-grid scroll-area">
-    @for (item of filteredInventory(); track item.id) {
-      <button type="button" class="interactive-card inventory-item" (click)="handleItemClick(item.id)">
-        <div class="item-visual">
-          <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+  @if (activeTab() === 'armor') {
+    <div class="armor-section scroll-area">
+      @for (group of armorSetGroups(); track group.setId) {
+        <section class="armor-set-group">
+          <h4 class="section-heading">{{ group.label }}</h4>
+          <div class="inventory-grid inventory-grid--compact">
+            @for (item of group.items; track item.id) {
+              <button type="button"
+                      class="interactive-card inventory-item"
+                      [class.inventory-item--equipped]="isEquipped(item.id)"
+                      (click)="handleItemClick(item.id)">
+                <div class="item-visual">
+                  <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+                  @if (isEquipped(item.id)) {
+                    <span class="equipped-dot" [attr.aria-label]="getText('equippedBadge')"></span>
+                  }
+                </div>
+                <span class="badge-count">{{ item.quantity }}</span>
+              </button>
+            }
+          </div>
+        </section>
+      } @empty {
+        <div class="empty-state">
+          <p>{{ getText('noArmorMsg') }}</p>
         </div>
-        <span class="badge-count">{{ item.quantity }}</span>
-      </button>
-    } @empty {
-      <div class="empty-state">
-        <p>{{ getText('noItemsMsg') }}</p>
+      }
+    </div>
+  } @else if (activeTab() === 'recipe') {
+    <div class="recipe-section scroll-area">
+      @for (entry of knownRecipeEntries(); track entry.recipeId) {
+        <div class="recipe-card">
+          <span class="recipe-name">{{ entry.itemName }}</span>
+          <span class="recipe-id text-dim">{{ entry.recipeId }}</span>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>{{ getText('noKnownRecipes') }}</p>
+        </div>
+      }
+
+      <h4 class="section-heading mt-md">{{ getText('recipeItemsTitle') }}</h4>
+      <div class="inventory-grid">
+        @for (item of filteredInventory(); track item.id) {
+          <button type="button" class="interactive-card inventory-item" (click)="handleItemClick(item.id)">
+            <div class="item-visual">
+              <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+            </div>
+            <span class="badge-count">{{ item.quantity }}</span>
+          </button>
+        } @empty {
+          <p class="empty-state">{{ getText('noRecipeItems') }}</p>
+        }
       </div>
-    }
-  </div>
+    </div>
+  } @else {
+    <div class="inventory-grid scroll-area">
+      @for (item of filteredInventory(); track item.id) {
+        <button type="button"
+                class="interactive-card inventory-item"
+                [class.inventory-item--equipped]="isEquipped(item.id)"
+                (click)="handleItemClick(item.id)">
+          <div class="item-visual">
+            <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+            @if (isEquipped(item.id)) {
+              <span class="equipped-dot" [attr.aria-label]="getText('equippedBadge')"></span>
+            }
+          </div>
+          <span class="badge-count">{{ item.quantity }}</span>
+        </button>
+      } @empty {
+        <div class="empty-state">
+          <p>{{ getText('noItemsMsg') }}</p>
+        </div>
+      }
+    </div>
+  }
 </div>

@@ -26,7 +26,7 @@ export class SidebarComponent {
   }[] = [
     { id: 'talkButton', label: 'talk', action: 'talk', icon: '/assets/icons/talk.svg' },
     { id: 'equipmentButton', label: 'equipment', action: 'equipment', icon: '/assets/icons/gear.svg' },
-    { id: 'inventoryButton', label: 'inventory', action: 'inventory', iconEmoji: '🎒' },
+    { id: 'inventoryButton', label: 'inventory', action: 'inventory', icon: '/assets/icons/inventory.svg' },
     { id: 'interactButton', label: 'interact', action: 'interact', icon: '/assets/icons/interact.svg' },
     { id: 'missionButton', label: 'mission', action: 'mission', icon: '/assets/icons/mission.svg' },
     { id: 'marketButton', label: 'market', action: 'market', icon: '/assets/icons/market.svg' },

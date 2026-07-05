@@ -1,9 +1,10 @@
 import { Injectable, signal, effect, computed, inject, untracked } from '@angular/core';
-import { GAME_SAVE_KEY, GAME_VERSION, ENERGY_MAX, SATIETY_MAX } from '@core/data/game-config';
+import { GAME_SAVE_KEY, GAME_VERSION, SATIETY_MAX } from '@core/data/game-config';
 import { cloneInitialGameState } from '@core/data/initial-game-state';
 import { GameState } from '@core/interfaces/game-state.interface';
 import { PersistenceService } from '@core/services/persistence.service';
 import { CharacterService } from '@core/services/character.service';
+import { CharacterStatsService } from '@core/services/character-stats.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class GameStateService {
   public hasCompletedIntro = computed(() => this.gameState().hasCompletedIntro);
 
   private persistenceService = inject(PersistenceService);
+  private characterStatsService = inject(CharacterStatsService);
   private isHydrating = true;
   private persistChanges = false;
 
@@ -50,6 +52,7 @@ export class GameStateService {
           equipped,
           expression,
         }));
+        this.clampEnergyToMax();
       });
     });
 
@@ -98,10 +101,19 @@ export class GameStateService {
   }
 
   updateEnergy(amount: number): void {
+    const maxEnergy = this.characterStatsService.maxEnergy();
     this.gameState.update(state => {
-      const newEnergy = Math.max(0, Math.min(ENERGY_MAX, state.energy + amount));
+      const newEnergy = Math.max(0, Math.min(maxEnergy, state.energy + amount));
       return { ...state, energy: newEnergy };
     });
+  }
+
+  clampEnergyToMax(): void {
+    const maxEnergy = this.characterStatsService.maxEnergy();
+    this.gameState.update(state => ({
+      ...state,
+      energy: Math.min(state.energy, maxEnergy),
+    }));
   }
 
   updateSatiety(amount: number): void {

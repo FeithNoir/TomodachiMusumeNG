@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { ENERGY_MAX, GAME_LOOP_TICK_MS } from '@core/data/game-config';
+import { GAME_LOOP_TICK_MS } from '@core/data/game-config';
+import { CharacterStatsService } from '@core/services/character-stats.service';
 import { GameStateService } from '@core/services/game-state.service';
 
 @Injectable({
@@ -7,6 +8,7 @@ import { GameStateService } from '@core/services/game-state.service';
 })
 export class GameLoopService {
   private gameStateService = inject(GameStateService);
+  private characterStatsService = inject(CharacterStatsService);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   start(): void {
@@ -15,7 +17,7 @@ export class GameLoopService {
     }
 
     this.intervalId = setInterval(() => {
-      if (this.gameStateService.energy() < ENERGY_MAX) {
+      if (this.gameStateService.energy() < this.characterStatsService.maxEnergy()) {
         this.gameStateService.updateEnergy(1);
       }
 

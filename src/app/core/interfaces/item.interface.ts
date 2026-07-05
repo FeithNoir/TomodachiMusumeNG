@@ -26,6 +26,7 @@ export interface Item {
   requiredAffinity?: number;
   effects?: ItemEffects;
   stats?: Partial<CharacterStats>;
+  armorSet?: string;
   buyPrice?: number;
   sellPrice?: number;
   recipeId?: string;

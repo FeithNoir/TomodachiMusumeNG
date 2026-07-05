@@ -2,44 +2,35 @@ import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@ang
 
 import { Router } from '@angular/router';
 import { GameStateService } from '@core/services/game-state.service';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-title',
   standalone: true,
   imports: [],
   templateUrl: './title.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./title.component.css']
 })
 export class TitleComponent implements OnInit {
   private router = inject(Router);
   private gameStateService = inject(GameStateService);
+  private localization = inject(LocalizationService);
 
-  // Señal para habilitar/deshabilitar el botón de "Cargar Partida"
   public canLoadGame = signal(false);
+  readonly getText = this.localization.t.bind(this.localization);
 
   ngOnInit(): void {
-    // Al iniciar, comprueba si existe una partida guardada
     this.canLoadGame.set(this.gameStateService.hasSaveData());
   }
 
-  /**
-   * Inicia una nueva partida.
-   * Borra cualquier dato guardado y navega a la pantalla principal del juego.
-   */
   newGame(): void {
     this.gameStateService.clearSaveData();
     this.router.navigate(['/main']);
   }
 
-  /**
-   * Carga una partida existente.
-   * Navega a la pantalla principal (el servicio se encargará de cargar los datos).
-   */
   loadGame(): void {
     if (this.canLoadGame()) {
-      // No es necesario llamar a loadGame() aquí, ya que main.component lo hará.
-      // Simplemente navegamos.
       this.router.navigate(['/main']);
     }
   }

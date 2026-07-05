@@ -87,7 +87,7 @@ export class MissionComponent implements OnInit, OnDestroy {
 
     if (result.itemsFound.length > 0) {
       const itemNames = result.itemsFound.map(item => {
-        const name = this.itemCatalog.getItemName(item.id);
+        const name = this.localization.itemName(item.id);
         return `${name} (x${item.quantity})`;
       });
 

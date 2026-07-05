@@ -4,11 +4,21 @@ export interface CharacterStats {
   magic: number;
   health: number;
   luck: number;
+  endurance: number;
+  stealth: number;
 }
 
 export type StatKey = keyof CharacterStats;
 
-export const STAT_KEYS: StatKey[] = ['attack', 'defense', 'magic', 'health', 'luck'];
+export const STAT_KEYS: StatKey[] = [
+  'attack',
+  'defense',
+  'magic',
+  'health',
+  'luck',
+  'endurance',
+  'stealth',
+];
 
 export const EMPTY_CHARACTER_STATS: CharacterStats = {
   attack: 0,
@@ -16,4 +26,6 @@ export const EMPTY_CHARACTER_STATS: CharacterStats = {
   magic: 0,
   health: 0,
   luck: 0,
+  endurance: 0,
+  stealth: 0,
 };

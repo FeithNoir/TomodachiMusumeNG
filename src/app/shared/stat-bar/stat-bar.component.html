@@ -1,0 +1,10 @@
+<div class="stat-bar">
+  <div class="stat-bar__header">
+    <span class="stat-bar__label">{{ label() }}</span>
+    <span class="stat-bar__value">{{ value() }}</span>
+  </div>
+  <div class="stat-bar__track">
+    <div class="stat-bar__fill {{ tierClass(tier()) }}"
+         [style.width.%]="fillPercent()"></div>
+  </div>
+</div>

@@ -35,6 +35,6 @@ export class LocalizationService {
   }
 
   itemName(itemId: string | null | undefined): string {
-    return this.itemCatalog.getItemName(itemId);
+    return this.itemCatalog.getItemName(itemId, this.gameStateService.language());
   }
 }

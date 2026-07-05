@@ -51,7 +51,7 @@ export class ShopComponent {
   }
 
   getItemName(itemId: string): string {
-    return this.itemCatalog.getItemName(itemId);
+    return this.localization.itemName(itemId);
   }
 
   getItemPath(itemId: string): string {

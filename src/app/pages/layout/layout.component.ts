@@ -17,6 +17,7 @@ import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
+import { InventoryUiService } from '@core/services/inventory-ui.service';
 import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
 import { dialogues } from '@core/data/dialogue-database';
 
@@ -47,6 +48,7 @@ type ActiveModal = SidebarAction | 'options' | null;
 export class LayoutComponent {
   private gameStateService = inject(GameStateService);
   private characterService = inject(CharacterService);
+  private inventoryUi = inject(InventoryUiService);
 
   constructor() {
     this.gameStateService.syncCharacterState(this.characterService);
@@ -83,6 +85,12 @@ export class LayoutComponent {
   closeActiveModal(): void {
     this.activeModal.set(null);
     this.currentDialogue.set(null);
+    this.inventoryUi.reset();
+  }
+
+  openInventoryFromEquipment(): void {
+    this.inventoryUi.openForEquip();
+    this.activeModal.set('inventory');
   }
 
   private startRandomDialogue(): void {

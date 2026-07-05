@@ -12,13 +12,16 @@ An anime-style virtual pet game built with **Angular 22** and optional **Electro
 * **Persistent Data**: Auto-save via signals; browser `localStorage` or Electron SQLite.
 * **Localization**: Spanish and English through `LocalizationService` + `UI_STRINGS`.
 * **In-game Notifications**: Toast stack and modal alerts via `NotificationService` (SweetAlert-style UX, pure CSS).
-* **Equipment Panel**: Dedicated gear screen with slot grid, stat totals (attack, defense, magic, health, luck), and equippable items from the bag.
-* **Inventory Panel**: Consumables, materials, and recipes with tab filters and global search.
+* **Equipment Panel**: Row layout with slot grid, `StatBarComponent` (base/low/medium/high tiers), endurance-linked energy cap, and inventory shortcut to equip.
+* **Inventory Panel**: Gold header, tabs (all/consumables/materials/recipes/armor by set), equipped indicator dot, equip mode from gear panel.
+* **Stat bars**: Shared `StatBarComponent` — white base, red/yellow/green bonus tiers.
+* **Game events**: `GameEventService` (master bus) + `AffinityEventService` (affinity thresholds).
+* **Crafting**: Recipe book modal with quantity badges (0/insufficient/exact/surplus) on workbench slots.
 * **Core HUD Stats**: Affinity, money, energy, and satiety pills.
 * **Main Actions**:
   * 🗣️ **Talk** — affinity dialogues.
   * ⚔️ **Gear** — equipment slots + combat stats.
-  * 🎒 **Bag** — filtered inventory (consumables/materials).
+  * 🎒 **Bag** — inventory with gold, recipes, armor sets, equip mode.
   * 🤝 **Interact** — feeding (planned expansion).
   * 🎯 **Mission** — loot and energy cost.
   * 🛠️ **Craft** — material combinations.
@@ -34,11 +37,11 @@ Indicador por área del juego — útil para priorizar el roadmap:
 | :--- | :--- | :--- | :--- |
 | **Companion core** (layers, blink, reactions) | 🟢 Activo | **88%** | Más expresiones contextuales (misiones, craft) |
 | **Persistence & save** | 🟢 Activo | **85%** | Detección de save en Electron + import/export JSON |
-| **Localization (i18n)** | 🟢 Activo | **90%** | Extraer textos de tutorial/título al catálogo |
+| **Localization (i18n)** | 🟢 Activo | **95%** | Diálogos dinámicos restantes |
 | **Notifications** | 🟢 Activo | **85%** | Confirmaciones destructivas con alert modal |
-| **Equipment & stats** | 🟡 En curso | **72%** | Stats en más ítems; comparativa antes/después al equipar |
-| **Inventory & filters** | 🟡 En curso | **78%** | Filtro por rareza/tags; orden por nombre/cantidad |
-| **Crafting** | 🟡 En curso | **65%** | Múltiples unidades por ranura; libro de recetas |
+| **Equipment & stats** | 🟢 Activo | **88%** | Comparativa antes/después al equipar |
+| **Inventory & filters** | 🟢 Activo | **90%** | Orden por nombre/cantidad |
+| **Crafting** | 🟡 En curso | **82%** | Múltiples recetas simultáneas; preview de resultado |
 | **Market** | 🟡 En curso | **70%** | Preview de stats al comprar armas/armaduras |
 | **Missions** | 🟡 En curso | **60%** | Loot table completa; bonos por stats equipados |
 | **Interact / feeding** | 🔴 Pendiente | **25%** | UI de comida y efectos de saciedad |
@@ -63,8 +66,8 @@ Indicador por área del juego — útil para priorizar el roadmap:
 ### Planned Features & Enhancements
 
 - [ ] **Minigames** — boost affinity through playable mini-games.
-- [ ] **Recipe Book** — UI to browse known crafting recipes.
-- [ ] **Advanced Crafting** — allow multiple units of each material per slot.
+- [x] **Recipe Book** — modal on workbench with unlocked recipes and slot fill.
+- [ ] **Advanced Crafting** — craft multiple output units per recipe.
 - [ ] **Story Progression** — main storyline dialogues unlocked by affinity.
 - [ ] **Data Management** — import/export save data as JSON.
 - [ ] **Interact expansion** — full feeding UI tied to satiety.

@@ -5,7 +5,16 @@
   </button>
 
   <div class="panel-header--stacked">
-    <h3 class="modal-title">{{ getText('craftingTitle') }}</h3>
+    <div class="crafting-title-row">
+      <h3 class="modal-title">{{ getText('craftingTitle') }}</h3>
+      <button type="button"
+              class="recipe-book-btn"
+              (click)="toggleRecipeModal()"
+              [attr.aria-label]="getText('recipesTitle')">
+        <img src="/assets/icons/craft.svg" alt="" class="recipe-book-icon">
+        <span>{{ getText('recipesTitle') }}</span>
+      </button>
+    </div>
   </div>
 
   <div class="crafting-layout">
@@ -13,13 +22,14 @@
       <h4 class="section-heading">{{ getText('craftingSlots') }}</h4>
 
       <div id="craftingSlotsGrid" class="crafting-slots-grid grid-slot-area">
-        @for (slot of craftingSlots(); track $index; let i = $index) {
+        @for (display of slotDisplays(); track $index; let i = $index) {
           <div class="interactive-card craft-slot" (click)="removeFromCraftingSlot(i)">
-            @if (slot) {
-              <img [src]="getItemPath(slot)"
-                   class="craft-slot-img item-img"
-                   [title]="getItemName(slot)"
-                   [alt]="getItemName(slot)">
+            @if (display.entry; as entry) {
+              <img [src]="getItemPath(entry.itemId)"
+                   class="craft-slot-img item-img {{ slotImageClass(display.state) }}"
+                   [title]="getItemName(entry.itemId)"
+                   [alt]="getItemName(entry.itemId)">
+              <span class="craft-qty {{ qtyClass(display.state) }}">{{ display.label }}</span>
             } @else {
               <span class="text-dim craft-slot-empty">{{ getText('emptySlot') }}</span>
             }
@@ -51,4 +61,32 @@
       </div>
     </div>
   </div>
+
+  @if (showRecipeModal()) {
+    <div class="recipe-modal-backdrop" (click)="closeRecipeModal()">
+      <div class="recipe-modal glass-panel" (click)="$event.stopPropagation()">
+        <div class="recipe-modal__header">
+          <h4>{{ getText('recipesTitle') }}</h4>
+          <button type="button" class="close-btn-round close-btn-round--sm" (click)="closeRecipeModal()">
+            <span>✕</span>
+          </button>
+        </div>
+
+        @if (knownRecipes().length === 0) {
+          <p class="empty-state">{{ getText('noRecipesUnlocked') }}</p>
+        } @else {
+          <ul class="recipe-list">
+            @for (entry of knownRecipes(); track entry.recipeId) {
+              <li>
+                <button type="button" class="recipe-list-item" (click)="applyRecipe(entry.recipeId)">
+                  <span>{{ getRecipeResultName(entry.recipeId) }}</span>
+                  <span class="text-dim">{{ entry.recipeId }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+  }
 </div>

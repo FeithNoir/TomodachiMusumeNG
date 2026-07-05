@@ -39,6 +39,7 @@
   line-height: 1.6;
   margin-bottom: 1rem;
   font-style: italic;
+  white-space: pre-line;
 }
 
 .click-hint {

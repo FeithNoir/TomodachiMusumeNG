@@ -1,0 +1,55 @@
+.stat-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 8rem;
+  flex: 1 1 8rem;
+}
+
+.stat-bar__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.stat-bar__label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.stat-bar__value {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.stat-bar__track {
+  height: 0.45rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.stat-bar__fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+.stat-bar__fill--base {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.stat-bar__fill--low {
+  background: #ef4444;
+}
+
+.stat-bar__fill--medium {
+  background: #eab308;
+}
+
+.stat-bar__fill--high {
+  background: #22c55e;
+}

@@ -38,7 +38,7 @@
 <!-- Modal de Equipo -->
 @if (isEquipmentVisible()) {
 <div class="modal-overlay">
-  <app-equipment (close)="closeActiveModal()"></app-equipment>
+  <app-equipment (close)="closeActiveModal()" (openInventory)="openInventoryFromEquipment()"></app-equipment>
 </div>
 }
 

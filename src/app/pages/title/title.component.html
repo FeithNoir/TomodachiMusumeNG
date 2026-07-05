@@ -4,30 +4,30 @@
 
   <div class="title-content fade-in-slow">
     <div class="logo-container">
-      <h1 class="game-title">Tomodachi Musume</h1>
-      <p class="game-subtitle">A New Bond Awaits</p>
+      <h1 class="game-title">{{ getText('titleGameName') }}</h1>
+      <p class="game-subtitle">{{ getText('titleSubtitle') }}</p>
     </div>
 
     <div class="title-menu glass-panel glass-panel--shell">
       <button class="btn-menu btn-menu--primary" (click)="newGame()">
         <img src="/assets/icons/talk.svg" alt="" class="btn-icon">
-        <span>Nueva Partida</span>
+        <span>{{ getText('titleNewGame') }}</span>
       </button>
 
       <button class="btn-menu" (click)="loadGame()" [disabled]="!canLoadGame()">
         <img src="/assets/icons/gear.svg" alt="" class="btn-icon">
-        <span>Cargar Partida</span>
+        <span>{{ getText('titleLoadGame') }}</span>
       </button>
 
       <button class="btn-menu disabled-link">
         <img src="/assets/icons/craft.svg" alt="" class="btn-icon">
-        <span>Opciones</span>
+        <span>{{ getText('options') }}</span>
       </button>
     </div>
 
     <div class="title-footer">
-      <span class="version-tag">Alpha v0.1.0</span>
-      <span class="copyright">© 2026 Oniriums</span>
+      <span class="version-tag">{{ getText('titleVersion') }}</span>
+      <span class="copyright">{{ getText('titleCopyright') }}</span>
     </div>
   </div>
 </div>
