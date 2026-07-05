@@ -1,0 +1,57 @@
+<div class="glass-panel modal-container modal-container--lg fade-in">
+
+  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+    <span>✕</span>
+  </button>
+
+  <div class="panel-header">
+    <h3 class="modal-title">{{ getText('equipmentTitle') }}</h3>
+  </div>
+
+  <section class="equipment-stats">
+    <h4 class="section-heading">{{ getText('statsTitle') }}</h4>
+    <div class="stats-grid">
+      @for (key of statKeys; track key) {
+        <div class="stat-pill stat-pill--wide">
+          <span class="stat-label">{{ getStatLabel(key) }}</span>
+          <strong class="stat-value">{{ stats()[key] }}</strong>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="equipment-slots">
+    <h4 class="section-heading">{{ getText('equippedTitle') }}</h4>
+    <div class="equipment-slot-grid">
+      @for (slot of slots; track slot.key) {
+        <button type="button" class="equipment-slot interactive-card"
+                [class.equipment-slot--filled]="equipped()[slot.key]"
+                (click)="handleEquippedSlotClick(slot.key)">
+          <span class="slot-label">{{ getText(slot.labelKey) }}</span>
+          @if (equipped()[slot.key]; as itemId) {
+            <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img slot-img">
+            <span class="slot-item-name">{{ getItemName(itemId) }}</span>
+          } @else {
+            <span class="text-dim">{{ getText('emptySlot') }}</span>
+          }
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="equipment-bag">
+    <h4 class="section-heading">{{ getText('equippableBagTitle') }}</h4>
+    <div class="equipment-bag-grid scroll-area">
+      @for (entry of equippableInventoryItems(); track entry.id) {
+        <button type="button" class="interactive-card equipment-bag-item"
+                [class.interactive-card--equipped]="isEquipped(entry.id)"
+                (click)="handleInventoryEquip(entry.id)">
+          <img [src]="getItemPath(entry.id)" [alt]="getItemName(entry.id)" class="item-img">
+          <span class="badge-count">x{{ entry.quantity }}</span>
+        </button>
+      } @empty {
+        <p class="empty-state">{{ getText('noEquippableItems') }}</p>
+      }
+    </div>
+  </section>
+</div>

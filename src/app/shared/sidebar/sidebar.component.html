@@ -2,7 +2,11 @@
   @for (btn of menuActions; track btn.id) {
   <button [id]="btn.id" class="dock-item" (click)="onAction(btn.action)" [title]="getText(btn.label)">
     <div class="icon-wrapper">
-      <img [src]="btn.icon" [alt]="btn.label" class="dock-icon">
+      @if (btn.icon) {
+        <img [src]="btn.icon" [alt]="btn.label" class="dock-icon">
+      } @else if (btn.iconEmoji) {
+        <span class="dock-emoji" aria-hidden="true">{{ btn.iconEmoji }}</span>
+      }
     </div>
     <span class="dock-label">{{ getText(btn.label) }}</span>
   </button>

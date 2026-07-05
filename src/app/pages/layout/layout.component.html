@@ -35,7 +35,14 @@
 </div>
 }
 
-<!-- Modal de Inventario/Equipamiento -->
+<!-- Modal de Equipo -->
+@if (isEquipmentVisible()) {
+<div class="modal-overlay">
+  <app-equipment (close)="closeActiveModal()"></app-equipment>
+</div>
+}
+
+<!-- Modal de Inventario -->
 @if (isInventoryVisible()) {
 <div class="modal-overlay">
   <app-inventory (close)="closeActiveModal()"></app-inventory>
@@ -69,3 +76,5 @@
   <app-options (close)="closeActiveModal()"></app-options>
 </div>
 }
+
+<app-notification></app-notification>

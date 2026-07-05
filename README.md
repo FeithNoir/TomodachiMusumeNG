@@ -7,44 +7,68 @@ An anime-style virtual pet game built with **Angular 22** and optional **Electro
 
 ## ✨ Features
 
-* **Layered Character System**: Eleanora's appearance is dynamically rendered using a layer system, allowing seamless equipment and expression changes.
-* **Dynamic Reactions**: Eleanora reacts to clicks with different expressions and dialogue based on her current affinity level.
-* **Persistent Data**: Game state (player name, stats, inventory, equipment) auto-saves to `localStorage` or Electron SQLite.
-* **i18n Support**: Spanish and English via `LocalizationService` and `UI_STRINGS`; language selectable on the title screen and in options.
-* **Core Stats System**:
-  * **Affinity** — influenced by dialogues and actions; unlocks equipment and interactions.
-  * **Energy** — consumed by missions; passively regenerates over time.
-  * **Satiety** — decreases over time; restored by feeding.
+* **Layered Character System**: Eleanora's appearance is dynamically rendered using a layer system, with normalized expression paths and automatic blinking.
+* **Dynamic Reactions**: Click reactions change expression and dialogue based on affinity tiers.
+* **Persistent Data**: Auto-save via signals; browser `localStorage` or Electron SQLite.
+* **Localization**: Spanish and English through `LocalizationService` + `UI_STRINGS`.
+* **In-game Notifications**: Toast stack and modal alerts via `NotificationService` (SweetAlert-style UX, pure CSS).
+* **Equipment Panel**: Dedicated gear screen with slot grid, stat totals (attack, defense, magic, health, luck), and equippable items from the bag.
+* **Inventory Panel**: Consumables, materials, and recipes with tab filters and global search.
+* **Core HUD Stats**: Affinity, money, energy, and satiety pills.
 * **Main Actions**:
-  * 🗣️ **Talk** — dynamic conversations with affinity-based nicknames.
-  * 👕 **Equip** — slots for `top`, `bottom`, `suit`, `head`, `weapon`, and more.
-  * 🤝 **Interact** — feed Eleanora to restore energy and manage satiety.
-  * ⚔️ **Mission** — send Eleanora on missions; success and loot depend on equipped gear.
-  * 🛠️ **Crafting** — combine materials to create new items.
-  * 🛒 **Market** — buy and sell items, materials, and recipes.
-* **Responsive Design**: Mobile-first HUD with a bottom action dock; desktop layout uses a grid shell with a vertical sidebar.
-* **Pure CSS styling**: No Tailwind — all UI uses design tokens and component styles in `src/styles.css` and co-located `*.component.css` files.
+  * 🗣️ **Talk** — affinity dialogues.
+  * ⚔️ **Gear** — equipment slots + combat stats.
+  * 🎒 **Bag** — filtered inventory (consumables/materials).
+  * 🤝 **Interact** — feeding (planned expansion).
+  * 🎯 **Mission** — loot and energy cost.
+  * 🛠️ **Craft** — material combinations.
+  * 🛒 **Market** — buy/sell with toast feedback.
+* **Responsive Design**: Mobile dock + desktop grid shell.
+* **Pure CSS**: Design tokens in `src/styles.css`; feature layout in co-located CSS.
+
+## 📊 Feature Progress
+
+Indicador por área del juego — útil para priorizar el roadmap:
+
+| Área | Estado | Progreso | Próximo paso sugerido |
+| :--- | :--- | :--- | :--- |
+| **Companion core** (layers, blink, reactions) | 🟢 Activo | **88%** | Más expresiones contextuales (misiones, craft) |
+| **Persistence & save** | 🟢 Activo | **85%** | Detección de save en Electron + import/export JSON |
+| **Localization (i18n)** | 🟢 Activo | **90%** | Extraer textos de tutorial/título al catálogo |
+| **Notifications** | 🟢 Activo | **85%** | Confirmaciones destructivas con alert modal |
+| **Equipment & stats** | 🟡 En curso | **72%** | Stats en más ítems; comparativa antes/después al equipar |
+| **Inventory & filters** | 🟡 En curso | **78%** | Filtro por rareza/tags; orden por nombre/cantidad |
+| **Crafting** | 🟡 En curso | **65%** | Múltiples unidades por ranura; libro de recetas |
+| **Market** | 🟡 En curso | **70%** | Preview de stats al comprar armas/armaduras |
+| **Missions** | 🟡 En curso | **60%** | Loot table completa; bonos por stats equipados |
+| **Interact / feeding** | 🔴 Pendiente | **25%** | UI de comida y efectos de saciedad |
+| **Story progression** | 🔴 Pendiente | **15%** | Diálogos desbloqueables por afinidad |
+| **Minigames** | 🔴 Pendiente | **0%** | Primer minijuego de afinidad |
+| **Gallery** | 🔴 Placeholder | **5%** | Galería de CG / outfits desbloqueados |
+| **Backend / cloud** | 🔴 Futuro | **0%** | API de saves |
+
+**Leyenda:** 🟢 usable · 🟡 parcial · 🔴 no iniciado o stub
 
 ## 📐 Project Guidelines
 
-Contributors and AI collaborators should follow these documents before adding features or UI. These files live in the project root for local reference (gitignored):
-
 | Document | Scope |
 | :--- | :--- |
-| `architecture_guidelines.md` | Folder layout, services, routing, state management, persistence, Angular conventions. |
-| `design_guidelines.md` | CSS tokens in `src/styles.css`, global classes, responsive layout, component visual patterns. |
+| `architecture_guidelines.md` | Folder layout, services, routing, state, persistence, Angular conventions. |
+| `design_guidelines.md` | CSS tokens, global classes, notifications, equipment/inventory UI patterns. |
+
+*(Local reference — gitignored in this repo.)*
 
 ## 🚀 Project Roadmap
 
 ### Planned Features & Enhancements
 
 - [ ] **Minigames** — boost affinity through playable mini-games.
-- [ ] **Consumable Items** — use items like Energy Drink directly from inventory.
 - [ ] **Recipe Book** — UI to browse known crafting recipes.
 - [ ] **Advanced Crafting** — allow multiple units of each material per slot.
 - [ ] **Story Progression** — main storyline dialogues unlocked by affinity.
 - [ ] **Data Management** — import/export save data as JSON.
-- [ ] **Toast Notifications** — implement `NotificationService` for in-game feedback.
+- [ ] **Interact expansion** — full feeding UI tied to satiety.
+- [ ] **Stat tooltips** — item comparison when hovering gear in the equipment panel.
 
 ### Future Integrations
 
@@ -87,23 +111,21 @@ npm run electron:build     # Web build + portable Electron app
 
 ```text
 TomodachiMusumeNg/
-├── electron/                 # Electron main process & SQLite persistence
+├── electron/
 ├── public/assets/
-│   ├── icons/                # SVG HUD and action icons
-│   └── img/                  # Character layers, items, backgrounds
 ├── src/
 │   ├── app/
 │   │   ├── core/
-│   │   │   ├── constants/    # UI_STRINGS and shared static config
-│   │   │   ├── data/         # Game databases, balance config, initial state
-│   │   │   ├── interfaces/   # TypeScript domain contracts
-│   │   │   ├── services/     # Injectable business logic
-│   │   │   └── utils/        # Pure helpers (localization resolution)
-│   │   ├── pages/            # Title, layout shell, main view, modals
-│   │   └── shared/           # Character, sidebar, inventory, dialogue…
-│   └── styles.css            # Design tokens & global UI classes (pure CSS)
-├── architecture_guidelines.md  # Local only (gitignored)
-├── design_guidelines.md        # Local only (gitignored)
+│   │   │   ├── constants/    # UI_STRINGS
+│   │   │   ├── data/         # Databases, balance, initial state
+│   │   │   ├── interfaces/
+│   │   │   ├── services/
+│   │   │   └── utils/
+│   │   ├── pages/
+│   │   └── shared/           # character, equipment, inventory, notification…
+│   └── styles.css
+├── architecture_guidelines.md
+├── design_guidelines.md
 └── README.md
 ```
 
@@ -116,21 +138,13 @@ TomodachiMusumeNg/
 | `@pages/*` | `src/app/pages/*` |
 | `@assets/*` | `public/assets/*` |
 
-Use aliases for cross-layer imports (e.g. `@core/services/game-state.service`, `@shared/character/character.component`).
-
 ## 🤝 Contributing
 
-Contributions are welcome. Please read `architecture_guidelines.md` and `design_guidelines.md` (local, gitignored) before opening a PR.
-
-1. Fork the project
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Read `architecture_guidelines.md` and `design_guidelines.md` before opening a PR.
 
 ## 📄 License
 
-Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
+MIT — see [LICENSE](./LICENSE).
 
 ## 👨‍💻 Author
 

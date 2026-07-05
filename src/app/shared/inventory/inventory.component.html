@@ -1,6 +1,6 @@
 <div class="glass-panel modal-container modal-container--md fade-in">
 
-  <button class="close-btn-round" (click)="onClose()">
+  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
     <span>✕</span>
   </button>
 
@@ -9,27 +9,38 @@
     <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots }}</span>
   </div>
 
-  <div class="inventory-grid scroll-area">
-    @for (item of inventory(); track item.id) {
-    <div class="interactive-card inventory-item"
-         [class.interactive-card--equipped]="isEquipped(item.id)"
-         (click)="handleItemClick(item.id)">
+  <div class="inventory-toolbar">
+    <input type="search"
+           class="search-input"
+           [placeholder]="getText('inventorySearchPlaceholder')"
+           [ngModel]="searchQuery()"
+           (ngModelChange)="searchQuery.set($event)">
 
-      <div class="item-visual">
-        <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
-      </div>
-
-      <span class="badge-count">{{ item.quantity }}</span>
-
-      @if (isEquipped(item.id)) {
-      <span class="badge-equipped">E</span>
-      }
+    <div class="tab-row">
+      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'all'" (click)="setTab('all')">
+        {{ getText('tabAll') }}
+      </button>
+      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'consumable'" (click)="setTab('consumable')">
+        {{ getText('tabConsumables') }}
+      </button>
+      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'material'" (click)="setTab('material')">
+        {{ getText('tabMaterials') }}
+      </button>
     </div>
-    } @empty {
-    <div class="empty-state">
-      <p>{{ getText('noItemsMsg') }}</p>
-    </div>
-    }
   </div>
 
+  <div class="inventory-grid scroll-area">
+    @for (item of filteredInventory(); track item.id) {
+      <button type="button" class="interactive-card inventory-item" (click)="handleItemClick(item.id)">
+        <div class="item-visual">
+          <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+        </div>
+        <span class="badge-count">{{ item.quantity }}</span>
+      </button>
+    } @empty {
+      <div class="empty-state">
+        <p>{{ getText('noItemsMsg') }}</p>
+      </div>
+    }
+  </div>
 </div>

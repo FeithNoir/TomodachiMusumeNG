@@ -37,10 +37,7 @@ export const INITIAL_GAME_STATE: GameState = {
     weapon: null,
   },
   knownRecipes: [],
-  expression: {
-    eyes: 'assets/img/expressions/eyes_1.png',
-    mouth: 'assets/img/expressions/mouth_1.png',
-  },
+  expression: { ...DEFAULT_EXPRESSION },
   characterName: DEFAULT_CHARACTER_NAME,
 };
 
@@ -53,5 +50,8 @@ export function createEmptyEquippedState(): GameState['equipped'] {
 }
 
 export function createDefaultExpression(): GameState['expression'] {
-  return { ...DEFAULT_EXPRESSION };
+  return {
+    eyes: DEFAULT_EXPRESSION.eyes,
+    mouth: DEFAULT_EXPRESSION.mouth,
+  };
 }

@@ -4,6 +4,12 @@ import { CharacterService } from '@core/services/character.service';
 import { GameStateService } from '@core/services/game-state.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
+import {
+  EXPRESSION_BLINK_MAX_MS,
+  EXPRESSION_BLINK_MIN_MS,
+  EXPRESSION_BLINK_MS,
+} from '@core/data/game-config';
+import { isDefaultIdleEyes } from '@core/utils/asset.util';
 
 @Component({
   selector: 'app-character',
@@ -24,6 +30,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
   public playerName = this.gameStateService.playerName;
 
   private blinkingInterval: ReturnType<typeof setInterval> | null = null;
+  private blinkRestoreTimeout: ReturnType<typeof setTimeout> | null = null;
   public showReactionDialogue = false;
   public reactionText = '';
 
@@ -32,22 +39,28 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.characterService.resetToDefaultExpression();
     this.startBlinking();
   }
 
   ngOnDestroy(): void {
     this.stopBlinking();
+    if (this.blinkRestoreTimeout) {
+      clearTimeout(this.blinkRestoreTimeout);
+    }
   }
 
   private startBlinking(): void {
     this.blinkingInterval = setInterval(() => {
-      if (this.expression().eyes === '/assets/img/expressions/eyes_1.png') {
-        this.characterService.updateExpression('/assets/img/expressions/eyes_2.png', this.expression().mouth);
-        setTimeout(() => {
-          this.characterService.updateExpression('/assets/img/expressions/eyes_1.png', this.expression().mouth);
-        }, 150);
+      if (!isDefaultIdleEyes(this.expression().eyes)) {
+        return;
       }
-    }, Math.random() * 4000 + 3000);
+
+      this.characterService.blink();
+      this.blinkRestoreTimeout = setTimeout(() => {
+        this.characterService.resetToDefaultExpression();
+      }, EXPRESSION_BLINK_MS);
+    }, Math.random() * (EXPRESSION_BLINK_MAX_MS - EXPRESSION_BLINK_MIN_MS) + EXPRESSION_BLINK_MIN_MS);
   }
 
   private stopBlinking(): void {
@@ -58,7 +71,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   onCharacterClick(): void {
     const reaction = this.characterService.getAffinityReaction();
-
     if (!reaction) {
       return;
     }

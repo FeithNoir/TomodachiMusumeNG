@@ -2,10 +2,12 @@ import { Injectable, signal } from '@angular/core';
 import { masterItemList } from '@core/data/item-database';
 import { affinityReactionTiers, AffinityReactionTier } from '@core/data/affinity-reactions';
 import { isEquippableCategory } from '@core/data/equippable-categories';
-import { AFFINITY_MAX, } from '@core/data/game-config';
-import { createDefaultExpression, createEmptyEquippedState, } from '@core/data/initial-game-state';
+import { AFFINITY_MAX } from '@core/data/game-config';
+import { createDefaultExpression, createEmptyEquippedState } from '@core/data/initial-game-state';
 import { EquippableItemCategory } from '@core/interfaces/item.interface';
+import { EquipResult } from '@core/interfaces/notification.interface';
 import { GameState } from '@core/interfaces/game-state.interface';
+import { blinkExpressionPaths, defaultExpressionPaths, normalizeAssetPath, } from '@core/utils/asset.util';
 
 @Injectable({
   providedIn: 'root',
@@ -15,24 +17,23 @@ export class CharacterService {
   public equipped = signal<GameState['equipped']>(createEmptyEquippedState());
   public expression = signal<GameState['expression']>(createDefaultExpression());
 
-  equipItem(itemId: string): boolean {
+  equipItem(itemId: string): EquipResult {
     const itemData = masterItemList[itemId];
     if (!itemData) {
-      console.error(`Attempted to equip non-existent item: ${itemId}`);
-      return false;
+      return { ok: false, reason: 'not_found' };
     }
 
     if (!isEquippableCategory(itemData.type)) {
-      console.warn(`Item ${itemData.name.en} is not an equippable type.`);
-      return false;
+      return { ok: false, reason: 'not_equippable' };
     }
 
     const currentAffinity = this.affinity();
     if (itemData.requiredAffinity && currentAffinity < itemData.requiredAffinity) {
-      console.warn(
-        `Insufficient affinity to equip ${itemData.name.en}. Required: ${itemData.requiredAffinity}, Current: ${currentAffinity}`
-      );
-      return false;
+      return {
+        ok: false,
+        reason: 'insufficient_affinity',
+        requiredAffinity: itemData.requiredAffinity,
+      };
     }
 
     const itemType = itemData.type;
@@ -49,7 +50,7 @@ export class CharacterService {
 
     currentEquipped[itemType] = itemId;
     this.equipped.set(currentEquipped);
-    return true;
+    return { ok: true };
   }
 
   unequipItem(itemType: EquippableItemCategory): void {
@@ -59,7 +60,14 @@ export class CharacterService {
   }
 
   updateExpression(eyesPath: string, mouthPath: string): void {
-    this.expression.set({ eyes: eyesPath, mouth: mouthPath });
+    this.expression.set({
+      eyes: normalizeAssetPath(eyesPath),
+      mouth: normalizeAssetPath(mouthPath),
+    });
+  }
+
+  resetToDefaultExpression(): void {
+    this.expression.set(defaultExpressionPaths());
   }
 
   updateAffinity(amount: number): void {
@@ -72,5 +80,18 @@ export class CharacterService {
       .slice()
       .reverse()
       .find(reaction => currentAffinity >= reaction.level);
+  }
+
+  /** Applies a blink frame while preserving the current mouth. */
+  blink(): void {
+    const currentMouth = this.expression().mouth;
+    const blinkPaths = blinkExpressionPaths(currentMouth);
+    this.expression.set(blinkPaths);
+  }
+
+  isDefaultIdleExpression(): boolean {
+    const current = this.expression();
+    const defaults = defaultExpressionPaths();
+    return current.eyes === defaults.eyes && current.mouth === defaults.mouth;
   }
 }

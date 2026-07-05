@@ -159,7 +159,8 @@ export const masterItemList: ItemCollection = {
     id: 'leather_shirt',
     name: { es: 'Coraza de Cuero', en: 'Leather Cuirass' },
     type: 'top',
-    path: 'assets/img/tops/leather_shirt.png'
+    path: 'assets/img/tops/leather_shirt.png',
+    stats: { defense: 6, health: 8 }
   },
   'leather_skirt': {
     id: 'leather_skirt',
@@ -185,7 +186,8 @@ export const masterItemList: ItemCollection = {
     id: 'steel_armor',
     name: { es: 'Armadura de Acero', en: 'Steel Armor' },
     type: 'top',
-    path: 'assets/img/tops/steel_armor.png'
+    path: 'assets/img/tops/steel_armor.png',
+    stats: { defense: 14, health: 12 }
   },
   'steel_skirt': {
     id: 'steel_skirt',
@@ -211,7 +213,8 @@ export const masterItemList: ItemCollection = {
     id: 'scale_armor',
     name: { es: 'Coraza de Escamas', en: 'Scale Cuirass' },
     type: 'top',
-    path: 'assets/img/tops/scale_armor.png'
+    path: 'assets/img/tops/scale_armor.png',
+    stats: { defense: 18, magic: 4, health: 10 }
   },
   'scale_skirt': {
     id: 'scale_skirt',
@@ -238,6 +241,7 @@ export const masterItemList: ItemCollection = {
     name: { es: 'Espada de Madera', en: 'Wooden Sword' },
     type: 'weapon',
     path: 'assets/img/items/sword_wood.png',
+    stats: { attack: 4 },
     effects: { missionBonus: { nothingChance: -0.05, itemChance: 0.05 } }
   },
   'iron_sword': {
@@ -245,6 +249,7 @@ export const masterItemList: ItemCollection = {
     name: { es: 'Espada de Hierro', en: 'Iron Sword' },
     type: 'weapon',
     path: 'assets/img/items/sword_iron.png',
+    stats: { attack: 12, luck: 2 },
     effects: { missionBonus: { nothingChance: -0.15, itemChance: 0.15 } }
   },
   'steel_sword': {

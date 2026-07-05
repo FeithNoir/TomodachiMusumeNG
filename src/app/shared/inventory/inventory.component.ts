@@ -1,38 +1,67 @@
-import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { InventoryService } from '@core/services/inventory.service';
-import { CharacterService } from '@core/services/character.service';
 import { GameStateService } from '@core/services/game-state.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
+import { NotificationService } from '@core/services/notification.service';
 import { INVENTORY_MAX_SLOTS } from '@core/data/game-config';
-import { isEquippableCategory } from '@core/data/equippable-categories';
-import { Item } from '@core/interfaces/item.interface';
+import { Item, ItemCategory } from '@core/interfaces/item.interface';
+
+type InventoryTab = 'all' | 'consumable' | 'material';
 
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './inventory.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './inventory.component.css',
 })
 export class InventoryComponent {
   private inventoryService = inject(InventoryService);
-  private characterService = inject(CharacterService);
   private gameStateService = inject(GameStateService);
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
+  private notifications = inject(NotificationService);
 
   @Output() close = new EventEmitter<void>();
 
   public inventory = this.inventoryService.inventory;
-  public equipped = this.characterService.equipped;
   public maxInventorySlots = INVENTORY_MAX_SLOTS;
+  public activeTab = signal<InventoryTab>('all');
+  public searchQuery = signal('');
+
   readonly getText = this.localization.t.bind(this.localization);
 
-  getItemData(itemId: string): Item | undefined {
-    return this.itemCatalog.getItem(itemId);
+  private storableCategories: ItemCategory[] = ['consumable', 'material', 'recipe'];
+
+  public filteredInventory = computed(() => {
+    const query = this.searchQuery().trim().toLowerCase();
+    const tab = this.activeTab();
+
+    return this.inventory().filter(entry => {
+      const item = this.itemCatalog.getItem(entry.id);
+      if (!item || !this.storableCategories.includes(item.type)) {
+        return false;
+      }
+
+      if (tab !== 'all' && item.type !== tab) {
+        return false;
+      }
+
+      if (!query) {
+        return true;
+      }
+
+      const localizedName = this.getItemName(entry.id).toLowerCase();
+      return localizedName.includes(query) || entry.id.toLowerCase().includes(query);
+    });
+  });
+
+  setTab(tab: InventoryTab): void {
+    this.activeTab.set(tab);
   }
 
   getItemName(itemId: string): string {
@@ -43,48 +72,22 @@ export class InventoryComponent {
     return this.itemCatalog.getItemPath(itemId);
   }
 
-  isEquipped(itemId: string): boolean {
-    return Object.values(this.equipped()).includes(itemId);
-  }
-
   handleItemClick(itemId: string): void {
-    const itemData = this.getItemData(itemId);
+    const itemData = this.itemCatalog.getItem(itemId);
     if (!itemData) {
       return;
     }
 
-    const itemType = itemData.type;
-
-    if (itemType === 'consumable') {
+    if (itemData.type === 'consumable') {
       this.useConsumable(itemId);
       return;
     }
 
-    if (!isEquippableCategory(itemType)) {
-      console.warn(this.getText('cannotEquipMsg'));
-      return;
-    }
-
-    const isCurrentlyEquipped = this.isEquipped(itemId);
-    const affinityReq = itemData.requiredAffinity || 0;
-
-    if (isCurrentlyEquipped) {
-      if ((itemType === 'bra' || itemType === 'pantsus') && this.characterService.affinity() < affinityReq) {
-        console.warn(this.getText('braPantsusUnequipMsg', affinityReq));
-        return;
-      }
-      this.characterService.unequipItem(itemType);
-    } else {
-      if (itemType !== 'bra' && itemType !== 'pantsus' && this.characterService.affinity() < affinityReq) {
-        console.warn(this.getText('insufficientAffinityMsg', affinityReq));
-        return;
-      }
-      this.characterService.equipItem(itemId);
-    }
+    this.notifications.info(this.getText('openEquipmentHint'));
   }
 
   private useConsumable(itemId: string): void {
-    const itemData = this.getItemData(itemId);
+    const itemData = this.itemCatalog.getItem(itemId);
     const itemInInventory = this.inventoryService.inventory().find(item => item.id === itemId);
 
     if (!itemData || !itemInInventory) {
@@ -96,7 +99,7 @@ export class InventoryComponent {
     }
 
     this.inventoryService.removeItem(itemId, 1);
-    console.log(this.getText('itemUsedMsg', this.getItemName(itemId)));
+    this.notifications.success(this.getText('itemUsedMsg', this.getItemName(itemId)));
   }
 
   onClose(): void {

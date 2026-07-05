@@ -1,5 +1,6 @@
 export type { LocalizedText } from './localized-text.interface';
 import type { LocalizedText } from './localized-text.interface';
+import type { CharacterStats } from './character-stats.interface';
 
 // Definimos un tipo cerrado para las categorías.
 // Esto evita errores tipográficos (ej: escribir 'wepon' en lugar de 'weapon').
@@ -24,6 +25,7 @@ export interface Item {
   path: string;
   requiredAffinity?: number;
   effects?: ItemEffects;
+  stats?: Partial<CharacterStats>;
   buyPrice?: number;
   sellPrice?: number;
   recipeId?: string;

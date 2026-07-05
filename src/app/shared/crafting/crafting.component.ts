@@ -4,6 +4,7 @@ import { CraftingService } from '@core/services/crafting.service';
 import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
+import { NotificationService } from '@core/services/notification.service';
 import { Item } from '@core/interfaces/item.interface';
 
 @Component({
@@ -19,6 +20,7 @@ export class CraftingComponent {
   private inventoryService = inject(InventoryService);
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
+  private notifications = inject(NotificationService);
 
   @Output() close = new EventEmitter<void>();
 
@@ -46,7 +48,7 @@ export class CraftingComponent {
     const emptySlotIndex = currentSlots.findIndex(slot => slot === null);
 
     if (emptySlotIndex === -1) {
-      console.warn(this.getText('slotsFullMsg'));
+      this.notifications.warning(this.getText('slotsFullMsg'));
       return;
     }
 
@@ -55,7 +57,7 @@ export class CraftingComponent {
       updatedSlots[emptySlotIndex] = itemId;
       this.craftingSlots.set(updatedSlots);
     } else {
-      console.warn(`No ${this.getItemName(itemId)} in inventory.`);
+      this.notifications.warning(this.getText('noMaterials'));
     }
   }
 
@@ -73,9 +75,9 @@ export class CraftingComponent {
     const craftedItemId = this.craftingService.attemptCraft(ingredients);
 
     if (craftedItemId) {
-      console.log(this.getText('craftSuccessMsg', this.getItemName(craftedItemId)));
+      this.notifications.success(this.getText('craftSuccessMsg', this.getItemName(craftedItemId)));
     } else {
-      console.warn(this.getText('craftFailMsg'));
+      this.notifications.warning(this.getText('craftFailMsg'));
     }
 
     this.craftingSlots.set([null, null, null, null]);

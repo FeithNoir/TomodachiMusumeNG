@@ -4,6 +4,7 @@ import { CharacterService } from '@core/services/character.service';
 import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
+import { NotificationService } from '@core/services/notification.service';
 import { shopInventory } from '@core/data/shop-data';
 
 @Injectable({
@@ -15,6 +16,7 @@ export class ShopService {
   private characterService = inject(CharacterService);
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
+  private notifications = inject(NotificationService);
 
   public availableShopItems = computed(() => shopInventory);
 
@@ -26,7 +28,7 @@ export class ShopService {
 
     const totalCost = itemData.buyPrice * quantity;
     if (this.gameStateService.money() < totalCost) {
-      console.warn(this.localization.t('fundsInsufficientMsg'));
+      this.notifications.warning(this.localization.t('fundsInsufficientMsg'));
       return false;
     }
 

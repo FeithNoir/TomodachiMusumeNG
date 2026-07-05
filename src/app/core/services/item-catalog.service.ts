@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { masterItemList } from '@core/data/item-database';
 import { Item } from '@core/interfaces/item.interface';
 import { resolveLocalizedText } from '@core/utils/localization.util';
+import { normalizeAssetPath } from '@core/utils/asset.util';
 import { GameStateService } from '@core/services/game-state.service';
 
 @Injectable({
@@ -32,6 +33,6 @@ export class ItemCatalogService {
       return '';
     }
 
-    return masterItemList[itemId]?.path ?? '';
+    return normalizeAssetPath(masterItemList[itemId]?.path ?? '');
   }
 }

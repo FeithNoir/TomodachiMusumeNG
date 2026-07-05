@@ -2,6 +2,8 @@ import { Injectable, computed, inject } from '@angular/core';
 import { INVENTORY_MAX_SLOTS, INVENTORY_MAX_STACK_SIZE } from '@core/data/game-config';
 import { GameStateService } from '@core/services/game-state.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { NotificationService } from '@core/services/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +11,8 @@ import { ItemCatalogService } from '@core/services/item-catalog.service';
 export class InventoryService {
   private gameStateService = inject(GameStateService);
   private itemCatalog = inject(ItemCatalogService);
+  private localization = inject(LocalizationService);
+  private notifications = inject(NotificationService);
 
   public inventory = computed(() => this.gameStateService.inventory());
 
@@ -34,7 +38,9 @@ export class InventoryService {
         return true;
       }
 
-      console.warn(`Stack for ${itemData.name.en} is full.`);
+      this.notifications.warning(
+        this.localization.t('stackFullMsg', this.itemCatalog.getItemName(itemId))
+      );
       return false;
     }
 
@@ -44,7 +50,7 @@ export class InventoryService {
       return true;
     }
 
-    console.warn('Inventory is full. No space for new item type.');
+    this.notifications.warning(this.localization.t('inventoryFullMsg'));
     return false;
   }
 
@@ -53,15 +59,12 @@ export class InventoryService {
     const existingItemIndex = currentInventory.findIndex(item => item.id === itemId);
 
     if (existingItemIndex === -1) {
-      console.warn(`Attempted to remove non-existent item from inventory: ${itemId}`);
       return false;
     }
 
     const existingItem = currentInventory[existingItemIndex];
-    const itemData = this.itemCatalog.getItem(itemId);
 
     if (existingItem.quantity < quantity) {
-      console.warn(`Not enough ${itemData?.name.en ?? itemId} to remove.`);
       return false;
     }
 

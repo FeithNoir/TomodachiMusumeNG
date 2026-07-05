@@ -3,7 +3,8 @@ import { UiStringDictionary } from '@core/interfaces/localized-text.interface';
 export const UI_STRINGS: UiStringDictionary = {
   // Sidebar
   talk: { es: 'Hablar', en: 'Talk' },
-  equip: { es: 'Equipo', en: 'Gear' },
+  equipment: { es: 'Equipo', en: 'Gear' },
+  inventory: { es: 'Inventario', en: 'Bag' },
   interact: { es: 'Interactuar', en: 'Interact' },
   mission: { es: 'Misión', en: 'Mission' },
   market: { es: 'Mercado', en: 'Market' },
@@ -43,6 +44,45 @@ export const UI_STRINGS: UiStringDictionary = {
     es: `No se lo quiere quitar... (necesita ${req} de afinidad).`,
     en: `She doesn't want to take it off... (needs ${req} affinity).`,
   }),
+  inventorySearchPlaceholder: { es: 'Buscar objetos...', en: 'Search items...' },
+  tabAll: { es: 'Todo', en: 'All' },
+  tabConsumables: { es: 'Consumibles', en: 'Consumables' },
+  tabMaterials: { es: 'Materiales', en: 'Materials' },
+  openEquipmentHint: {
+    es: 'Abre Equipo para usar objetos equipables.',
+    en: 'Open Gear to manage equippable items.',
+  },
+
+  // Equipment
+  equipmentTitle: { es: 'Equipo', en: 'Gear' },
+  statsTitle: { es: 'Estadísticas', en: 'Stats' },
+  equippedTitle: { es: 'Equipado', en: 'Equipped' },
+  equippableBagTitle: { es: 'Listo para Equipar', en: 'Ready to Equip' },
+  noEquippableItems: { es: 'No hay objetos equipables en la mochila.', en: 'No equippable items in the bag.' },
+  itemEquippedMsg: (name: string) => ({ es: `Has equipado ${name}.`, en: `You equipped ${name}.` }),
+  itemUnequippedMsg: (name: string) => ({ es: `Has desequipado ${name}.`, en: `You unequipped ${name}.` }),
+  itemNotFoundMsg: { es: 'Objeto no encontrado.', en: 'Item not found.' },
+  statAttack: { es: 'Ataque', en: 'Attack' },
+  statDefense: { es: 'Defensa', en: 'Defense' },
+  statMagic: { es: 'Magia', en: 'Magic' },
+  statHealth: { es: 'Vida', en: 'Health' },
+  statLuck: { es: 'Suerte', en: 'Luck' },
+  slotHead: { es: 'Cabeza', en: 'Head' },
+  slotTop: { es: 'Torso', en: 'Top' },
+  slotBottom: { es: 'Piernas', en: 'Bottom' },
+  slotSuit: { es: 'Traje', en: 'Suit' },
+  slotStockings: { es: 'Medias', en: 'Stockings' },
+  slotHands: { es: 'Manos', en: 'Hands' },
+  slotWeapon: { es: 'Arma', en: 'Weapon' },
+  slotBra: { es: 'Sujetador', en: 'Bra' },
+  slotPantsus: { es: 'Braguitas', en: 'Panties' },
+
+  // Notifications
+  stackFullMsg: (name: string) => ({
+    es: `Ya tienes el máximo de ${name}.`,
+    en: `You already have the maximum amount of ${name}.`,
+  }),
+  inventoryFullMsg: { es: 'No tienes espacio para un nuevo tipo de objeto.', en: "You don't have space for a new type of item." },
 
   // Crafting
   craftingTitle: { es: 'Mesa de Trabajo', en: 'Workbench' },

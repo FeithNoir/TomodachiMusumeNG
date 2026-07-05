@@ -2,7 +2,7 @@ import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from
 
 import { LocalizationService } from '@core/services/localization.service';
 
-export type SidebarAction = 'talk' | 'equip' | 'interact' | 'mission' | 'market' | 'craft';
+export type SidebarAction = 'talk' | 'equipment' | 'inventory' | 'interact' | 'mission' | 'market' | 'craft';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,9 +17,16 @@ export class SidebarComponent {
 
   @Output() action = new EventEmitter<SidebarAction>();
 
-  public readonly menuActions: { id: string; label: string; action: SidebarAction; icon: string }[] = [
+  public readonly menuActions: {
+    id: string;
+    label: string;
+    action: SidebarAction;
+    icon?: string;
+    iconEmoji?: string;
+  }[] = [
     { id: 'talkButton', label: 'talk', action: 'talk', icon: '/assets/icons/talk.svg' },
-    { id: 'equipButton', label: 'equip', action: 'equip', icon: '/assets/icons/gear.svg' },
+    { id: 'equipmentButton', label: 'equipment', action: 'equipment', icon: '/assets/icons/gear.svg' },
+    { id: 'inventoryButton', label: 'inventory', action: 'inventory', iconEmoji: '🎒' },
     { id: 'interactButton', label: 'interact', action: 'interact', icon: '/assets/icons/interact.svg' },
     { id: 'missionButton', label: 'mission', action: 'mission', icon: '/assets/icons/mission.svg' },
     { id: 'marketButton', label: 'market', action: 'market', icon: '/assets/icons/market.svg' },

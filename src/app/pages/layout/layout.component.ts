@@ -4,9 +4,11 @@ import { RouterOutlet } from '@angular/router';
 
 import { CraftingComponent } from '@shared/crafting/crafting.component';
 import { DialogueComponent } from '@shared/dialogue/dialogue.component';
+import { EquipmentComponent } from '@shared/equipment/equipment.component';
 import { InfoComponent } from '@shared/info/info.component';
 import { InventoryComponent } from '@shared/inventory/inventory.component';
 import { MenuComponent } from '@shared/menu/menu.component';
+import { NotificationComponent } from '@shared/notification/notification.component';
 import { SidebarComponent, SidebarAction } from '@shared/sidebar/sidebar.component';
 import { OptionsComponent } from '@shared/options/options.component';
 import { ShopComponent } from '@pages/shop/shop.component';
@@ -27,9 +29,11 @@ type ActiveModal = SidebarAction | 'options' | null;
     RouterOutlet,
     CraftingComponent,
     DialogueComponent,
+    EquipmentComponent,
     InfoComponent,
     InventoryComponent,
     MenuComponent,
+    NotificationComponent,
     SidebarComponent,
     ShopComponent,
     MissionComponent,
@@ -52,7 +56,8 @@ export class LayoutComponent {
   public currentDialogue = signal<Dialogue | null>(null);
 
   isDialogueVisible = computed(() => this.activeModal() === 'talk');
-  isInventoryVisible = computed(() => this.activeModal() === 'equip');
+  isEquipmentVisible = computed(() => this.activeModal() === 'equipment');
+  isInventoryVisible = computed(() => this.activeModal() === 'inventory');
   isCraftingVisible = computed(() => this.activeModal() === 'craft');
   isMissionVisible = computed(() => this.activeModal() === 'mission');
   isMarketVisible = computed(() => this.activeModal() === 'market');

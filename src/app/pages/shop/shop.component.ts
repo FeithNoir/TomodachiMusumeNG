@@ -7,6 +7,7 @@ import { CharacterService } from '@core/services/character.service';
 import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
+import { NotificationService } from '@core/services/notification.service';
 import { Item } from '@core/interfaces/item.interface';
 
 type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
@@ -26,6 +27,7 @@ export class ShopComponent {
   private characterService = inject(CharacterService);
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
+  private notifications = inject(NotificationService);
 
   @Output() closeShop = new EventEmitter<void>();
 
@@ -83,7 +85,7 @@ export class ShopComponent {
     }
 
     if (maxQuantity < 1) {
-      console.warn(this.getText('noSellEquippedMsg'));
+      this.notifications.warning(this.getText('noSellEquippedMsg'));
       return;
     }
 
@@ -95,7 +97,7 @@ export class ShopComponent {
 
   buyItem(itemId: string): void {
     if (this.shopService.buyItem(itemId, 1)) {
-      console.log(this.getText('buySuccessMsg', this.getItemName(itemId)));
+      this.notifications.success(this.getText('buySuccessMsg', this.getItemName(itemId)));
     }
   }
 
@@ -104,13 +106,15 @@ export class ShopComponent {
     const quantity = this.sellQuantityInput();
 
     if (!itemToSell || quantity <= 0 || quantity > this.maxSellQuantity()) {
-      console.warn(this.getText('invalidQuantityMsg'));
+      this.notifications.warning(this.getText('invalidQuantityMsg'));
       return;
     }
 
     if (this.shopService.sellItem(itemToSell.item.id, quantity)) {
       const totalGain = itemToSell.item.sellPrice! * quantity;
-      console.log(this.getText('sellSuccessMsg', quantity, this.getItemName(itemToSell.item.id), totalGain));
+      this.notifications.success(
+        this.getText('sellSuccessMsg', quantity, this.getItemName(itemToSell.item.id), totalGain)
+      );
       this.viewMode.set('sell');
     }
   }

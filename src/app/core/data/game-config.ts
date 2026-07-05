@@ -23,6 +23,12 @@ export const DEFAULT_EXPRESSION = {
   mouth: '/assets/img/expressions/mouth_1.png',
 } as const;
 
+export const EXPRESSION_EYES_IDLE = DEFAULT_EXPRESSION.eyes;
+export const EXPRESSION_EYES_BLINK = '/assets/img/expressions/eyes_happy.png';
+export const EXPRESSION_BLINK_MS = 150;
+export const EXPRESSION_BLINK_MIN_MS = 3_000;
+export const EXPRESSION_BLINK_MAX_MS = 7_000;
+
 export const EMPTY_EQUIPPED = {
   top: null,
   bottom: null,

@@ -1,1 +1,22 @@
-<p>notification works!</p>
+<div class="notification-host" aria-live="polite">
+  <div class="toast-stack">
+    @for (toast of notificationService.toastList(); track toast.id) {
+      <div class="toast toast--{{ toast.variant }}" (click)="dismissToast(toast.id)">
+        <span class="toast-icon">{{ variantIcon(toast.variant) }}</span>
+        <p class="toast-message">{{ toast.message }}</p>
+        <button type="button" class="toast-close" (click)="dismissToast(toast.id); $event.stopPropagation()">✕</button>
+      </div>
+    }
+  </div>
+
+  @if (notificationService.alert(); as alertData) {
+    <div class="alert-overlay" (click)="dismissAlert()">
+      <div class="alert-card glass-panel alert-card--{{ alertData.variant }}" (click)="$event.stopPropagation()">
+        <div class="alert-icon">{{ variantIcon(alertData.variant) }}</div>
+        <h3 class="alert-title">{{ alertData.title }}</h3>
+        <p class="alert-message">{{ alertData.message }}</p>
+        <button type="button" class="btn-action btn-primary alert-confirm" (click)="dismissAlert()">OK</button>
+      </div>
+    </div>
+  }
+</div>
