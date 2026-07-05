@@ -4,6 +4,7 @@ import {
   DEFAULT_EXPRESSION,
   DEFAULT_GUILD_NAME,
   DEFAULT_LANGUAGE,
+  DEFAULT_PET_SLOT_CAPACITY,
   DEFAULT_PLAYER_NAME,
   EMPTY_EQUIPPED,
   GAME_VERSION,
@@ -41,10 +42,32 @@ export const INITIAL_GAME_STATE: GameState = {
   },
   expression: { ...DEFAULT_EXPRESSION },
   characterName: DEFAULT_CHARACTER_NAME,
+  pets: [],
+  petSlotCapacity: DEFAULT_PET_SLOT_CAPACITY,
+  activeMission: null,
+  missionBoardSeed: Date.now(),
+  missionFlags: [],
 };
 
 export function cloneInitialGameState(): GameState {
   return JSON.parse(JSON.stringify(INITIAL_GAME_STATE)) as GameState;
+}
+
+export function normalizeGameState(raw: Partial<GameState>): GameState {
+  const defaults = cloneInitialGameState();
+  return {
+    ...defaults,
+    ...raw,
+    equipped: { ...defaults.equipped, ...raw.equipped },
+    expression: { ...defaults.expression, ...raw.expression },
+    inventory: raw.inventory ?? defaults.inventory,
+    knownRecipes: raw.knownRecipes ?? defaults.knownRecipes,
+    pets: raw.pets ?? defaults.pets,
+    petSlotCapacity: raw.petSlotCapacity ?? defaults.petSlotCapacity,
+    activeMission: raw.activeMission ?? null,
+    missionBoardSeed: raw.missionBoardSeed ?? defaults.missionBoardSeed,
+    missionFlags: raw.missionFlags ?? defaults.missionFlags,
+  };
 }
 
 export function createEmptyEquippedState(): GameState['equipped'] {

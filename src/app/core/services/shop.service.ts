@@ -1,11 +1,14 @@
 import { Injectable, computed, inject } from '@angular/core';
+import { PET_SLOT_UPGRADE_ITEM_ID } from '@core/data/game-config';
+import { isShopSpecialItem, SHOP_SPECIAL_ITEMS } from '@core/data/shop-special-items';
+import { shopInventory } from '@core/data/shop-data';
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
 import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
-import { shopInventory } from '@core/data/shop-data';
+import { PetService } from '@core/services/pet.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +20,18 @@ export class ShopService {
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
   private notifications = inject(NotificationService);
+  private petService = inject(PetService);
 
-  public availableShopItems = computed(() => shopInventory);
+  public availableShopItems = computed(() => [
+    ...shopInventory,
+    ...SHOP_SPECIAL_ITEMS.map(item => item.id),
+  ]);
 
   buyItem(itemId: string, quantity: number = 1): boolean {
+    if (isShopSpecialItem(itemId)) {
+      return this.buySpecialItem(itemId);
+    }
+
     const itemData = this.itemCatalog.getItem(itemId);
     if (!itemData?.buyPrice) {
       return false;
@@ -63,5 +74,29 @@ export class ShopService {
     const totalGain = itemData.sellPrice * quantity;
     this.gameStateService.updateMoney(totalGain);
     return true;
+  }
+
+  getSpecialShopItem(itemId: string) {
+    return SHOP_SPECIAL_ITEMS.find(item => item.id === itemId);
+  }
+
+  private buySpecialItem(itemId: string): boolean {
+    const special = this.getSpecialShopItem(itemId);
+    if (!special) {
+      return false;
+    }
+
+    if (this.gameStateService.money() < special.buyPrice) {
+      this.notifications.warning(this.localization.t('fundsInsufficientMsg'));
+      return false;
+    }
+
+    if (itemId === PET_SLOT_UPGRADE_ITEM_ID) {
+      this.gameStateService.updateMoney(-special.buyPrice);
+      this.petService.expandSlotCapacity();
+      return true;
+    }
+
+    return false;
   }
 }

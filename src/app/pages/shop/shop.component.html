@@ -37,7 +37,21 @@
 
     <div class="items-grid scroll-area">
       @for (itemId of availableShopItems(); track itemId) {
-        @if (getItemData(itemId); as item) {
+        @if (isSpecialItem(itemId)) {
+        <div class="item-card">
+          <div class="item-visual item-visual--emoji">
+            <span class="shop-emoji">{{ getSpecialItem(itemId)?.emoji }}</span>
+          </div>
+          <div class="item-info">
+            <p class="item-name">{{ getSpecialItemName(itemId) }}</p>
+            <p class="item-price">💰 {{ getBuyPrice(itemId) }}</p>
+          </div>
+          <button (click)="buyItem(itemId)" class="btn-outline-gold"
+                  [disabled]="money() < getBuyPrice(itemId)">
+            {{ getText('buy') }}
+          </button>
+        </div>
+        } @else if (getItemData(itemId); as item) {
         <div class="item-card">
           <div class="item-visual">
             <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">

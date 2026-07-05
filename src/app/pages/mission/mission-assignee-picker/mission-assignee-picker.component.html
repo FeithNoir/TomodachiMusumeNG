@@ -1,0 +1,36 @@
+<div class="assignee-picker">
+  <div class="assignee-picker__header">
+    <button type="button" class="tab-btn" (click)="back.emit()">{{ getText('back') }}</button>
+    <h4 class="section-heading">{{ getText('missionSelectAssignee') }}</h4>
+  </div>
+
+  <p class="assignee-picker__subtitle text-dim">{{ missionTitle() }}</p>
+
+  <div class="assignee-picker__list scroll-area">
+    @for (option of assignees; track option.id) {
+      <button type="button"
+              class="assignee-card"
+              [class.assignee-card--disabled]="!option.available"
+              (click)="selectAssignee(option)">
+        <div class="assignee-card__avatar">
+          @if (isEmoji(option)) {
+            <span class="assignee-emoji">{{ displayVisual(option) }}</span>
+          } @else {
+            <img [src]="displayVisual(option)" [alt]="option.label" class="assignee-img">
+          }
+        </div>
+        <div class="assignee-card__info">
+          <strong>{{ option.label }}</strong>
+          <span class="text-dim">
+            {{ getText('missionAssigneeType' + (option.type === 'character' ? 'Character' : 'Pet')) }}
+          </span>
+          @if (!option.available) {
+            <span class="assignee-card__reason">{{ getText(option.unavailableReasonKey ?? 'missionAssigneeBusy') }}</span>
+          }
+        </div>
+      </button>
+    } @empty {
+      <p class="empty-state">{{ getText('missionNoAssignees') }}</p>
+    }
+  </div>
+</div>

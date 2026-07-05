@@ -179,6 +179,47 @@ export const UI_STRINGS: UiStringDictionary = {
   }),
 
   // Mission
+  missionBoardTitle: { es: 'Tablero de Misiones', en: 'Mission Board' },
+  missionRefreshBoard: { es: 'Actualizar eventos', en: 'Refresh events' },
+  missionSelectAssignee: { es: 'Elegir aventurero', en: 'Choose adventurer' },
+  missionInProgressTitle: { es: 'Misión en curso', en: 'Mission in progress' },
+  missionAwayHint: {
+    es: 'Puedes cerrar este panel; la misión continuará en segundo plano.',
+    en: 'You can close this panel; the mission will continue in the background.',
+  },
+  missionLockedStats: {
+    es: 'Estadísticas insuficientes',
+    en: 'Insufficient stats',
+  },
+  missionLockedCondition: {
+    es: 'Requisitos no cumplidos',
+    en: 'Requirements not met',
+  },
+  missionAssigneeBusy: {
+    es: 'Ya está en una misión',
+    en: 'Already on a mission',
+  },
+  missionNoAssignees: {
+    es: 'No hay aventureros disponibles para esta misión.',
+    en: 'No adventurers available for this mission.',
+  },
+  missionAssigneeTypeCharacter: { es: 'Personaje', en: 'Character' },
+  missionAssigneeTypePet: { es: 'Mascota', en: 'Pet' },
+  missionEggReward: { es: 'Huevos eclosionados', en: 'Hatched eggs' },
+  missionCompleteToast: {
+    es: '¡Misión completada! Revisa tus recompensas.',
+    en: 'Mission complete! Check your rewards.',
+  },
+  characterOnMissionTitle: { es: 'En misión...', en: 'On a mission...' },
+  characterOnMissionMsg: {
+    es: 'Eleanora salió del cuartel. Vuelve cuando termine la misión.',
+    en: 'Eleanora left the barracks. She will return when the mission ends.',
+  },
+  difficultyCommon: { es: 'Común', en: 'Common' },
+  difficultyUncommon: { es: 'Poco común', en: 'Uncommon' },
+  difficultyRare: { es: 'Raro', en: 'Rare' },
+  difficultyEpic: { es: 'Épico', en: 'Epic' },
+  difficultyLegendary: { es: 'Legendario', en: 'Legendary' },
   sending: { es: 'Enviando a Misión...', en: 'Sending on Mission...' },
   complete: { es: '¡Misión Completada!', en: 'Mission Complete!' },
   noEnergy: { es: 'Sin Energía', en: 'No Energy' },
@@ -187,4 +228,28 @@ export const UI_STRINGS: UiStringDictionary = {
   returnedNothing: { es: 'No encontró nada esta vez...', en: 'She did not find anything this time...' },
   gains: { es: 'Ganancias', en: 'Earnings' },
   items: { es: 'Objetos', en: 'Items' },
+
+  // Pets
+  petSlotsFullMsg: {
+    es: 'No tienes espacio para más mascotas. Compra expansiones en la tienda.',
+    en: 'No room for more pets. Buy expansions at the market.',
+  },
+  petHatchedMsg: (name: string) => ({
+    es: `¡Ha nacido ${name}!`,
+    en: `${name} has hatched!`,
+  }),
+  petTrainedMsg: (stat: string) => ({
+    es: `Mascota entrenada (+${stat}).`,
+    en: `Pet trained (+${stat}).`,
+  }),
+  petFedMsg: { es: 'Mascota alimentada.', en: 'Pet fed.' },
+  petPotionMsg: { es: 'Poción aplicada a la mascota.', en: 'Potion applied to pet.' },
+  petSlotExpandedMsg: {
+    es: '¡Capacidad de mascotas ampliada!',
+    en: 'Pet capacity expanded!',
+  },
+  shopPetSlotUpgrade: {
+    es: 'Expansión de Mascotas (+1)',
+    en: 'Pet Slot Expansion (+1)',
+  },
 };

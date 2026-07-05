@@ -18,6 +18,7 @@ import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
 import { InventoryUiService } from '@core/services/inventory-ui.service';
+import { MissionService } from '@core/services/mission.service';
 import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
 import { dialogues } from '@core/data/dialogue-database';
 
@@ -49,6 +50,7 @@ export class LayoutComponent {
   private gameStateService = inject(GameStateService);
   private characterService = inject(CharacterService);
   private inventoryUi = inject(InventoryUiService);
+  private missionService = inject(MissionService);
 
   constructor() {
     this.gameStateService.syncCharacterState(this.characterService);
@@ -67,6 +69,13 @@ export class LayoutComponent {
   isOptionsVisible = computed(() => this.activeModal() === 'options');
 
   public hasCompletedIntro = this.gameStateService.hasCompletedIntro;
+
+  disabledSidebarActions = computed((): SidebarAction[] => {
+    if (this.missionService.isCharacterAway()) {
+      return ['talk', 'equipment', 'interact'];
+    }
+    return [];
+  });
 
   handleSidebarAction(action: SidebarAction): void {
     if (action === 'talk') {

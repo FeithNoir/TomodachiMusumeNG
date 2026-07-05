@@ -1,6 +1,6 @@
 import { Injectable, signal, effect, computed, inject, untracked } from '@angular/core';
 import { GAME_SAVE_KEY, GAME_VERSION, SATIETY_MAX } from '@core/data/game-config';
-import { cloneInitialGameState } from '@core/data/initial-game-state';
+import { cloneInitialGameState, normalizeGameState } from '@core/data/initial-game-state';
 import { GameState } from '@core/interfaces/game-state.interface';
 import { PersistenceService } from '@core/services/persistence.service';
 import { CharacterService } from '@core/services/character.service';
@@ -68,7 +68,7 @@ export class GameStateService {
     }
 
     const parsedState = this.persistenceService.load(GAME_SAVE_KEY) as GameState | null;
-    return parsedState?.version === GAME_VERSION;
+    return parsedState !== null && typeof parsedState === 'object';
   }
 
   clearSaveData(): void {
@@ -148,6 +148,10 @@ export class GameStateService {
     });
   }
 
+  updateState(updater: (state: GameState) => GameState): void {
+    this.gameState.update(updater);
+  }
+
   private async loadFromElectron(): Promise<void> {
     try {
       const parsedState = await this.persistenceService.loadFromElectron();
@@ -163,16 +167,9 @@ export class GameStateService {
 
     try {
       if (parsedState && typeof parsedState === 'object' && 'version' in parsedState) {
-        const state = parsedState as GameState;
-        if (state.version === GAME_VERSION) {
-          this.gameState.set(state);
-          console.log('Game loaded successfully.');
-        } else {
-          console.warn(
-            `Saved game version mismatch. Expected ${GAME_VERSION}, got ${state.version}. Starting new game.`
-          );
-          this.gameState.set(cloneInitialGameState());
-        }
+        const state = normalizeGameState(parsedState as Partial<GameState>);
+        this.gameState.set({ ...state, version: GAME_VERSION });
+        console.log('Game loaded successfully.');
       } else {
         console.log('No saved game found. Starting new game.');
         this.gameState.set(cloneInitialGameState());

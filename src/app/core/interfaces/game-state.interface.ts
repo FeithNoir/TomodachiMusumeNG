@@ -1,3 +1,6 @@
+import { ActiveMission } from '@core/interfaces/mission-definition.interface';
+import { Pet } from '@core/interfaces/pet.interface';
+
 export interface GameState {
   version: string;
   language: string;
@@ -23,4 +26,11 @@ export interface GameState {
   knownRecipes: string[];
   expression: { eyes: string; mouth: string };
   characterName: string;
+  pets: Pet[];
+  petSlotCapacity: number;
+  activeMission: ActiveMission | null;
+  /** Seed for deterministic random mission slots between sessions. */
+  missionBoardSeed: number;
+  /** Unlocked conditional / one-time mission ids. */
+  missionFlags: string[];
 }

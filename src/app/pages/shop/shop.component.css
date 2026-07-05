@@ -24,6 +24,18 @@
   padding: 0.5rem;
 }
 
+.item-visual--emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4rem;
+}
+
+.shop-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
 .confirm-item-preview {
   background: var(--gold-accent-muted);
   padding: 2rem;

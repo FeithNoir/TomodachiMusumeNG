@@ -1,6 +1,1 @@
-export interface MissionReward {
-  moneyEarned: number;
-  itemsFound: { id: string; quantity: number }[];
-  recipesFound: string[];
-  messageKey: string;
-}
+export type { MissionRewardRoll as MissionReward } from './mission-definition.interface';

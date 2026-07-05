@@ -1,0 +1,28 @@
+<div class="mission-board">
+  <div class="mission-board__toolbar">
+    <h4 class="section-heading">{{ getText('missionBoardTitle') }}</h4>
+    <button type="button" class="tab-btn" (click)="refreshBoard.emit()">
+      {{ getText('missionRefreshBoard') }}
+    </button>
+  </div>
+
+  <div class="mission-board__grid scroll-area">
+    @for (entry of entries; track entry.definition.id) {
+      <button type="button"
+              class="mission-card"
+              [style]="difficultyStyle(entry.definition.difficulty)"
+              [class.mission-card--locked]="!entry.meetsRequirements"
+              (click)="selectMission(entry)">
+        <div class="mission-card__header">
+          <span class="mission-card__difficulty">{{ difficultyLabel(entry.definition.difficulty) }}</span>
+          <span class="mission-card__duration">{{ formatDuration(entry.durationMs) }}</span>
+        </div>
+        <h5 class="mission-card__title">{{ localizedName(entry) }}</h5>
+        <p class="mission-card__desc text-dim">{{ localizedDescription(entry) }}</p>
+        @if (!entry.meetsRequirements) {
+          <span class="mission-card__lock">{{ getText(entry.lockedReasonKey ?? 'missionLockedStats') }}</span>
+        }
+      </button>
+    }
+  </div>
+</div>

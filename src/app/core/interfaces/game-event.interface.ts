@@ -9,7 +9,8 @@ export const GAME_EVENT_TYPES = {
   AFFINITY_THRESHOLD: 'affinity.threshold',
   ITEM_EQUIPPED: 'item.equipped',
   ITEM_USED: 'item.used',
-  CRAFT_SUCCESS: 'craft.success',
+  MISSION_COMPLETED: 'mission.completed',
+  MISSION_STARTED: 'mission.started',
 } as const;
 
 export type GameEventType = (typeof GAME_EVENT_TYPES)[keyof typeof GAME_EVENT_TYPES];

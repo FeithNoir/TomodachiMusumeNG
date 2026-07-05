@@ -1,7 +1,7 @@
-<div class="glass-panel modal-container modal-container--sm fade-in text-center">
+<div class="glass-panel modal-container modal-container--lg fade-in text-center">
 
-  @if (isComplete()) {
-  <button class="close-btn-round" (click)="onClose()">
+  @if (isComplete() || phase() === 'board' || phase() === 'assign') {
+  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
     <span>✕</span>
   </button>
   }
@@ -11,10 +11,26 @@
   </div>
 
   <div class="mission-content">
-    @if (!isComplete()) {
+    @if (phase() === 'board') {
+      <app-mission-board
+        [entries]="boardEntries()"
+        (missionSelected)="onMissionSelected($event)"
+        (refreshBoard)="onRefreshBoard()">
+      </app-mission-board>
+    }
+
+    @if (phase() === 'assign' && selectedMission(); as mission) {
+      <app-mission-assignee-picker
+        [mission]="mission"
+        [assignees]="assigneeOptions()"
+        (assigneeSelected)="onAssigneeSelected($event)"
+        (back)="onBackToBoard()">
+      </app-mission-assignee-picker>
+    }
+
+    @if (phase() === 'progress') {
     <div class="mission-status">
       <div class="glass-spinner"></div>
-
       <div class="progress-section">
         <div class="progress-bar-container">
           <div class="progress-bar-fill" [style.width.%]="progress()">
@@ -23,18 +39,21 @@
         </div>
         <p class="progress-percentage">{{ progress() | number:'1.0-0' }}%</p>
       </div>
+      <p class="text-dim">{{ getText('missionAwayHint') }}</p>
     </div>
     }
 
-    <div class="mission-result" [class.visible]="isComplete()">
+    @if (phase() === 'complete') {
+    <div class="mission-result visible">
       <p class="result-text" [innerHTML]="resultText()"></p>
     </div>
+    }
   </div>
 
   @if (isComplete()) {
   <div class="mission-footer">
     <button class="btn-finish" (click)="onClose()">
-      {{ getText('close') || 'Cerrar' }}
+      {{ getText('close') }}
     </button>
   </div>
   }

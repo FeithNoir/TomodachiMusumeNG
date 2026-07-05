@@ -1,6 +1,15 @@
-<!-- Div para el fondo de la aplicación -->
 <div class="main-background"></div>
 
-<!-- El componente del personaje es la parte central de esta página -->
-<app-character></app-character>
-
+@if (!isCharacterAway()) {
+  <app-character></app-character>
+} @else {
+  <div class="character-away-panel fade-in">
+    <div class="character-away-icon">🗺️</div>
+    <h2 class="character-away-title">{{ getText('characterOnMissionTitle') }}</h2>
+    <p class="character-away-text">{{ getText('characterOnMissionMsg') }}</p>
+    <div class="character-away-progress">
+      <div class="character-away-progress__fill" [style.width.%]="missionProgress()"></div>
+    </div>
+    <span class="character-away-percent">{{ missionProgress() }}%</span>
+  </div>
+}

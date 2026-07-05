@@ -1,4 +1,4 @@
-import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { LocalizationService } from '@core/services/localization.service';
 
@@ -9,12 +9,13 @@ export type SidebarAction = 'talk' | 'equipment' | 'inventory' | 'interact' | 'm
   standalone: true,
   imports: [],
   templateUrl: './sidebar.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
   private localization = inject(LocalizationService);
 
+  @Input() disabledActions: SidebarAction[] = [];
   @Output() action = new EventEmitter<SidebarAction>();
 
   public readonly menuActions: {
@@ -35,7 +36,14 @@ export class SidebarComponent {
 
   readonly getText = this.localization.t.bind(this.localization);
 
+  isDisabled(action: SidebarAction): boolean {
+    return this.disabledActions.includes(action);
+  }
+
   onAction(actionType: SidebarAction): void {
+    if (this.isDisabled(actionType)) {
+      return;
+    }
     this.action.emit(actionType);
   }
 }

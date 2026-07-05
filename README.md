@@ -23,7 +23,9 @@ An anime-style virtual pet game built with **Angular 22** and optional **Electro
   * ⚔️ **Gear** — equipment slots + combat stats.
   * 🎒 **Bag** — inventory with gold, recipes, armor sets, equip mode.
   * 🤝 **Interact** — feeding (planned expansion).
-  * 🎯 **Mission** — loot and energy cost.
+* **Mission Board**: Difficulty tiers (common→legendary) with duration/color, stat gates, random & conditional events; assign character or pets.
+* **Pets**: Hatch from mission egg rewards (emoji visuals, swappable to images); stats via training/food/potions; slot cap expandable in shop.
+* **Away state**: Character hidden on mission; talk/gear/interact disabled until return.
   * 🛠️ **Craft** — material combinations.
   * 🛒 **Market** — buy/sell with toast feedback.
 * **Responsive Design**: Mobile dock + desktop grid shell.
@@ -43,7 +45,7 @@ Indicador por área del juego — útil para priorizar el roadmap:
 | **Inventory & filters** | 🟢 Activo | **90%** | Orden por nombre/cantidad |
 | **Crafting** | 🟡 En curso | **82%** | Múltiples recetas simultáneas; preview de resultado |
 | **Market** | 🟡 En curso | **70%** | Preview de stats al comprar armas/armaduras |
-| **Missions** | 🟡 En curso | **60%** | Loot table completa; bonos por stats equipados |
+| **Missions** | 🟢 Activo | **85%** | UI de mascotas en cuartel; entrenamiento/comida |
 | **Interact / feeding** | 🔴 Pendiente | **25%** | UI de comida y efectos de saciedad |
 | **Story progression** | 🔴 Pendiente | **15%** | Diálogos desbloqueables por afinidad |
 | **Minigames** | 🔴 Pendiente | **0%** | Primer minijuego de afinidad |

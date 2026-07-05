@@ -8,6 +8,7 @@ import { InventoryService } from '@core/services/inventory.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
+import { SHOP_SPECIAL_ITEMS, isShopSpecialItem } from '@core/data/shop-special-items';
 import { Item } from '@core/interfaces/item.interface';
 
 type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
@@ -58,6 +59,27 @@ export class ShopComponent {
     return this.itemCatalog.getItemPath(itemId);
   }
 
+  isSpecialItem(itemId: string): boolean {
+    return isShopSpecialItem(itemId);
+  }
+
+  getSpecialItem(itemId: string) {
+    return SHOP_SPECIAL_ITEMS.find(item => item.id === itemId);
+  }
+
+  getSpecialItemName(itemId: string): string {
+    const special = this.getSpecialItem(itemId);
+    return special ? this.getText(special.nameKey) : itemId;
+  }
+
+  getBuyPrice(itemId: string): number {
+    const special = this.getSpecialItem(itemId);
+    if (special) {
+      return special.buyPrice;
+    }
+    return this.getItemData(itemId)?.buyPrice ?? 0;
+  }
+
   openMarket(): void {
     this.viewMode.set('market');
   }
@@ -97,7 +119,10 @@ export class ShopComponent {
 
   buyItem(itemId: string): void {
     if (this.shopService.buyItem(itemId, 1)) {
-      this.notifications.success(this.getText('buySuccessMsg', this.getItemName(itemId)));
+      const name = this.isSpecialItem(itemId)
+        ? this.getSpecialItemName(itemId)
+        : this.getItemName(itemId);
+      this.notifications.success(this.getText('buySuccessMsg', name));
     }
   }
 

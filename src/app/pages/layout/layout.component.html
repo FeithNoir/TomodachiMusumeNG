@@ -15,7 +15,7 @@
 
   <!-- Barra de acciones principal (hablar, misión, etc.) -->
   <div class="layout-sidebar">
-    <app-sidebar (action)="handleSidebarAction($event)"></app-sidebar>
+    <app-sidebar [disabledActions]="disabledSidebarActions()" (action)="handleSidebarAction($event)"></app-sidebar>
   </div>
 
   <!-- Área principal donde se renderizarán las páginas (como 'main') -->

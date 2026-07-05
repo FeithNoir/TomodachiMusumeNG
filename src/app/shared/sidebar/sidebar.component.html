@@ -1,6 +1,11 @@
 <div class="sidebar-dock shell-surface">
   @for (btn of menuActions; track btn.id) {
-  <button [id]="btn.id" class="dock-item" (click)="onAction(btn.action)" [title]="getText(btn.label)">
+  <button [id]="btn.id"
+          class="dock-item"
+          [class.dock-item--disabled]="isDisabled(btn.action)"
+          (click)="onAction(btn.action)"
+          [title]="getText(btn.label)"
+          [disabled]="isDisabled(btn.action)">
     <div class="icon-wrapper">
       @if (btn.icon) {
         <img [src]="btn.icon" [alt]="btn.label" class="dock-icon">
