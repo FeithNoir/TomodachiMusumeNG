@@ -14,6 +14,8 @@ import { OptionsComponent } from '@shared/options/options.component';
 import { ShopComponent } from '@pages/shop/shop.component';
 import { MissionComponent } from '@pages/mission/mission.component';
 import { InteractComponent } from '@pages/interact/interact.component';
+import { GalleryComponent } from '@shared/gallery/gallery.component';
+import { MissionRewardModalComponent } from '@shared/mission-reward-modal/mission-reward-modal.component';
 import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 
 import { GameStateService } from '@core/services/game-state.service';
@@ -23,7 +25,7 @@ import { MissionService } from '@core/services/mission.service';
 import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
 import { dialogues } from '@core/data/dialogue-database';
 
-type ActiveModal = SidebarAction | 'options' | null;
+type ActiveModal = SidebarAction | 'options' | 'gallery' | null;
 
 @Component({
   selector: 'app-layout',
@@ -41,6 +43,8 @@ type ActiveModal = SidebarAction | 'options' | null;
     ShopComponent,
     MissionComponent,
     InteractComponent,
+    GalleryComponent,
+    MissionRewardModalComponent,
     TutorialComponent,
     OptionsComponent,
   ],
@@ -69,6 +73,7 @@ export class LayoutComponent {
   isMarketVisible = computed(() => this.activeModal() === 'market');
   isInteractVisible = computed(() => this.activeModal() === 'interact');
   isOptionsVisible = computed(() => this.activeModal() === 'options');
+  isGalleryVisible = computed(() => this.activeModal() === 'gallery');
 
   public hasCompletedIntro = this.gameStateService.hasCompletedIntro;
 
@@ -90,6 +95,10 @@ export class LayoutComponent {
   handleMenuAction(action: string): void {
     if (action === 'options') {
       this.activeModal.set('options');
+      return;
+    }
+    if (action === 'gallery') {
+      this.activeModal.set('gallery');
     }
   }
 

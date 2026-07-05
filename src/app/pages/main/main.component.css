@@ -65,3 +65,6 @@
   color: var(--gold-accent);
 }
 
+.shell-surface {
+  height: 100%;
+}

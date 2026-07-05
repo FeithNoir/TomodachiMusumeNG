@@ -1,5 +1,5 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { INVENTORY_MAX_SLOTS, INVENTORY_MAX_STACK_SIZE } from '@core/data/game-config';
+import { INVENTORY_MAX_STACK_SIZE } from '@core/data/game-config';
 import { GameStateService } from '@core/services/game-state.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
@@ -15,13 +15,18 @@ export class InventoryService {
   private notifications = inject(NotificationService);
 
   public inventory = computed(() => this.gameStateService.inventory());
+  public maxSlots = computed(() => this.gameStateService.gameState().inventorySlotCapacity);
 
   addItem(itemId: string, quantity: number = 1): boolean {
     const currentInventory = this.gameStateService.gameState().inventory;
     const itemData = this.itemCatalog.getItem(itemId);
+    const maxSlots = this.maxSlots();
 
     if (!itemData) {
-      console.error(`Attempted to add non-existent item: ${itemId}`);
+      console.error(
+        `Attempted to add non-existent item: ${itemId}. ` +
+          'Ensure the id exists in masterItemList and matches recipe/mission references.'
+      );
       return false;
     }
 
@@ -44,7 +49,7 @@ export class InventoryService {
       return false;
     }
 
-    if (currentInventory.length < INVENTORY_MAX_SLOTS) {
+    if (currentInventory.length < maxSlots) {
       const updatedInventory = [...currentInventory, { id: itemId, quantity }];
       this.gameStateService.updateInventory(updatedInventory);
       return true;

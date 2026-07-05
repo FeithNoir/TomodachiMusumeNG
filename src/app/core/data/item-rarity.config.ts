@@ -43,43 +43,50 @@ export const ITEM_RARITY_META: Record<ItemRarity, ItemRarityMeta> = {
   },
 };
 
-/** Explicit rarity tags for equippable gear and weapons. */
+/** Explicit rarity tags for catalog items. */
 export const ITEM_RARITY_MAP: Record<string, ItemRarity> = {
   cheap_shirt: 'common',
   cheap_pants: 'common',
-  bra_1: 'common',
-  pantsus_1: 'common',
-  wood_sword: 'common',
-  wooden_sword: 'common',
   good_shirt: 'uncommon',
   good_pants: 'uncommon',
   casual_top: 'uncommon',
   mini_skirt: 'uncommon',
+  neko_ears: 'uncommon',
+  bra_1: 'common',
   bra_2: 'uncommon',
+  pantsus_1: 'common',
   pantsus_2: 'uncommon',
+  maid_diadema: 'rare',
+  maid_top: 'rare',
+  maid_skirt: 'rare',
+  maid_stocks: 'rare',
+  maid_guantelets: 'rare',
   leather_shirt: 'uncommon',
   leather_skirt: 'uncommon',
   leather_guantelets: 'uncommon',
   leather_stocks: 'uncommon',
-  maid_top: 'rare',
-  maid_skirt: 'rare',
-  maid_diadema: 'rare',
-  maid_stocks: 'rare',
-  maid_guantelets: 'rare',
   steel_armor: 'rare',
   steel_skirt: 'rare',
   steel_guantelets: 'rare',
   steel_stocks: 'rare',
-  steel_sword: 'rare',
-  iron_sword: 'rare',
   scale_armor: 'epic',
   scale_skirt: 'epic',
   scale_guantelets: 'epic',
   scale_stocks: 'epic',
   bunny_suit: 'epic',
   bunny_ears: 'epic',
+  bunny_stocks: 'epic',
   east_suit: 'legendary',
+  east_stocks: 'legendary',
   leotard: 'legendary',
+  wooden_sword: 'common',
+  iron_sword: 'rare',
+  steel_sword: 'epic',
+  energy_drink: 'uncommon',
+  wood_plank: 'common',
+  iron_ore: 'common',
+  steel_ingot: 'uncommon',
+  recipe_steel_sword: 'rare',
 };
 
 export function getItemRarity(itemId: string): ItemRarity {
@@ -104,5 +111,5 @@ export function shouldShowItemRarity(itemId: string, type?: string): boolean {
   if (!type) {
     return itemId in ITEM_RARITY_MAP;
   }
-  return ['top', 'bottom', 'suit', 'head', 'stockings', 'hands', 'weapon', 'bra', 'pantsus'].includes(type);
+  return ['top', 'bottom', 'suit', 'head', 'stockings', 'hands', 'weapon', 'bra', 'pantsus', 'consumable', 'material', 'recipe'].includes(type);
 }

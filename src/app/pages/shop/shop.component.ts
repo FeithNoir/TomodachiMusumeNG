@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import { SHOP_FILTER_TABS } from '@core/data/catalog-filter.config';
+import { SHOP_SETS } from '@core/data/shop-catalog';
 import { ShopService } from '@core/services/shop.service';
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
@@ -10,15 +12,28 @@ import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
 import { SHOP_SPECIAL_ITEMS, isShopSpecialItem } from '@core/data/shop-special-items';
 import { Item } from '@core/interfaces/item.interface';
+import { CatalogFilterComponent } from '@shared/catalog-filter/catalog-filter.component';
 
 type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
+
+const ARMOR_SET_IDS = new Set([
+  'casual',
+  'intimate',
+  'maid',
+  'leather',
+  'steel',
+  'scale',
+  'bunny',
+  'east',
+  'misc',
+]);
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CatalogFilterComponent, FormsModule],
   templateUrl: './shop.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './shop.component.css',
 })
 export class ShopComponent {
@@ -36,8 +51,44 @@ export class ShopComponent {
   public selectedItemToSell = signal<{ item: Item; quantity: number } | null>(null);
   public sellQuantityInput = signal<number>(1);
   public maxSellQuantity = signal<number>(1);
+  public shopFilterTab = signal('all');
+  public shopSearchQuery = signal('');
 
   public availableShopItems = this.shopService.availableShopItems;
+  public filterTabs = SHOP_FILTER_TABS;
+
+  public visibleShopSets = computed(() => {
+    const available = new Set(this.availableShopItems());
+    const tab = this.shopFilterTab();
+    const query = this.shopSearchQuery().trim().toLowerCase();
+
+    return SHOP_SETS.map(set => ({
+      ...set,
+      label: this.localization.localized(set.name),
+      itemIds: set.itemIds.filter(id => {
+        if (!available.has(id)) {
+          return false;
+        }
+        if (tab !== 'all') {
+          if (tab === 'armor' && !ARMOR_SET_IDS.has(set.id)) {
+            return false;
+          }
+          if (tab !== 'armor' && set.id !== tab) {
+            return false;
+          }
+        }
+        if (!query) {
+          return true;
+        }
+        if (isShopSpecialItem(id)) {
+          const special = SHOP_SPECIAL_ITEMS.find(item => item.id === id);
+          return special ? this.getText(special.nameKey).toLowerCase().includes(query) : false;
+        }
+        const name = this.getItemName(id).toLowerCase();
+        return name.includes(query) || id.toLowerCase().includes(query);
+      }),
+    })).filter(set => set.itemIds.length > 0);
+  });
 
   public sellableInventoryItems = computed(() =>
     this.inventoryService.inventory().filter(item => {
@@ -155,5 +206,13 @@ export class ShopComponent {
   onClose(): void {
     this.closeShop.emit();
     this.viewMode.set('market');
+  }
+
+  onShopTabChange(tab: string): void {
+    this.shopFilterTab.set(tab);
+  }
+
+  onShopSearchChange(query: string): void {
+    this.shopSearchQuery.set(query);
   }
 }

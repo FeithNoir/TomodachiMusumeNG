@@ -84,4 +84,12 @@
 </div>
 }
 
+<!-- Modal de Galería -->
+@if (isGalleryVisible()) {
+<div class="modal-overlay" (click)="closeActiveModal()">
+  <app-gallery (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-gallery>
+</div>
+}
+
+<app-mission-reward-modal></app-mission-reward-modal>
 <app-notification></app-notification>

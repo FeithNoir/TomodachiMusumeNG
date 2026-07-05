@@ -29,6 +29,7 @@ export interface GameState {
   pets: Pet[];
   incubatingEggs: IncubatingEgg[];
   petSlotCapacity: number;
+  inventorySlotCapacity: number;
   activeMission: ActiveMission | null;
   /** Seed for deterministic random mission slots between sessions. */
   missionBoardSeed: number;

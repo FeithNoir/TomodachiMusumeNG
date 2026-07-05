@@ -1,0 +1,52 @@
+@if (pendingReward(); as reward) {
+  @if (summary(); as result) {
+    <div class="modal-overlay mission-reward-overlay" (click)="dismiss()">
+      <div class="glass-panel modal-container modal-container--md fade-in mission-reward-panel" (click)="$event.stopPropagation()">
+        <button type="button" class="close-btn-round" (click)="dismiss()" [attr.aria-label]="getText('close')">
+          <span>✕</span>
+        </button>
+
+        <h3 class="modal-title">{{ getText('missionRewardTitle') }}</h3>
+
+        @if (result.hasLoot) {
+          <p class="reward-intro">{{ getText('returned') }}</p>
+
+          @if (result.moneyEarned > 0) {
+            <div class="reward-row reward-row--gold">
+              <span class="reward-label">{{ getText('gains') }}</span>
+              <span class="reward-value">💰 {{ result.moneyEarned }}</span>
+            </div>
+          }
+
+          @if (result.items.length > 0) {
+            <div class="reward-section">
+              <span class="reward-label">{{ getText('items') }}</span>
+              <ul class="reward-list">
+                @for (item of result.items; track item.id) {
+                  <li>{{ item.name }} ×{{ item.quantity }}</li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (result.eggs.length > 0) {
+            <div class="reward-section">
+              <span class="reward-label">{{ getText('missionEggIncubating') }}</span>
+              <ul class="reward-list">
+                @for (egg of result.eggs; track egg) {
+                  <li>{{ egg }}</li>
+                }
+              </ul>
+            </div>
+          }
+        } @else {
+          <p class="reward-empty">{{ getText('returnedNothing') }}</p>
+        }
+
+        <button type="button" class="btn-finish reward-close" (click)="dismiss()">
+          {{ getText('close') }}
+        </button>
+      </div>
+    </div>
+  }
+}

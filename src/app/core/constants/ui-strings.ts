@@ -50,7 +50,11 @@ export const UI_STRINGS: UiStringDictionary = {
   menuTitle: { es: 'Menú', en: 'Menu' },
   options: { es: 'Opciones', en: 'Options' },
   save: { es: 'Guardar', en: 'Save' },
-  gallery: { es: 'Galería (Próximamente)', en: 'Gallery (Coming Soon)' },
+  gallery: { es: 'Galería', en: 'Gallery' },
+  galleryTitle: { es: 'Galería', en: 'Gallery' },
+  galleryTab_outfit: { es: 'Atuendos', en: 'Outfits' },
+  galleryTab_scene: { es: 'Escenas', en: 'Scenes' },
+  galleryTab_memory: { es: 'Recuerdos', en: 'Memories' },
   exit: { es: 'Salir', en: 'Exit' },
 
   // Info HUD
@@ -210,6 +214,7 @@ export const UI_STRINGS: UiStringDictionary = {
     es: '¡Misión completada! Revisa tus recompensas.',
     en: 'Mission complete! Check your rewards.',
   },
+  missionRewardTitle: { es: 'Recompensas de misión', en: 'Mission rewards' },
   characterOnMissionTitle: { es: 'En misión...', en: 'On a mission...' },
   characterOnMissionMsg: {
     es: 'Eleanora salió del cuartel. Vuelve cuando termine la misión.',
@@ -252,6 +257,17 @@ export const UI_STRINGS: UiStringDictionary = {
     es: 'Expansión de Mascotas (+1)',
     en: 'Pet Slot Expansion (+1)',
   },
+  shopInventorySlotUpgrade: {
+    es: 'Expansión de Inventario (+4)',
+    en: 'Inventory Expansion (+4)',
+  },
+  inventorySlotExpandedMsg: {
+    es: '¡Capacidad de inventario ampliada!',
+    en: 'Inventory capacity expanded!',
+  },
+  shopTabUpgrades: { es: 'Mejoras', en: 'Upgrades' },
+  shopTabWeapons: { es: 'Armas', en: 'Weapons' },
+  noShopItems: { es: 'No hay artículos en esta categoría.', en: 'No items in this category.' },
   shopCommonEgg: {
     es: 'Huevo Común de Compañero',
     en: 'Common Companion Egg',

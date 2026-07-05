@@ -168,6 +168,7 @@ export class MissionService {
     };
 
     this.gameState.updateState(state => ({ ...state, activeMission: active }));
+    this.gameState.saveGame();
     this.gameEvents.emit(GAME_EVENT_TYPES.MISSION_STARTED, active);
     return true;
   }

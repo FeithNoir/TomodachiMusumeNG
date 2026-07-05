@@ -1,7 +1,8 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { PET_SLOT_UPGRADE_ITEM_ID } from '@core/data/game-config';
+import { PET_SLOT_UPGRADE_ITEM_ID, INVENTORY_SLOT_UPGRADE_ITEM_ID, INVENTORY_SLOT_UPGRADE_AMOUNT } from '@core/data/game-config';
 import { isShopSpecialItem, SHOP_SPECIAL_ITEMS } from '@core/data/shop-special-items';
-import { shopInventory } from '@core/data/shop-data';
+import { shopInventory } from '@core/data/shop-catalog';
+import '@core/data/shop-data';
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
 import { InventoryService } from '@core/services/inventory.service';
@@ -97,11 +98,25 @@ export class ShopService {
       return true;
     }
 
+    if (itemId === INVENTORY_SLOT_UPGRADE_ITEM_ID) {
+      this.gameStateService.updateMoney(-special.buyPrice);
+      this.expandInventoryCapacity();
+      return true;
+    }
+
     if (special.type === 'egg' && special.eggId) {
       this.gameStateService.updateMoney(-special.buyPrice);
       return this.petService.acquireEgg(special.eggId);
     }
 
     return false;
+  }
+
+  private expandInventoryCapacity(amount: number = INVENTORY_SLOT_UPGRADE_AMOUNT): void {
+    this.gameStateService.updateState(state => ({
+      ...state,
+      inventorySlotCapacity: state.inventorySlotCapacity + amount,
+    }));
+    this.notifications.success(this.localization.t('inventorySlotExpandedMsg'));
   }
 }

@@ -8,7 +8,7 @@
     <h3 class="modal-title">{{ getText('inventoryTitle') }}</h3>
     <div class="inventory-meta">
       <span class="pill pill--gold">{{ getText('goldLabel') }}: {{ money() }}</span>
-      <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots }}</span>
+      <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots() }}</span>
     </div>
   </div>
 
@@ -16,31 +16,13 @@
     <p class="equip-mode-banner">{{ getText('equipModeBanner') }}</p>
   }
 
-  <div class="inventory-toolbar">
-    <input type="search"
-           class="search-input"
-           [placeholder]="getText('inventorySearchPlaceholder')"
-           [ngModel]="searchQuery()"
-           (ngModelChange)="searchQuery.set($event)">
-
-    <div class="tab-row">
-      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'all'" (click)="setTab('all')">
-        {{ getText('tabAll') }}
-      </button>
-      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'consumable'" (click)="setTab('consumable')">
-        {{ getText('tabConsumables') }}
-      </button>
-      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'material'" (click)="setTab('material')">
-        {{ getText('tabMaterials') }}
-      </button>
-      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'recipe'" (click)="setTab('recipe')">
-        {{ getText('tabRecipes') }}
-      </button>
-      <button type="button" class="tab-btn" [class.tab-btn--active]="activeTab() === 'armor'" (click)="setTab('armor')">
-        {{ getText('tabArmor') }}
-      </button>
-    </div>
-  </div>
+  <app-catalog-filter
+    [tabs]="filterTabs"
+    [activeTab]="activeTab()"
+    [searchQuery]="searchQuery()"
+    (activeTabChange)="setTab($event)"
+    (searchQueryChange)="updateSearchQuery($event)">
+  </app-catalog-filter>
 
   @if (activeTab() === 'armor') {
     <div class="armor-section scroll-area">

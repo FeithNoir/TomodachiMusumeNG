@@ -20,6 +20,9 @@ export const COMPANION_MISSION_ID = 'eleanora';
 
 export const INVENTORY_MAX_SLOTS = 20;
 export const INVENTORY_MAX_STACK_SIZE = 10;
+export const INVENTORY_SLOT_UPGRADE_ITEM_ID = 'inventory_slot_upgrade';
+export const INVENTORY_SLOT_UPGRADE_AMOUNT = 4;
+export const INVENTORY_SLOT_UPGRADE_PRICE = 300;
 
 export const DEFAULT_LANGUAGE = 'en';
 export const DEFAULT_PLAYER_NAME = 'Jefe';

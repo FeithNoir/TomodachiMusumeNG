@@ -16,6 +16,25 @@
   align-items: center;
 }
 
+.shop-set-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-height: 55vh;
+}
+
+.shop-set-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-heading {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--gold-accent);
+}
+
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));

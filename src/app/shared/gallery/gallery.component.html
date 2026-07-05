@@ -1,0 +1,40 @@
+<div class="glass-panel modal-container modal-container--lg fade-in gallery-modal">
+
+  <button type="button" class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+    <span>✕</span>
+  </button>
+
+  <div class="panel-header">
+    <h3 class="modal-title">{{ getText('galleryTitle') }}</h3>
+    <span class="pill pill--sm">{{ progress().unlocked }} / {{ progress().total }}</span>
+  </div>
+
+  <div class="gallery-tabs">
+    @for (category of ['outfit', 'scene', 'memory']; track category) {
+      <button
+        type="button"
+        class="tab-btn"
+        [class.tab-btn--active]="activeCategory() === category"
+        (click)="setCategory($any(category))">
+        {{ getText('galleryTab_' + category) }}
+      </button>
+    }
+  </div>
+
+  <div class="gallery-grid scroll-area">
+    @for (entry of entries(); track entry.id) {
+      <article
+        class="gallery-card"
+        [class.gallery-card--locked]="!isUnlocked(entry.id)">
+        <div class="gallery-preview">
+          @if (isUnlocked(entry.id)) {
+            <img [src]="entry.previewPath" [alt]="localized(entry.name)" class="gallery-img" />
+          } @else {
+            <div class="gallery-locked">🔒</div>
+          }
+        </div>
+        <p class="gallery-name">{{ localized(entry.name) }}</p>
+      </article>
+    }
+  </div>
+</div>

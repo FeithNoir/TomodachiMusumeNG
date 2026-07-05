@@ -1,6 +1,11 @@
-import { PET_SLOT_UPGRADE_ITEM_ID, PET_SLOT_UPGRADE_PRICE } from '@core/data/game-config';
+import {
+  INVENTORY_SLOT_UPGRADE_ITEM_ID,
+  INVENTORY_SLOT_UPGRADE_PRICE,
+  PET_SLOT_UPGRADE_ITEM_ID,
+  PET_SLOT_UPGRADE_PRICE,
+} from '@core/data/game-config';
 
-export type ShopSpecialItemType = 'pet_slot' | 'egg';
+export type ShopSpecialItemType = 'pet_slot' | 'inventory_slot' | 'egg';
 
 export interface ShopSpecialItem {
   id: string;
@@ -27,6 +32,13 @@ export const SHOP_SPECIAL_ITEMS: ShopSpecialItem[] = [
     buyPrice: PET_SLOT_UPGRADE_PRICE,
     emoji: '🏠',
     type: 'pet_slot',
+  },
+  {
+    id: INVENTORY_SLOT_UPGRADE_ITEM_ID,
+    nameKey: 'shopInventorySlotUpgrade',
+    buyPrice: INVENTORY_SLOT_UPGRADE_PRICE,
+    emoji: '🎒',
+    type: 'inventory_slot',
   },
 ];
 

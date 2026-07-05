@@ -35,37 +35,54 @@
       <button (click)="openMarket()" class="btn-back">← {{ getText('back') }}</button>
     </div>
 
-    <div class="items-grid scroll-area">
-      @for (itemId of availableShopItems(); track itemId) {
-        @if (isSpecialItem(itemId)) {
-        <div class="item-card">
-          <div class="item-visual item-visual--emoji">
-            <span class="shop-emoji">{{ getSpecialItem(itemId)?.emoji }}</span>
+    <app-catalog-filter
+      [tabs]="filterTabs"
+      [activeTab]="shopFilterTab()"
+      [searchQuery]="shopSearchQuery()"
+      (activeTabChange)="onShopTabChange($event)"
+      (searchQueryChange)="onShopSearchChange($event)">
+    </app-catalog-filter>
+
+    <div class="scroll-area shop-set-list">
+      @for (set of visibleShopSets(); track set.id) {
+        <section class="shop-set-group">
+          <h4 class="section-heading">{{ set.label }}</h4>
+          <div class="items-grid">
+            @for (itemId of set.itemIds; track itemId) {
+              @if (isSpecialItem(itemId)) {
+                <div class="item-card">
+                  <div class="item-visual item-visual--emoji">
+                    <span class="shop-emoji">{{ getSpecialItem(itemId)?.emoji }}</span>
+                  </div>
+                  <div class="item-info">
+                    <p class="item-name">{{ getSpecialItemName(itemId) }}</p>
+                    <p class="item-price">💰 {{ getBuyPrice(itemId) }}</p>
+                  </div>
+                  <button (click)="buyItem(itemId)" class="btn-outline-gold"
+                          [disabled]="money() < getBuyPrice(itemId)">
+                    {{ getText('buy') }}
+                  </button>
+                </div>
+              } @else if (getItemData(itemId); as item) {
+                <div class="item-card" [class]="'item-card ' + getRarityClass(itemId)" [style]="getRarityStyle(itemId)">
+                  <div class="item-visual">
+                    <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">
+                  </div>
+                  <div class="item-info">
+                    <p class="item-name">{{ getItemName(itemId) }}</p>
+                    <p class="item-price">💰 {{ item.buyPrice }}</p>
+                  </div>
+                  <button (click)="buyItem(itemId)" class="btn-outline-gold"
+                          [disabled]="money() < (item.buyPrice || 0)">
+                    {{ getText('buy') }}
+                  </button>
+                </div>
+              }
+            }
           </div>
-          <div class="item-info">
-            <p class="item-name">{{ getSpecialItemName(itemId) }}</p>
-            <p class="item-price">💰 {{ getBuyPrice(itemId) }}</p>
-          </div>
-          <button (click)="buyItem(itemId)" class="btn-outline-gold"
-                  [disabled]="money() < getBuyPrice(itemId)">
-            {{ getText('buy') }}
-          </button>
-        </div>
-        } @else if (getItemData(itemId); as item) {
-        <div class="item-card" [class]="'item-card ' + getRarityClass(itemId)" [style]="getRarityStyle(itemId)">
-          <div class="item-visual">
-            <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">
-          </div>
-          <div class="item-info">
-            <p class="item-name">{{ getItemName(itemId) }}</p>
-            <p class="item-price">💰 {{ item.buyPrice }}</p>
-          </div>
-          <button (click)="buyItem(itemId)" class="btn-outline-gold"
-                  [disabled]="money() < (item.buyPrice || 0)">
-            {{ getText('buy') }}
-          </button>
-        </div>
-        }
+        </section>
+      } @empty {
+        <div class="empty-state">{{ getText('noShopItems') }}</div>
       }
     </div>
   </div>

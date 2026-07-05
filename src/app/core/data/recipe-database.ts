@@ -9,7 +9,7 @@ export const recipes: { [key: string]: Recipe } = {
     ]
   },
   'wood_sword_recipe': {
-    result: 'wood_sword',
+    result: 'wooden_sword',
     ingredients: [
       { id: 'wood_plank', quantity: 3 },
       { id: 'steel_ingot', quantity: 1 },

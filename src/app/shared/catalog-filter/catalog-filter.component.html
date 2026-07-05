@@ -1,0 +1,20 @@
+<div class="catalog-filter">
+  <input
+    type="search"
+    class="search-input"
+    [placeholder]="getText(searchPlaceholderKey())"
+    [ngModel]="searchQuery()"
+    (ngModelChange)="onSearchChange($event)" />
+
+  <div class="tab-row">
+    @for (tab of tabs(); track tab.id) {
+      <button
+        type="button"
+        class="tab-btn"
+        [class.tab-btn--active]="activeTab() === tab.id"
+        (click)="setTab(tab.id)">
+        {{ getText(tab.labelKey) }}
+      </button>
+    }
+  </div>
+</div>

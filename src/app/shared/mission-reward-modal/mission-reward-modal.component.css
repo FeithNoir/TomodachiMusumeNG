@@ -1,0 +1,61 @@
+.mission-reward-overlay {
+  z-index: 1200;
+}
+
+.mission-reward-panel {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.reward-intro {
+  margin: 0;
+  color: var(--gold-accent);
+  font-weight: 600;
+}
+
+.reward-empty {
+  margin: 0.5rem 0;
+  color: var(--text-dim);
+}
+
+.reward-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-subtle);
+  border: 1px solid var(--glass-border);
+}
+
+.reward-row--gold .reward-value {
+  color: var(--gold-accent);
+  font-weight: 700;
+}
+
+.reward-section {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.reward-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.reward-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.5;
+}
+
+.reward-close {
+  align-self: center;
+  margin-top: 0.25rem;
+}

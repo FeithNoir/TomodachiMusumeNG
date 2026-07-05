@@ -1,10 +1,9 @@
 import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { ARMOR_SET_LABELS } from '@core/data/armor-sets';
+import { INVENTORY_FILTER_TABS } from '@core/data/catalog-filter.config';
 import { isEquippableCategory } from '@core/data/equippable-categories';
 import { recipes } from '@core/data/recipe-database';
-import { INVENTORY_MAX_SLOTS } from '@core/data/game-config';
 import { ItemCategory } from '@core/interfaces/item.interface';
 import { CharacterService } from '@core/services/character.service';
 import { GameStateService } from '@core/services/game-state.service';
@@ -15,6 +14,7 @@ import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
 import { EquipResult } from '@core/interfaces/notification.interface';
 import { resolveLocalizedText } from '@core/utils/localization.util';
+import { CatalogFilterComponent } from '@shared/catalog-filter/catalog-filter.component';
 
 type InventoryTab = 'all' | 'consumable' | 'material' | 'recipe' | 'armor';
 
@@ -27,7 +27,7 @@ interface ArmorSetGroup {
 @Component({
   selector: 'app-inventory',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CatalogFilterComponent],
   templateUrl: './inventory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './inventory.component.css',
@@ -46,7 +46,8 @@ export class InventoryComponent {
   public inventory = this.inventoryService.inventory;
   public money = this.gameStateService.money;
   public equipped = this.characterService.equipped;
-  public maxInventorySlots = INVENTORY_MAX_SLOTS;
+  public maxInventorySlots = this.inventoryService.maxSlots;
+  public filterTabs = INVENTORY_FILTER_TABS;
   public equipMode = this.inventoryUi.equipMode;
   public activeTab = signal<InventoryTab>('all');
   public searchQuery = signal('');
@@ -128,8 +129,12 @@ export class InventoryComponent {
     })).filter(entry => entry.recipe);
   });
 
-  setTab(tab: InventoryTab): void {
-    this.activeTab.set(tab);
+  setTab(tab: string): void {
+    this.activeTab.set(tab as InventoryTab);
+  }
+
+  updateSearchQuery(value: string): void {
+    this.searchQuery.set(value);
   }
 
   getItemName(itemId: string): string {

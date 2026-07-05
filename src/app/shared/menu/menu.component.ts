@@ -1,4 +1,4 @@
-import { Component, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, signal, output, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { GameStateService } from '@core/services/game-state.service';
@@ -19,7 +19,7 @@ export class MenuComponent {
   private localization = inject(LocalizationService);
   private router = inject(Router);
 
-  @Output() menuAction = new EventEmitter<string>();
+  menuAction = output<string>();
 
   public isOpen = signal(false);
   readonly getText = this.localization.t.bind(this.localization);

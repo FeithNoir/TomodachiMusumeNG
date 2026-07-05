@@ -1,85 +1,77 @@
 # 🎨 Tomodachi Musume Ng
 
-An anime-style virtual pet game built with **Angular 22** and optional **Electron** desktop packaging. Care for **Eleanora** in her barracks room — talk, equip outfits, feed her, send her on missions, craft gear, and trade at the market. Game state persists to `localStorage` in the browser or SQLite when running as a desktop app.
+An anime-style virtual pet game built with **Angular 22** and optional **Electron** desktop packaging. Care for **Eleanora** in her barracks room — talk, equip outfits, send missions, craft gear, play minigames, unlock gallery entries, and trade at the market. Game state persists to `localStorage` in the browser or SQLite when running as a desktop app.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FeithNoir/TomodachiMusume/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/FeithNoir/TomodachiMusume)](https://github.com/FeithNoir/TomodachiMusume/issues)
 
 ## ✨ Features
 
-* **Layered Character System**: Eleanora's appearance is dynamically rendered using a layer system, with normalized expression paths and automatic blinking.
-* **Dynamic Reactions**: Click reactions change expression and dialogue based on affinity tiers.
+* **Layered Character System**: Dynamic sprite layers, normalized expression paths, automatic blinking.
+* **Dynamic Reactions**: Click reactions and affinity-tier dialogue.
 * **Persistent Data**: Auto-save via signals; browser `localStorage` or Electron SQLite.
 * **Localization**: Spanish and English through `LocalizationService` + `UI_STRINGS`.
-* **In-game Notifications**: Toast stack and modal alerts via `NotificationService` (SweetAlert-style UX, pure CSS).
-* **Equipment Panel**: Row layout with slot grid, `StatBarComponent` (base/low/medium/high tiers), endurance-linked energy cap, and inventory shortcut to equip.
-* **Inventory Panel**: Gold header, tabs (all/consumables/materials/recipes/armor by set), equipped indicator dot, equip mode from gear panel.
-* **Stat bars**: Shared `StatBarComponent` — white base, red/yellow/green bonus tiers.
-* **Game events**: `GameEventService` (master bus) + `AffinityEventService` (affinity thresholds).
-* **Crafting**: Recipe book modal with quantity badges (0/insufficient/exact/surplus) on workbench slots.
-* **Core HUD Stats**: Affinity, money, energy, and satiety pills.
-* **Main Actions**:
-  * 🗣️ **Talk** — affinity dialogues.
-  * ⚔️ **Gear** — equipment slots + combat stats.
-  * 🎒 **Bag** — inventory with gold, recipes, armor sets, equip mode.
-  * 🤝 **Interact** — feeding (planned expansion).
-* **Mission Board**: Difficulty tiers (common→legendary) with duration/color, stat gates, random & conditional events; assign character or pets.
-* **Pets**: Hatch from mission egg rewards (emoji visuals, swappable to images); stats via training/food/potions; slot cap expandable in shop.
-* **Away state**: Character hidden on mission; talk/gear/interact disabled until return.
-  * 🛠️ **Craft** — material combinations.
-  * 🛒 **Market** — buy/sell with toast feedback.
-* **Responsive Design**: Mobile dock + desktop grid shell.
+* **Equipment & Inventory**: Stat bars, rarity gradients, armor sets, shared catalog filter (search + tabs).
+* **Mission Board**: Difficulty tiers, stat gates, character or pet assignees; rewards modal on completion; missions resume after reload.
+* **Interact Hub**: Training minigames, affinity date events, experiments placeholder.
+* **Gallery**: Unlock outfits (owned items), scenes (completed dates), and affinity memories.
+* **Market**: Buy/sell grouped by thematic sets; pet slot and inventory expansions.
+* **Crafting**: Recipe book with material quantity badges.
 * **Pure CSS**: Design tokens in `src/styles.css`; feature layout in co-located CSS.
+
+## 📦 Item Data Flow
+
+All runtime item operations go through a single catalog. Understanding this flow prevents errors like `Attempted to add non-existent item: wood_sword`.
+
+```text
+masterItemList (item-database.ts)
+        │
+        ├── ItemCatalogService.getItem(id)   ← UI names, paths, rarity
+        ├── InventoryService.addItem(id)     ← validates id exists
+        ├── ShopService / CraftingService    ← buy, sell, craft
+        └── MissionService.applyRewards()    ← loot rolls
+```
+
+**Reference sources that must use valid item ids:**
+
+| Source | File | Example |
+| :--- | :--- | :--- |
+| Craft results | `recipe-database.ts` | `result: 'wooden_sword'` |
+| Mission loot | `mission-rewards.config.ts` | `{ type: 'item', id: 'wood_plank' }` |
+| Shop listings | `shop-catalog.ts` | set `itemIds` arrays |
+| Initial inventory | `initial-game-state.ts` | starter items |
+
+### Fixing “non-existent item” errors
+
+1. **Check spelling** — ids are case-sensitive (`wooden_sword`, not `wood_sword`).
+2. **Add the item** to `masterItemList` in `item-database.ts` if it is new content.
+3. **Update references** in recipes, missions, or shop sets to match the catalog id.
+4. **Run the app in dev** — `assertValidItemRegistry()` in `main.ts` logs broken recipe/mission references at startup.
+5. **Optional** — call `findInvalidItemReferences()` from `item-registry.util.ts` in tests or CI.
 
 ## 📊 Feature Progress
 
-Indicador por área del juego — útil para priorizar el roadmap:
+| Area | Status | Notes |
+| :--- | :--- | :--- |
+| Companion core | 🟢 Active | Layers, blink, reactions |
+| Persistence & save | 🟢 Active | Auto-save; mission autosave on deploy |
+| Missions | 🟢 Active | Board, pets, reward modal, offline completion |
+| Interact / minigames | 🟢 Active | Training, dates, experiments stub |
+| Gallery | 🟢 Active | Outfits, scenes, memories |
+| Market | 🟢 Active | Set groups, upgrades, rarity |
+| Crafting | 🟡 In progress | Single-recipe craft flow |
+| Story progression | 🔴 Planned | Affinity-gated main story |
 
-| Área | Estado | Progreso | Próximo paso sugerido |
-| :--- | :--- | :--- | :--- |
-| **Companion core** (layers, blink, reactions) | 🟢 Activo | **88%** | Más expresiones contextuales (misiones, craft) |
-| **Persistence & save** | 🟢 Activo | **85%** | Detección de save en Electron + import/export JSON |
-| **Localization (i18n)** | 🟢 Activo | **95%** | Diálogos dinámicos restantes |
-| **Notifications** | 🟢 Activo | **85%** | Confirmaciones destructivas con alert modal |
-| **Equipment & stats** | 🟢 Activo | **88%** | Comparativa antes/después al equipar |
-| **Inventory & filters** | 🟢 Activo | **90%** | Orden por nombre/cantidad |
-| **Crafting** | 🟡 En curso | **82%** | Múltiples recetas simultáneas; preview de resultado |
-| **Market** | 🟡 En curso | **70%** | Preview de stats al comprar armas/armaduras |
-| **Missions** | 🟢 Activo | **85%** | UI de mascotas en cuartel; entrenamiento/comida |
-| **Interact / feeding** | 🔴 Pendiente | **25%** | UI de comida y efectos de saciedad |
-| **Story progression** | 🔴 Pendiente | **15%** | Diálogos desbloqueables por afinidad |
-| **Minigames** | 🔴 Pendiente | **0%** | Primer minijuego de afinidad |
-| **Gallery** | 🔴 Placeholder | **5%** | Galería de CG / outfits desbloqueados |
-| **Backend / cloud** | 🔴 Futuro | **0%** | API de saves |
-
-**Leyenda:** 🟢 usable · 🟡 parcial · 🔴 no iniciado o stub
+**Legend:** 🟢 usable · 🟡 partial · 🔴 planned
 
 ## 📐 Project Guidelines
 
 | Document | Scope |
 | :--- | :--- |
-| `architecture_guidelines.md` | Folder layout, services, routing, state, persistence, Angular conventions. |
-| `design_guidelines.md` | CSS tokens, global classes, notifications, equipment/inventory UI patterns. |
+| `architecture_guidelines.md` | Folder layout, services, routing, state, persistence. |
+| `design_guidelines.md` | CSS tokens, global classes, UI patterns. |
 
-*(Local reference — gitignored in this repo.)*
-
-## 🚀 Project Roadmap
-
-### Planned Features & Enhancements
-
-- [ ] **Minigames** — boost affinity through playable mini-games.
-- [x] **Recipe Book** — modal on workbench with unlocked recipes and slot fill.
-- [ ] **Advanced Crafting** — craft multiple output units per recipe.
-- [ ] **Story Progression** — main storyline dialogues unlocked by affinity.
-- [ ] **Data Management** — import/export save data as JSON.
-- [ ] **Interact expansion** — full feeding UI tied to satiety.
-- [ ] **Stat tooltips** — item comparison when hovering gear in the equipment panel.
-
-### Future Integrations
-
-- [ ] **Backend & Database** — cloud saves for cross-device play.
-
-## 🛠️ Installation & Usage
+## 🚀 Installation & Usage
 
 ### Prerequisites
 
@@ -109,7 +101,7 @@ npm run electron:serve
 
 ```bash
 npm run build              # Web build → dist/tomodachi-musume-ng/
-npm run electron:build     # Web build + portable Electron app
+npm run electron:build     # Web build + portable Electron app → dist/electron/
 ```
 
 ## 📁 Project Structure
@@ -121,13 +113,11 @@ TomodachiMusumeNg/
 ├── src/
 │   ├── app/
 │   │   ├── core/
-│   │   │   ├── constants/    # UI_STRINGS
-│   │   │   ├── data/         # Databases, balance, initial state
-│   │   │   ├── interfaces/
-│   │   │   ├── services/
-│   │   │   └── utils/
-│   │   ├── pages/
-│   │   └── shared/           # character, equipment, inventory, notification…
+│   │   │   ├── data/         # Catalogs, shop sets, gallery, missions
+│   │   │   ├── services/     # Game state, missions, gallery, shop…
+│   │   │   └── utils/        # item-registry, mission-reward helpers
+│   │   ├── pages/            # layout, shop, mission, interact…
+│   │   └── shared/           # inventory, gallery, catalog-filter…
 │   └── styles.css
 ├── architecture_guidelines.md
 ├── design_guidelines.md
@@ -141,7 +131,6 @@ TomodachiMusumeNg/
 | `@core/*` | `src/app/core/*` |
 | `@shared/*` | `src/app/shared/*` |
 | `@pages/*` | `src/app/pages/*` |
-| `@assets/*` | `public/assets/*` |
 
 ## 🤝 Contributing
 
