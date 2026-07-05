@@ -44,7 +44,7 @@
             <input type="text" [(ngModel)]="playerNameInput" class="name-input"
                 [placeholder]="selectedLang() === 'en' ? 'Enter your name...' : 'Introduce tu nombre...'"
                 (keyup.enter)="confirmName()">
-            <button (click)="confirmName()" class="btn-tutorial mt-4" [disabled]="!playerNameInput()">
+            <button (click)="confirmName()" class="btn-tutorial btn-spaced" [disabled]="!playerNameInput()">
                 {{ selectedLang() === 'en' ? 'Confirm' : 'Confirmar' }}
             </button>
         </div>
@@ -85,7 +85,7 @@
                 "Espero que podamos vivir grandes aventuras juntos de ahora en adelante."
                 }
             </p>
-            <button (click)="finishTutorial()" class="btn-tutorial btn-start mt-6">
+            <button (click)="finishTutorial()" class="btn-tutorial btn-start btn-spaced-lg">
                 {{ selectedLang() === 'en' ? 'Start Adventure' : 'Comenzar Aventura' }}
             </button>
         </div>

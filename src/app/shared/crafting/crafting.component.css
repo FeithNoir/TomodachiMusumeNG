@@ -1,0 +1,182 @@
+:host {
+  display: contents;
+}
+
+.crafting-container {
+  width: 95%;
+  max-width: 42rem;
+  max-height: 90vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+.crafting-header {
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 1rem;
+  padding-right: 3rem;
+}
+
+.crafting-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-accent);
+  margin: 0;
+}
+
+.crafting-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+.crafting-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.section-label {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-white);
+}
+
+.crafting-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  min-height: 10rem;
+}
+
+.craft-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.craft-slot:hover {
+  background: var(--gold-accent-muted);
+  border-color: var(--gold-accent);
+}
+
+.craft-slot-img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+}
+
+.craft-slot-empty {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.materials-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.materials-grid::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 3px;
+}
+
+.material-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.material-card:hover {
+  background: var(--gold-accent-muted);
+}
+
+.material-img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+
+.material-label {
+  font-size: 0.75rem;
+  margin: 0;
+  color: var(--text-white);
+  line-height: 1.2;
+}
+
+.materials-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+.craft-action-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.craft-action-btn.primary {
+  background: var(--success);
+  color: var(--text-white);
+}
+
+.craft-action-btn.primary:hover {
+  background: var(--success-hover);
+}
+
+@media (min-width: 768px) {
+  .crafting-layout {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 480px) {
+  .crafting-container {
+    padding: 1.5rem;
+  }
+
+  .materials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

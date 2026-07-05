@@ -1,15 +1,31 @@
-@import "tailwindcss";
-
 :root {
   --glass-bg: rgba(45, 20, 5, 0.75);
   --glass-border: rgba(251, 191, 36, 0.3);
   --glass-blur: 20px;
+  --shell-bg: rgba(120, 53, 15, 0.4);
   --gold-accent: #fbbf24;
   --gold-accent-muted: rgba(251, 191, 36, 0.2);
   --text-white: #ffffff;
   --text-dim: rgba(255, 255, 255, 0.6);
   --radius-lg: 1.5rem;
   --radius-md: 1rem;
+  --success: #16a34a;
+  --success-hover: #15803d;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #000;
+  color: var(--text-white);
 }
 
 .glass-panel {
@@ -59,4 +75,19 @@
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   padding: 1rem;
+}
+
+.fade-in {
+  animation: modalEnter 0.3s ease-out;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

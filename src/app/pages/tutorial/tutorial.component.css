@@ -123,5 +123,10 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.mt-4 { margin-top: 1rem; }
-.mt-6 { margin-top: 2rem; }
+.btn-spaced {
+  margin-top: 1rem;
+}
+
+.btn-spaced-lg {
+  margin-top: 1.5rem;
+}

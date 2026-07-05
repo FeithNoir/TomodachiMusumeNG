@@ -23,10 +23,22 @@
   pointer-events: auto; /* El cuerpo base sí recibe eventos por si acaso */
 }
 
-/* Las reacciones (diálogos flotantes) */
 .reaction-dialogue {
   position: absolute;
   top: 20%;
   z-index: 100;
   pointer-events: none;
+  background: var(--shell-bg);
+  border: 2px solid rgba(217, 119, 6, 0.8);
+  color: #fffbeb;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.reaction-dialogue.visible {
+  opacity: 1;
 }

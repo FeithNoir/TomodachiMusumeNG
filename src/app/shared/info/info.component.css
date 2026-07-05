@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   height: 60px;
-  background: rgba(120, 53, 15, 0.4);
+  background: var(--shell-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
