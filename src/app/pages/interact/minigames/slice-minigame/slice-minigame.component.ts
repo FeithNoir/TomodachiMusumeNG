@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { MinigameParticipant } from '@core/interfaces/minigame.interface';
 import { LocalizationService } from '@core/services/localization.service';
+import { MinigameSpriteComponent } from '@shared/minigame-sprite/minigame-sprite.component';
 
 interface SliceTarget {
   id: number;
@@ -26,7 +27,7 @@ const TARGET_EMOJIS = ['🍎', '🍉', '🎯', '🎋', '⭐'];
 @Component({
   selector: 'app-slice-minigame',
   standalone: true,
-  imports: [],
+  imports: [MinigameSpriteComponent],
   templateUrl: './slice-minigame.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './slice-minigame.component.css',

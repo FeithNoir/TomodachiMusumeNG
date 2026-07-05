@@ -1,6 +1,7 @@
 import { Component, inject, signal, output, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router } from '@angular/router';
+import { GAME_VERSION } from '@core/data/game-config';
 import { GameStateService } from '@core/services/game-state.service';
 import { PersistenceService } from '@core/services/persistence.service';
 import { LocalizationService } from '@core/services/localization.service';
@@ -22,6 +23,7 @@ export class MenuComponent {
   menuAction = output<string>();
 
   public isOpen = signal(false);
+  readonly gameVersion = GAME_VERSION;
   readonly getText = this.localization.t.bind(this.localization);
 
   toggle(): void {

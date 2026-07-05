@@ -19,6 +19,26 @@ export const SHOP_SETS: ShopSetDefinition[] = [
     itemIds: ['common_egg', PET_SLOT_UPGRADE_ITEM_ID, INVENTORY_SLOT_UPGRADE_ITEM_ID],
   },
   {
+    id: 'companions',
+    name: { es: 'Compañeros', en: 'Companions' },
+    itemIds: ['common_egg'],
+  },
+  {
+    id: 'food_ingredients',
+    name: { es: 'Ingredientes', en: 'Ingredients' },
+    itemIds: ['wheat', 'meat', 'eggs', 'avocado'],
+  },
+  {
+    id: 'food_meals',
+    name: { es: 'Comidas', en: 'Meals' },
+    itemIds: ['bread', 'grilled_steak', 'omelette', 'guacamole'],
+  },
+  {
+    id: 'recipes',
+    name: { es: 'Recetas', en: 'Recipes' },
+    itemIds: ['recipe_bread', 'recipe_steak', 'recipe_omelette', 'recipe_steel_sword'],
+  },
+  {
     id: 'consumables',
     name: { es: 'Consumibles', en: 'Consumables' },
     itemIds: ['energy_drink'],

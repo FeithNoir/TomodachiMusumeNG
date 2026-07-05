@@ -297,4 +297,94 @@ export const masterItemList: ItemCollection = {
     path: 'assets/img/items/recipe.png',
     recipeId: 'steel_sword_recipe'
   },
+
+  // ---- Ingredientes de cocina ----
+  'wheat': {
+    id: 'wheat',
+    name: { es: 'Trigo', en: 'Wheat' },
+    type: 'material',
+    path: 'assets/img/items/wood.png',
+    emoji: '🌾',
+  },
+  'meat': {
+    id: 'meat',
+    name: { es: 'Carne', en: 'Meat' },
+    type: 'material',
+    path: 'assets/img/items/iron.png',
+    emoji: '🥩',
+  },
+  'eggs': {
+    id: 'eggs',
+    name: { es: 'Huevos', en: 'Eggs' },
+    type: 'material',
+    path: 'assets/img/items/wood.png',
+    emoji: '🥚',
+  },
+  'avocado': {
+    id: 'avocado',
+    name: { es: 'Aguacate', en: 'Avocado' },
+    type: 'material',
+    path: 'assets/img/items/wood.png',
+    emoji: '🥑',
+  },
+
+  // ---- Comidas crafteadas ----
+  'bread': {
+    id: 'bread',
+    name: { es: 'Pan', en: 'Bread' },
+    type: 'consumable',
+    path: 'assets/img/items/wood.png',
+    emoji: '🍞',
+    effects: { satiety: 15 },
+  },
+  'grilled_steak': {
+    id: 'grilled_steak',
+    name: { es: 'Bistec a la parrilla', en: 'Grilled Steak' },
+    type: 'consumable',
+    path: 'assets/img/items/iron.png',
+    emoji: '🥩',
+    effects: { satiety: 25, energy: 5 },
+  },
+  'omelette': {
+    id: 'omelette',
+    name: { es: 'Tortilla francesa', en: 'Omelette' },
+    type: 'consumable',
+    path: 'assets/img/items/wood.png',
+    emoji: '🍳',
+    effects: { satiety: 18, energy: 8 },
+  },
+  'guacamole': {
+    id: 'guacamole',
+    name: { es: 'Guacamole', en: 'Guacamole' },
+    type: 'consumable',
+    path: 'assets/img/items/wood.png',
+    emoji: '🥑',
+    effects: { satiety: 12, energy: 10 },
+  },
+
+  // ---- Recetas de comida (ítems aprendibles) ----
+  'recipe_bread': {
+    id: 'recipe_bread',
+    name: { es: 'Receta: Pan', en: 'Recipe: Bread' },
+    type: 'recipe',
+    path: 'assets/img/items/recipe.png',
+    recipeId: 'bread_recipe',
+    emoji: '📜',
+  },
+  'recipe_steak': {
+    id: 'recipe_steak',
+    name: { es: 'Receta: Bistec', en: 'Recipe: Steak' },
+    type: 'recipe',
+    path: 'assets/img/items/recipe.png',
+    recipeId: 'steak_recipe',
+    emoji: '📜',
+  },
+  'recipe_omelette': {
+    id: 'recipe_omelette',
+    name: { es: 'Receta: Tortilla', en: 'Recipe: Omelette' },
+    type: 'recipe',
+    path: 'assets/img/items/recipe.png',
+    recipeId: 'omelette_recipe',
+    emoji: '📜',
+  },
 };

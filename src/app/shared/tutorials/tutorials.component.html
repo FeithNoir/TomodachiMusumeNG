@@ -1,0 +1,28 @@
+<div class="glass-panel modal-container modal-container--lg fade-in tutorials-modal">
+  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+    <span>✕</span>
+  </button>
+
+  <div class="panel-header">
+    <h3 class="modal-title">{{ getText('tutorialsTitle') }}</h3>
+  </div>
+
+  <div class="tutorials-list scroll-area">
+    @for (entry of entries; track entry.id) {
+      <article class="tutorial-card interactive-card" [class.tutorial-card--seen]="isSeen(entry.id)">
+        <div class="tutorial-card__header">
+          <h4 class="tutorial-card__title">{{ localized(entry.title) }}</h4>
+          @if (isSeen(entry.id)) {
+            <span class="tutorial-badge">{{ getText('tutorialSeenBadge') }}</span>
+          }
+        </div>
+        <p class="tutorial-card__body">{{ localized(entry.body) }}</p>
+        @if (!isSeen(entry.id)) {
+          <button type="button" class="btn-outline-gold tutorial-mark-btn" (click)="markSeen(entry.id)">
+            {{ getText('tutorialMarkRead') }}
+          </button>
+        }
+      </article>
+    }
+  </div>
+</div>

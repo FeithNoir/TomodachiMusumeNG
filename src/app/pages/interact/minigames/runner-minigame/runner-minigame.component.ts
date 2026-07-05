@@ -12,43 +12,52 @@ import {
 } from '@angular/core';
 import { MinigameParticipant } from '@core/interfaces/minigame.interface';
 import { LocalizationService } from '@core/services/localization.service';
+import { MinigameService } from '@core/services/minigame.service';
+import { MinigameSpriteComponent } from '@shared/minigame-sprite/minigame-sprite.component';
 
 interface Obstacle {
   id: number;
   x: number;
 }
 
+export type RunnerDefeatReason = 'collision' | 'stamina';
+
 @Component({
   selector: 'app-runner-minigame',
   standalone: true,
-  imports: [],
+  imports: [MinigameSpriteComponent],
   templateUrl: './runner-minigame.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './runner-minigame.component.css',
 })
 export class RunnerMinigameComponent implements OnInit, OnDestroy {
   private localization = inject(LocalizationService);
+  private minigameService = inject(MinigameService);
 
   participant = input.required<MinigameParticipant>();
 
   @Output() finished = new EventEmitter<number>();
 
   readonly getText = this.localization.t.bind(this.localization);
+  readonly highScore = this.minigameService.runnerHighScore;
 
-  playerY = signal(0);
+  jumpHeight = signal(0);
   obstacles = signal<Obstacle[]>([]);
-  score = signal(0);
+  meters = signal(0);
+  stamina = signal(100);
   gameOver = signal(false);
+  defeatReason = signal<RunnerDefeatReason | null>(null);
 
   private velocity = 0;
   private nextObstacleId = 0;
   private spawnTimer = 0;
   private elapsed = 0;
+  private distancePx = 0;
   private rafId = 0;
   private lastTimestamp = 0;
-  private readonly groundY = 0;
-  private readonly gravity = 0.0018;
-  private readonly jumpForce = -0.65;
+  private readonly gravity = 0.0022;
+  private readonly jumpForce = 0.72;
+  private readonly maxJumpHeight = 90;
   private readonly stageWidth = 360;
   private readonly playerX = 48;
   private readonly playerSize = 56;
@@ -78,18 +87,21 @@ export class RunnerMinigameComponent implements OnInit, OnDestroy {
     if (this.gameOver()) {
       return;
     }
-    if (this.playerY() <= this.groundY + 1) {
+    if (this.jumpHeight() <= 1) {
       this.velocity = this.jumpForce;
+      this.stamina.update(v => Math.max(0, v - 3));
     }
   }
 
-  finish(): void {
-    if (this.gameOver()) {
-      return;
+  defeatReasonLabel(): string {
+    const reason = this.defeatReason();
+    if (reason === 'collision') {
+      return this.getText('runnerDefeatCollision');
     }
-    this.gameOver.set(true);
-    cancelAnimationFrame(this.rafId);
-    this.finished.emit(Math.min(100, Math.round(this.score())));
+    if (reason === 'stamina') {
+      return this.getText('runnerDefeatStamina');
+    }
+    return '';
   }
 
   private loop(timestamp: number): void {
@@ -105,8 +117,17 @@ export class RunnerMinigameComponent implements OnInit, OnDestroy {
 
   private tick(delta: number): void {
     this.elapsed += delta;
-    this.score.set(Math.floor(this.elapsed / 100));
     this.spawnTimer += delta;
+
+    const speed = 0.22 + this.elapsed / 60000;
+    this.distancePx += speed * delta;
+    this.meters.set(Math.floor(this.distancePx / 8));
+
+    this.stamina.update(v => Math.max(0, v - delta * 0.012));
+    if (this.stamina() <= 0) {
+      this.endRun('stamina');
+      return;
+    }
 
     if (this.spawnTimer > 1400 - Math.min(800, this.elapsed / 20)) {
       this.spawnTimer = 0;
@@ -116,14 +137,18 @@ export class RunnerMinigameComponent implements OnInit, OnDestroy {
       ]);
     }
 
-    this.velocity += this.gravity * delta;
-    const nextY = Math.min(this.groundY, this.playerY() + this.velocity * delta);
-    this.playerY.set(nextY);
-    if (nextY >= this.groundY) {
+    this.velocity -= this.gravity * delta;
+    let nextHeight = this.jumpHeight() + this.velocity * delta;
+    if (nextHeight <= 0) {
+      nextHeight = 0;
       this.velocity = 0;
     }
+    if (nextHeight > this.maxJumpHeight) {
+      nextHeight = this.maxJumpHeight;
+      this.velocity = 0;
+    }
+    this.jumpHeight.set(nextHeight);
 
-    const speed = 0.22 + this.elapsed / 60000;
     const updated: Obstacle[] = [];
     let hit = false;
 
@@ -133,17 +158,13 @@ export class RunnerMinigameComponent implements OnInit, OnDestroy {
         continue;
       }
 
-      const playerBottom = 72 - this.playerY();
+      const onGround = this.jumpHeight() < 8;
       const obstacleLeft = nextX;
       const obstacleRight = nextX + 28;
       const playerRight = this.playerX + this.playerSize - 8;
       const playerLeft = this.playerX + 8;
 
-      if (
-        playerBottom < 36 &&
-        obstacleRight > playerLeft &&
-        obstacleLeft < playerRight
-      ) {
+      if (onGround && obstacleRight > playerLeft && obstacleLeft < playerRight) {
         hit = true;
       }
 
@@ -153,8 +174,14 @@ export class RunnerMinigameComponent implements OnInit, OnDestroy {
     this.obstacles.set(updated);
 
     if (hit) {
-      this.gameOver.set(true);
-      this.finished.emit(Math.min(100, Math.round(this.score())));
+      this.endRun('collision');
     }
+  }
+
+  private endRun(reason: RunnerDefeatReason): void {
+    this.gameOver.set(true);
+    this.defeatReason.set(reason);
+    cancelAnimationFrame(this.rafId);
+    this.finished.emit(this.meters());
   }
 }

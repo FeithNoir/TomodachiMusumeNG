@@ -38,7 +38,7 @@
 <!-- Modal de Equipo -->
 @if (isEquipmentVisible()) {
 <div class="modal-overlay">
-  <app-equipment (close)="closeActiveModal()" (openInventory)="openInventoryFromEquipment()"></app-equipment>
+  <app-equipment (close)="closeActiveModal()"></app-equipment>
 </div>
 }
 
@@ -88,6 +88,20 @@
 @if (isGalleryVisible()) {
 <div class="modal-overlay" (click)="closeActiveModal()">
   <app-gallery (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-gallery>
+</div>
+}
+
+<!-- Modal de Compañeros -->
+@if (isCompanionsVisible()) {
+<div class="modal-overlay" (click)="closeActiveModal()">
+  <app-companions (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-companions>
+</div>
+}
+
+<!-- Modal de Tutoriales -->
+@if (isTutorialsVisible()) {
+<div class="modal-overlay" (click)="closeActiveModal()">
+  <app-tutorials (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-tutorials>
 </div>
 }
 

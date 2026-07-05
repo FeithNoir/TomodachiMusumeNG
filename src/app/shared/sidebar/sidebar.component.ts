@@ -2,7 +2,15 @@ import { Component, inject, Input, Output, EventEmitter, ChangeDetectionStrategy
 
 import { LocalizationService } from '@core/services/localization.service';
 
-export type SidebarAction = 'talk' | 'equipment' | 'inventory' | 'interact' | 'mission' | 'market' | 'craft';
+export type SidebarAction =
+  | 'talk'
+  | 'equipment'
+  | 'inventory'
+  | 'companions'
+  | 'interact'
+  | 'mission'
+  | 'market'
+  | 'craft';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,6 +36,7 @@ export class SidebarComponent {
     { id: 'talkButton', label: 'talk', action: 'talk', icon: '/assets/icons/talk.svg' },
     { id: 'equipmentButton', label: 'equipment', action: 'equipment', icon: '/assets/icons/gear.svg' },
     { id: 'inventoryButton', label: 'inventory', action: 'inventory', icon: '/assets/icons/inventory.svg' },
+    { id: 'companionsButton', label: 'companions', action: 'companions', icon: '/assets/icons/companions.svg' },
     { id: 'interactButton', label: 'interact', action: 'interact', icon: '/assets/icons/interact.svg' },
     { id: 'missionButton', label: 'mission', action: 'mission', icon: '/assets/icons/mission.svg' },
     { id: 'marketButton', label: 'market', action: 'market', icon: '/assets/icons/market.svg' },

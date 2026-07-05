@@ -32,24 +32,23 @@ export class MissionService {
   private missionBoard = inject(MissionBoardService);
   private gameEvents = inject(GameEventService);
 
-  /** Updated by the game loop so time-based computeds refresh. */
   private clock = signal(Date.now());
 
-  readonly activeMission = computed(() => this.gameState.gameState().activeMission);
+  readonly activeMissions = computed(() => this.getRunningMissions());
+
+  /** @deprecated Use activeMissions — first running mission for legacy UI. */
+  readonly activeMission = computed(() => this.activeMissions()[0] ?? null);
 
   readonly isMissionInProgress = computed(() => {
     this.clock();
-    const mission = this.activeMission();
-    return mission !== null && Date.now() < mission.endsAt;
+    return this.activeMissions().length > 0;
   });
 
   readonly isCharacterAway = computed(() => {
     this.clock();
-    const mission = this.activeMission();
-    if (!mission || Date.now() >= mission.endsAt) {
-      return false;
-    }
-    return mission.assigneeType === 'character';
+    return this.activeMissions().some(
+      m => m.assigneeType === 'character' && m.assigneeId === COMPANION_MISSION_ID
+    );
   });
 
   readonly missionProgress = computed(() => {
@@ -58,39 +57,30 @@ export class MissionService {
     if (!mission) {
       return 0;
     }
-
     const total = mission.endsAt - mission.startedAt;
     if (total <= 0) {
       return 100;
     }
-
     const elapsed = Date.now() - mission.startedAt;
     return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
   });
-
-  readonly remainingMs = computed(() => {
-    const mission = this.activeMission();
-    if (!mission) {
-      return 0;
-    }
-    return Math.max(0, mission.endsAt - Date.now());
-  });
-
-  getDefinition(missionId: string): MissionDefinition | undefined {
-    return this.missionBoard.getDefinition(missionId);
-  }
 
   tickClock(): void {
     this.clock.set(Date.now());
   }
 
+  getRunningMissions(): ActiveMission[] {
+    const now = Date.now();
+    return this.gameState.gameState().activeMissions.filter(m => now < m.endsAt);
+  }
+
+  getBusyAssigneeIds(): Set<string> {
+    return new Set(this.getRunningMissions().map(m => m.assigneeId));
+  }
+
   buildAssigneeOptions(definition: MissionDefinition): MissionAssigneeOption[] {
     const options: MissionAssigneeOption[] = [];
-    const active = this.activeMission();
-    const busyIds = new Set<string>();
-    if (active && Date.now() < active.endsAt) {
-      busyIds.add(active.assigneeId);
-    }
+    const busyIds = this.getBusyAssigneeIds();
 
     if (definition.allowCharacter) {
       const stats = this.characterStats.totalStats();
@@ -138,10 +128,6 @@ export class MissionService {
     assigneeType: 'character' | 'pet',
     assigneeId: string
   ): boolean {
-    if (this.isMissionInProgress()) {
-      return false;
-    }
-
     const definition = this.getDefinition(missionId);
     if (!definition) {
       return false;
@@ -167,19 +153,33 @@ export class MissionService {
       endsAt: startedAt + durationMs,
     };
 
-    this.gameState.updateState(state => ({ ...state, activeMission: active }));
+    this.gameState.updateState(state => ({
+      ...state,
+      activeMissions: [...state.activeMissions, active],
+    }));
     this.gameState.saveGame();
     this.gameEvents.emit(GAME_EVENT_TYPES.MISSION_STARTED, active);
     return true;
   }
 
   tickActiveMission(): MissionRewardRoll | null {
-    const mission = this.activeMission();
-    if (!mission || Date.now() < mission.endsAt) {
-      return null;
+    const rewards = this.tickAllCompletedMissions();
+    return rewards.length > 0 ? rewards[rewards.length - 1] : null;
+  }
+
+  tickAllCompletedMissions(): MissionRewardRoll[] {
+    const now = Date.now();
+    const expired = this.gameState.gameState().activeMissions.filter(m => now >= m.endsAt);
+    const rewards: MissionRewardRoll[] = [];
+
+    for (const mission of expired) {
+      const reward = this.completeMission(mission);
+      if (reward) {
+        rewards.push(reward);
+      }
     }
 
-    return this.completeActiveMission();
+    return rewards;
   }
 
   completeActiveMission(): MissionRewardRoll | null {
@@ -187,7 +187,10 @@ export class MissionService {
     if (!mission) {
       return null;
     }
+    return this.completeMission(mission);
+  }
 
+  private completeMission(mission: ActiveMission): MissionRewardRoll | null {
     const definition = this.getDefinition(mission.missionId);
     const reward = definition
       ? this.rollRewards(definition.rewardTableId)
@@ -196,7 +199,9 @@ export class MissionService {
     this.applyRewards(reward);
     this.gameState.updateState(state => ({
       ...state,
-      activeMission: null,
+      activeMissions: state.activeMissions.filter(
+        m => !(m.assigneeId === mission.assigneeId && m.startedAt === mission.startedAt)
+      ),
       missionFlags: state.missionFlags.includes(mission.missionId)
         ? state.missionFlags
         : [...state.missionFlags, mission.missionId],
@@ -204,6 +209,10 @@ export class MissionService {
 
     this.gameEvents.emit(GAME_EVENT_TYPES.MISSION_COMPLETED, { mission, reward });
     return reward;
+  }
+
+  getDefinition(missionId: string): MissionDefinition | undefined {
+    return this.missionBoard.getDefinition(missionId);
   }
 
   cancelBoardIfAway(): boolean {

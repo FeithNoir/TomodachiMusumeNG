@@ -65,8 +65,12 @@
                 </div>
               } @else if (getItemData(itemId); as item) {
                 <div class="item-card" [class]="'item-card ' + getRarityClass(itemId)" [style]="getRarityStyle(itemId)">
-                  <div class="item-visual">
-                    <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">
+                  <div class="item-visual" [class.item-visual--emoji]="item.emoji">
+                    @if (item.emoji) {
+                      <span class="shop-emoji">{{ item.emoji }}</span>
+                    } @else {
+                      <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">
+                    }
                   </div>
                   <div class="item-info">
                     <p class="item-name">{{ getItemName(itemId) }}</p>

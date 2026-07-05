@@ -25,6 +25,11 @@
       <span>{{ getText('gallery') }}</span>
     </button>
 
+    <button (click)="onOptionClick('tutorials')" class="menu-item-btn">
+      <img src="/assets/icons/talk.svg" alt="" class="menu-icon">
+      <span>{{ getText('tutorials') }}</span>
+    </button>
+
     <a href="https://www.patreon.com/c/genericfactoryint" target="_blank" class="menu-item-btn patreon">
       <img src="/assets/icons/patreon.svg" alt="" class="menu-icon">
       <span>Patreon</span>
@@ -39,7 +44,7 @@
   </div>
 
   <div class="menu-footer">
-    <span class="version">v0.1.0</span>
+    <span class="version">v{{ gameVersion }}</span>
   </div>
 </div>
 

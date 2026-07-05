@@ -1,0 +1,56 @@
+.tutorials-modal {
+  max-height: min(85vh, 640px);
+  display: flex;
+  flex-direction: column;
+}
+
+.tutorials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.tutorial-card {
+  padding: 1rem;
+  text-align: left;
+}
+
+.tutorial-card--seen {
+  opacity: 0.85;
+}
+
+.tutorial-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tutorial-card__title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--gold-accent);
+}
+
+.tutorial-card__body {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-white);
+  white-space: pre-line;
+}
+
+.tutorial-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.tutorial-mark-btn {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.75rem;
+}

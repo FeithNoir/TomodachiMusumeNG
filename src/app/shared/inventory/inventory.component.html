@@ -1,15 +1,23 @@
-<div class="glass-panel modal-container modal-container--md fade-in">
+<div
+  class="glass-panel fade-in inventory-root"
+  [class.modal-container]="!embedded"
+  [class.modal-container--md]="!embedded"
+  [class.inventory-root--embedded]="embedded">
 
-  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
-    <span>✕</span>
-  </button>
+  @if (!embedded) {
+    <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+      <span>✕</span>
+    </button>
+  }
 
-  <div class="panel-header">
+  <div class="panel-header" [class.panel-header--compact]="embedded">
     <h3 class="modal-title">{{ getText('inventoryTitle') }}</h3>
-    <div class="inventory-meta">
-      <span class="pill pill--gold">{{ getText('goldLabel') }}: {{ money() }}</span>
-      <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots() }}</span>
-    </div>
+    @if (!embedded) {
+      <div class="inventory-meta">
+        <span class="pill pill--gold">{{ getText('goldLabel') }}: {{ money() }}</span>
+        <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots() }}</span>
+      </div>
+    }
   </div>
 
   @if (equipMode()) {
@@ -37,7 +45,11 @@
                       [class.inventory-item--equipped]="isEquipped(item.id)"
                       (click)="handleItemClick(item.id)">
                 <div class="item-visual">
-                  <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+                  @if (getItemEmoji(item.id); as emoji) {
+                    <span class="item-emoji">{{ emoji }}</span>
+                  } @else {
+                    <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+                  }
                   @if (isEquipped(item.id)) {
                     <span class="equipped-dot" [attr.aria-label]="getText('equippedBadge')"></span>
                   }
@@ -71,7 +83,11 @@
         @for (item of filteredInventory(); track item.id) {
           <button type="button" class="interactive-card inventory-item" (click)="handleItemClick(item.id)">
             <div class="item-visual">
-              <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+              @if (getItemEmoji(item.id); as emoji) {
+                <span class="item-emoji">{{ emoji }}</span>
+              } @else {
+                <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+              }
             </div>
             <span class="badge-count">{{ item.quantity }}</span>
           </button>
@@ -89,7 +105,11 @@
                 [class.inventory-item--equipped]="isEquipped(item.id)"
                 (click)="handleItemClick(item.id)">
           <div class="item-visual">
-            <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+            @if (getItemEmoji(item.id); as emoji) {
+              <span class="item-emoji">{{ emoji }}</span>
+            } @else {
+              <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+            }
             @if (isEquipped(item.id)) {
               <span class="equipped-dot" [attr.aria-label]="getText('equippedBadge')"></span>
             }

@@ -1,0 +1,36 @@
+<div class="minigame-sprite" [style.transform]="scaleStyle()">
+  @if (participant().display === 'emoji') {
+    <span class="minigame-sprite-emoji">{{ participant().src }}</span>
+  } @else if (participant().type === 'character') {
+    <img src="/assets/img/character/base.png" alt="" class="minigame-sprite-layer" />
+    @if (equipped().pantsus) {
+      <img [src]="getItemPath(equipped().pantsus)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().stockings) {
+      <img [src]="getItemPath(equipped().stockings)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().bottom) {
+      <img [src]="getItemPath(equipped().bottom)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().bra) {
+      <img [src]="getItemPath(equipped().bra)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().suit) {
+      <img [src]="getItemPath(equipped().suit)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().top) {
+      <img [src]="getItemPath(equipped().top)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().hands) {
+      <img [src]="getItemPath(equipped().hands)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().head) {
+      <img [src]="getItemPath(equipped().head)" alt="" class="minigame-sprite-layer" />
+    }
+    @if (equipped().weapon) {
+      <img [src]="getItemPath(equipped().weapon)" alt="" class="minigame-sprite-layer minigame-sprite-layer--weapon" />
+    }
+  } @else {
+    <img [src]="participant().src" alt="" class="minigame-sprite-layer" />
+  }
+</div>

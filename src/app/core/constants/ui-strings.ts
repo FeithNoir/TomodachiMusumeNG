@@ -6,7 +6,7 @@ export const UI_STRINGS: UiStringDictionary = {
   titleSubtitle: { es: 'Un nuevo vínculo te espera', en: 'A New Bond Awaits' },
   titleNewGame: { es: 'Nueva Partida', en: 'New Game' },
   titleLoadGame: { es: 'Cargar Partida', en: 'Load Game' },
-  titleVersion: { es: 'Alpha v0.1.0', en: 'Alpha v0.1.0' },
+  titleVersion: { es: 'Alpha v0.2.0', en: 'Alpha v0.2.0' },
   titleCopyright: { es: '© 2026 Oniriums', en: '© 2026 Oniriums' },
 
   // Tutorial
@@ -45,6 +45,7 @@ export const UI_STRINGS: UiStringDictionary = {
   mission: { es: 'Misión', en: 'Mission' },
   market: { es: 'Mercado', en: 'Market' },
   craft: { es: 'Crear', en: 'Craft' },
+  companions: { es: 'Compañeros', en: 'Companions' },
 
   // Menu
   menuTitle: { es: 'Menú', en: 'Menu' },
@@ -55,6 +56,11 @@ export const UI_STRINGS: UiStringDictionary = {
   galleryTab_outfit: { es: 'Atuendos', en: 'Outfits' },
   galleryTab_scene: { es: 'Escenas', en: 'Scenes' },
   galleryTab_memory: { es: 'Recuerdos', en: 'Memories' },
+  tutorials: { es: 'Tutoriales', en: 'Tutorials' },
+  tutorialsTitle: { es: 'Tutoriales', en: 'Tutorials' },
+  tutorialSeenBadge: { es: 'Leído', en: 'Read' },
+  tutorialMarkRead: { es: 'Marcar como leído', en: 'Mark as read' },
+  tutorialGotIt: { es: 'Entendido', en: 'Got it' },
   exit: { es: 'Salir', en: 'Exit' },
 
   // Info HUD
@@ -253,6 +259,18 @@ export const UI_STRINGS: UiStringDictionary = {
     es: '¡Capacidad de mascotas ampliada!',
     en: 'Pet capacity expanded!',
   },
+
+  companionsTitle: { es: 'Compañeros y mascotas', en: 'Companions & pets' },
+  companionsSlots: (used: number, max: number) => ({
+    es: `${used} / ${max} espacios`,
+    en: `${used} / ${max} slots`,
+  }),
+  companionsIncubating: { es: 'Incubando', en: 'Incubating' },
+  companionsPets: { es: 'Mascotas', en: 'Pets' },
+  companionsEmpty: {
+    es: 'Aún no tienes mascotas. Compra huevos en el mercado.',
+    en: 'No pets yet. Buy eggs at the market.',
+  },
   shopPetSlotUpgrade: {
     es: 'Expansión de Mascotas (+1)',
     en: 'Pet Slot Expansion (+1)',
@@ -266,6 +284,9 @@ export const UI_STRINGS: UiStringDictionary = {
     en: 'Inventory capacity expanded!',
   },
   shopTabUpgrades: { es: 'Mejoras', en: 'Upgrades' },
+  shopTabCompanions: { es: 'Compañeros', en: 'Companions' },
+  shopTabIngredients: { es: 'Ingredientes', en: 'Ingredients' },
+  shopTabMeals: { es: 'Comidas', en: 'Meals' },
   shopTabWeapons: { es: 'Armas', en: 'Weapons' },
   noShopItems: { es: 'No hay artículos en esta categoría.', en: 'No items in this category.' },
   shopCommonEgg: {
@@ -321,6 +342,26 @@ export const UI_STRINGS: UiStringDictionary = {
     en: `+${amount} affinity`,
   }),
   minigameResultStat: (stat: string, amount: number) => ({
+    es: `+${amount} ${stat} (mascota)`,
+    en: `+${amount} ${stat} (pet)`,
+  }),
+  runnerMeters: { es: 'Metros recorridos', en: 'Meters run' },
+  runnerHighScore: { es: 'Récord', en: 'Best run' },
+  runnerDefeatCollision: { es: '¡Chocaste con un obstáculo!', en: 'You hit an obstacle!' },
+  runnerDefeatStamina: { es: 'Te quedaste sin resistencia.', en: 'You ran out of stamina.' },
+  runnerEnduranceGain: (amount: number) => ({
+    es: `+${amount} aguante permanente por tu récord en carrera.`,
+    en: `+${amount} permanent endurance from your run record.`,
+  }),
+  runnerRunComplete: (meters: number) => ({
+    es: `Carrera completada: ${meters} m.`,
+    en: `Run complete: ${meters} m.`,
+  }),
+  runnerResultAffinity: (amount: number) => ({
+    es: `+${amount} afinidad`,
+    en: `+${amount} affinity`,
+  }),
+  runnerResultStat: (stat: string, amount: number) => ({
     es: `+${amount} ${stat} (mascota)`,
     en: `+${amount} ${stat} (pet)`,
   }),

@@ -1,4 +1,5 @@
 import { GameState } from '@core/interfaces/game-state.interface';
+import { ActiveMission } from '@core/interfaces/mission-definition.interface';
 import {
   DEFAULT_CHARACTER_NAME,
   DEFAULT_EXPRESSION,
@@ -47,7 +48,11 @@ export const INITIAL_GAME_STATE: GameState = {
   incubatingEggs: [],
   petSlotCapacity: DEFAULT_PET_SLOT_CAPACITY,
   inventorySlotCapacity: INVENTORY_MAX_SLOTS,
-  activeMission: null,
+  activeMissions: [],
+  runnerHighScoreMeters: 0,
+  runnerEnduranceGranted: 0,
+  trainingStatBonus: {},
+  seenTutorials: [],
   missionBoardSeed: Date.now(),
   missionFlags: [],
   completedDateEvents: [],
@@ -57,8 +62,13 @@ export function cloneInitialGameState(): GameState {
   return JSON.parse(JSON.stringify(INITIAL_GAME_STATE)) as GameState;
 }
 
-export function normalizeGameState(raw: Partial<GameState>): GameState {
+export function normalizeGameState(raw: Partial<GameState> & { activeMission?: ActiveMission | null }): GameState {
   const defaults = cloneInitialGameState();
+  const legacyMission = raw.activeMission;
+  const activeMissions =
+    raw.activeMissions ??
+    (legacyMission ? [legacyMission] : defaults.activeMissions);
+
   return {
     ...defaults,
     ...raw,
@@ -70,7 +80,11 @@ export function normalizeGameState(raw: Partial<GameState>): GameState {
     incubatingEggs: raw.incubatingEggs ?? defaults.incubatingEggs,
     petSlotCapacity: raw.petSlotCapacity ?? defaults.petSlotCapacity,
     inventorySlotCapacity: raw.inventorySlotCapacity ?? defaults.inventorySlotCapacity,
-    activeMission: raw.activeMission ?? null,
+    activeMissions,
+    runnerHighScoreMeters: raw.runnerHighScoreMeters ?? defaults.runnerHighScoreMeters,
+    runnerEnduranceGranted: raw.runnerEnduranceGranted ?? defaults.runnerEnduranceGranted,
+    trainingStatBonus: raw.trainingStatBonus ?? defaults.trainingStatBonus,
+    seenTutorials: raw.seenTutorials ?? defaults.seenTutorials,
     missionBoardSeed: raw.missionBoardSeed ?? defaults.missionBoardSeed,
     missionFlags: raw.missionFlags ?? defaults.missionFlags,
     completedDateEvents: raw.completedDateEvents ?? defaults.completedDateEvents,

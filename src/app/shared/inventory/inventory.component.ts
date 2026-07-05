@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, signal, Output, EventEmitter, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { ARMOR_SET_LABELS } from '@core/data/armor-sets';
 import { INVENTORY_FILTER_TABS } from '@core/data/catalog-filter.config';
@@ -41,6 +41,7 @@ export class InventoryComponent {
   private localization = inject(LocalizationService);
   private notifications = inject(NotificationService);
 
+  @Input() embedded = false;
   @Output() close = new EventEmitter<void>();
 
   public inventory = this.inventoryService.inventory;
@@ -145,6 +146,10 @@ export class InventoryComponent {
     return this.itemCatalog.getItemPath(itemId);
   }
 
+  getItemEmoji(itemId: string): string | null {
+    return this.itemCatalog.getItem(itemId)?.emoji ?? null;
+  }
+
   getRarityClass(itemId: string): string {
     return this.itemCatalog.getItemRarityClass(itemId);
   }
@@ -226,11 +231,18 @@ export class InventoryComponent {
       this.gameStateService.updateEnergy(itemData.effects.energy);
     }
 
+    if (itemData.effects?.satiety) {
+      this.gameStateService.updateSatiety(itemData.effects.satiety);
+    }
+
     this.inventoryService.removeItem(itemId, 1);
     this.notifications.success(this.getText('itemUsedMsg', this.getItemName(itemId)));
   }
 
   onClose(): void {
+    if (this.embedded) {
+      return;
+    }
     this.inventoryUi.reset();
     this.close.emit();
   }

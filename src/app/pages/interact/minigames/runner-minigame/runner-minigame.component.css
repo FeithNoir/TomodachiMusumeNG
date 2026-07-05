@@ -55,29 +55,41 @@
   background: linear-gradient(180deg, #a67c52, #6b4f2a);
 }
 
+.runner-stamina {
+  position: absolute;
+  top: 2rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.runner-stamina-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #fbbf24);
+  transition: width 0.1s linear;
+}
+
+.overlay-reason {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.overlay-record {
+  color: var(--gold-accent);
+  font-weight: 700;
+}
+
 .runner-player {
   position: absolute;
   left: 48px;
   bottom: 44%;
   width: 56px;
   height: 72px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  transition: transform 0.05s linear;
   z-index: 2;
-}
-
-.runner-sprite {
-  max-height: 100%;
-  transform: scale(0.5);
-  transform-origin: bottom center;
-  pointer-events: none;
-}
-
-.runner-emoji {
-  font-size: 2.4rem;
-  line-height: 1;
 }
 
 .runner-obstacle {

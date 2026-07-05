@@ -38,8 +38,21 @@
   gap: 3rem;
   z-index: 10;
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
   padding: 2rem;
+  border: 3px solid rgba(251, 191, 36, 0.65);
+  border-radius: 1.25rem;
+  background: linear-gradient(
+    160deg,
+    rgba(88, 28, 135, 0.45) 0%,
+    rgba(30, 27, 75, 0.55) 45%,
+    rgba(190, 24, 93, 0.35) 100%
+  );
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08) inset,
+    0 0 40px rgba(244, 114, 182, 0.25),
+    0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
 }
 
 .logo-container {
@@ -49,12 +62,16 @@
 .game-title {
   font-size: 4rem;
   font-weight: 800;
-  color: var(--text-white);
+  background: linear-gradient(180deg, #fef3c7 0%, #fbbf24 45%, #f472b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 0;
   line-height: 1;
-  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 40px rgba(251, 191, 36, 0.3);
+  text-shadow: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
 }
 
 .game-subtitle {

@@ -18,11 +18,7 @@
   </div>
 
   <div class="rhythm-player" [style.transform]="'scale(' + jumpScale() + ')'">
-    @if (participant().display === 'emoji') {
-      <span class="rhythm-emoji">{{ participant().src }}</span>
-    } @else {
-      <img [src]="participant().src" alt="" class="rhythm-sprite" />
-    }
+    <app-minigame-sprite [participant]="participant()" [scale]="0.45" />
   </div>
 
   @if (gameOver()) {

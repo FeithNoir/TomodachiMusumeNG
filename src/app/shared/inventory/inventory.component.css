@@ -2,6 +2,40 @@
   display: contents;
 }
 
+.inventory-root--embedded {
+  padding: 0.75rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.inventory-root--embedded .panel-header--compact {
+  margin-bottom: 0.35rem;
+}
+
+.inventory-root--embedded .panel-header--compact .modal-title {
+  font-size: 0.95rem;
+}
+
+.inventory-root--embedded .scroll-area,
+.inventory-root--embedded .inventory-grid,
+.inventory-root--embedded .armor-section,
+.inventory-root--embedded .recipe-section {
+  flex: 1;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.item-emoji {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
 .inventory-meta {
   display: flex;
   flex-wrap: wrap;

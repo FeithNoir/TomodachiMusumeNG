@@ -1,0 +1,29 @@
+.minigame-sprite {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform-origin: bottom center;
+  height: 100%;
+  width: 100%;
+}
+
+.minigame-sprite-layer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.minigame-sprite-layer--weapon {
+  z-index: 2;
+}
+
+.minigame-sprite-emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+}

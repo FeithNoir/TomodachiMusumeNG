@@ -31,15 +31,19 @@
 
 .icon-wrapper {
   padding: 0.5rem;
-  background: var(--icon-wrapper-bg);
+  background: linear-gradient(145deg, rgba(244, 114, 182, 0.22), rgba(251, 191, 36, 0.18));
+  border: 2px solid rgba(251, 191, 36, 0.75);
   border-radius: var(--radius-sm);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 4px 12px rgba(0, 0, 0, 0.35);
   transition: all var(--transition-base);
 }
 
 .dock-icon {
   width: 1.5rem;
   height: 1.5rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) sepia(0.35) saturate(2.2) hue-rotate(5deg);
 }
 
 .dock-emoji {
@@ -61,8 +65,12 @@
 }
 
 .dock-item:hover .icon-wrapper {
-  background: var(--gold-glow);
-  box-shadow: 0 0 15px var(--gold-glow);
+  background: linear-gradient(145deg, rgba(244, 114, 182, 0.35), rgba(251, 191, 36, 0.32));
+  border-color: #fde68a;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 0 18px rgba(251, 191, 36, 0.55),
+    0 0 24px rgba(244, 114, 182, 0.35);
 }
 
 .dock-item:active {

@@ -1,6 +1,6 @@
 /** Global balance and persistence constants for Tomodachi Musume Ng. */
 export const GAME_SAVE_KEY = 'tomodachiMusumeSave';
-export const GAME_VERSION = '0.0.2';
+export const GAME_VERSION = '0.2.0';
 
 export const GAME_LOOP_TICK_MS = 3_000;
 export const MISSION_TICK_MS = 1_000;

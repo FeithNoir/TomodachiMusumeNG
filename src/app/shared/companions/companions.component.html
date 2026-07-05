@@ -1,0 +1,68 @@
+<div class="glass-panel modal-container modal-container--lg fade-in companions-modal">
+  <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+    <span>✕</span>
+  </button>
+
+  <div class="panel-header">
+    <h3 class="modal-title">{{ getText('companionsTitle') }}</h3>
+    <span class="pill pill--sm">{{ getText('companionsSlots', slotsUsed(), slotCapacity()) }}</span>
+  </div>
+
+  @if (incubatingEggs().length > 0) {
+    <section class="companions-section">
+      <h4 class="section-heading">{{ getText('companionsIncubating') }}</h4>
+      <div class="companions-grid">
+        @for (egg of incubatingEggs(); track egg.instanceId) {
+          <div class="companion-card interactive-card">
+            <div class="companion-visual">
+              @if (eggVisual(egg); as visual) {
+                @if (isImageVisual(visual)) {
+                  <img [src]="visual.value" alt="" class="companion-img" />
+                } @else {
+                  <span class="companion-emoji">{{ visual.value }}</span>
+                }
+              } @else {
+                <span class="companion-emoji">🥚</span>
+              }
+            </div>
+            <p class="companion-name">{{ eggLabel(egg) }}</p>
+            <div class="incubation-bar">
+              <div class="incubation-bar__fill" [style.width.%]="incubationProgress(egg)"></div>
+            </div>
+            <span class="text-dim incubation-pct">{{ incubationProgress(egg) }}%</span>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="companions-section">
+    <h4 class="section-heading">{{ getText('companionsPets') }}</h4>
+    @if (pets().length === 0) {
+      <p class="empty-state">{{ getText('companionsEmpty') }}</p>
+    } @else {
+      <div class="companions-grid scroll-area">
+        @for (pet of pets(); track pet.id) {
+          <div class="companion-card interactive-card">
+            <div class="companion-visual">
+              @if (isImageVisual(pet.visual)) {
+                <img [src]="pet.visual.value" alt="" class="companion-img" />
+              } @else {
+                <span class="companion-emoji">{{ pet.visual.value }}</span>
+              }
+            </div>
+            <p class="companion-name">{{ pet.name }}</p>
+            <div class="companion-stats">
+              @for (key of statKeys; track key) {
+                <span class="companion-stat">
+                  <span class="companion-stat__label">{{ getStatLabel(key) }}</span>
+                  <span class="companion-stat__value">{{ petTotalStat(pet, key) }}</span>
+                </span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

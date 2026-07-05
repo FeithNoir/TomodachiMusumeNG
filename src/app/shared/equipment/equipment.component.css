@@ -46,6 +46,43 @@
   background: var(--gold-accent-muted);
 }
 
+.inventory-link-btn--active {
+  border-color: var(--gold-accent);
+  background: var(--gold-accent-muted);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+}
+
+.equipment-panel--with-inventory {
+  max-width: min(96vw, 920px);
+}
+
+.equipment-layout {
+  display: block;
+}
+
+.equipment-layout--split {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 340px);
+  gap: 1rem;
+  align-items: start;
+}
+
+.equipment-inventory-pane {
+  min-height: 0;
+  max-height: min(65vh, 520px);
+  overflow: hidden;
+}
+
+@media (max-width: 720px) {
+  .equipment-layout--split {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-inventory-pane {
+    max-height: 50vh;
+  }
+}
+
 .inventory-link-icon {
   width: 1.1rem;
   height: 1.1rem;

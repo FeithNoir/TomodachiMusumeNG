@@ -15,17 +15,18 @@ import { ShopComponent } from '@pages/shop/shop.component';
 import { MissionComponent } from '@pages/mission/mission.component';
 import { InteractComponent } from '@pages/interact/interact.component';
 import { GalleryComponent } from '@shared/gallery/gallery.component';
+import { TutorialsComponent } from '@shared/tutorials/tutorials.component';
+import { CompanionsComponent } from '@shared/companions/companions.component';
 import { MissionRewardModalComponent } from '@shared/mission-reward-modal/mission-reward-modal.component';
 import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 
 import { GameStateService } from '@core/services/game-state.service';
 import { CharacterService } from '@core/services/character.service';
-import { InventoryUiService } from '@core/services/inventory-ui.service';
 import { MissionService } from '@core/services/mission.service';
 import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
 import { dialogues } from '@core/data/dialogue-database';
 
-type ActiveModal = SidebarAction | 'options' | 'gallery' | null;
+type ActiveModal = SidebarAction | 'options' | 'gallery' | 'tutorials' | null;
 
 @Component({
   selector: 'app-layout',
@@ -44,6 +45,8 @@ type ActiveModal = SidebarAction | 'options' | 'gallery' | null;
     MissionComponent,
     InteractComponent,
     GalleryComponent,
+    TutorialsComponent,
+    CompanionsComponent,
     MissionRewardModalComponent,
     TutorialComponent,
     OptionsComponent,
@@ -55,7 +58,6 @@ type ActiveModal = SidebarAction | 'options' | 'gallery' | null;
 export class LayoutComponent {
   private gameStateService = inject(GameStateService);
   private characterService = inject(CharacterService);
-  private inventoryUi = inject(InventoryUiService);
   private missionService = inject(MissionService);
 
   constructor() {
@@ -74,6 +76,8 @@ export class LayoutComponent {
   isInteractVisible = computed(() => this.activeModal() === 'interact');
   isOptionsVisible = computed(() => this.activeModal() === 'options');
   isGalleryVisible = computed(() => this.activeModal() === 'gallery');
+  isTutorialsVisible = computed(() => this.activeModal() === 'tutorials');
+  isCompanionsVisible = computed(() => this.activeModal() === 'companions');
 
   public hasCompletedIntro = this.gameStateService.hasCompletedIntro;
 
@@ -99,18 +103,16 @@ export class LayoutComponent {
     }
     if (action === 'gallery') {
       this.activeModal.set('gallery');
+      return;
+    }
+    if (action === 'tutorials') {
+      this.activeModal.set('tutorials');
     }
   }
 
   closeActiveModal(): void {
     this.activeModal.set(null);
     this.currentDialogue.set(null);
-    this.inventoryUi.reset();
-  }
-
-  openInventoryFromEquipment(): void {
-    this.inventoryUi.openForEquip();
-    this.activeModal.set('inventory');
   }
 
   private startRandomDialogue(): void {

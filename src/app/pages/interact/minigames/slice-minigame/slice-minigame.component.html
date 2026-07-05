@@ -18,12 +18,10 @@
   }
 
   <div class="slice-fighter" [class.slice-fighter--slash]="slash()">
-    @if (participant().display === 'emoji') {
-      <span class="slice-emoji">{{ participant().src }}</span>
-    } @else {
-      <img [src]="participant().src" alt="" class="slice-sprite" />
+    <app-minigame-sprite [participant]="participant()" [scale]="0.42" />
+    @if (participant().type === 'character') {
+      <span class="slice-sword">⚔️</span>
     }
-    <span class="slice-sword">⚔️</span>
   </div>
 
   @if (gameOver()) {

@@ -74,7 +74,12 @@
 
       @if (phase() === 'result' && trainingResult(); as result) {
         <div class="result-panel">
-          <p class="result-score">{{ getText('interactScore') }}: {{ result.score }}</p>
+          @if (selectedGame()?.id === 'runner') {
+            <p class="result-score">{{ getText('runnerMeters') }}: {{ result.score }}m</p>
+            <p class="text-dim">{{ getText('runnerHighScore') }}: {{ minigameService.runnerHighScore() }}m</p>
+          } @else {
+            <p class="result-score">{{ getText('interactScore') }}: {{ result.score }}</p>
+          }
           <p class="result-bonus">{{ resultSummary() }}</p>
           <p class="text-dim">{{ result.assigneeLabel }}</p>
           <button type="button" class="btn-finish" (click)="goBack()">
@@ -132,4 +137,16 @@
       }
     </div>
   </div>
+
+  @if (showMinigameTutorial() && minigameIntroTutorial; as tutorial) {
+    <div class="tutorial-overlay" (click)="$event.stopPropagation()">
+      <div class="tutorial-pop glass-panel fade-in">
+        <h4 class="tutorial-pop__title">{{ localized(tutorial.title) }}</h4>
+        <p class="tutorial-pop__body">{{ localized(tutorial.body) }}</p>
+        <button type="button" class="btn-finish" (click)="dismissMinigameTutorial()">
+          {{ getText('tutorialGotIt') }}
+        </button>
+      </div>
+    </div>
+  }
 }

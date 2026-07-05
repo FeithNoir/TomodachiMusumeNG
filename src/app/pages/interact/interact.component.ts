@@ -19,6 +19,8 @@ import {
 } from '@core/interfaces/minigame.interface';
 import { LocalizationService } from '@core/services/localization.service';
 import { MinigameService } from '@core/services/minigame.service';
+import { TutorialService } from '@core/services/tutorial.service';
+import { GAME_TUTORIALS } from '@core/data/tutorials.config';
 import { TrainingAssigneePickerComponent } from '@pages/interact/training-assignee-picker/training-assignee-picker.component';
 import { RunnerMinigameComponent } from '@pages/interact/minigames/runner-minigame/runner-minigame.component';
 import { RhythmMinigameComponent } from '@pages/interact/minigames/rhythm-minigame/rhythm-minigame.component';
@@ -51,7 +53,8 @@ type InteractPhase =
 })
 export class InteractComponent {
   private localization = inject(LocalizationService);
-  private minigameService = inject(MinigameService);
+  readonly minigameService = inject(MinigameService);
+  private tutorialService = inject(TutorialService);
 
   @Output() close = new EventEmitter<void>();
 
@@ -65,6 +68,10 @@ export class InteractComponent {
   participant = signal<MinigameParticipant | null>(null);
   trainingResult = signal<TrainingResult | null>(null);
   selectedDate = signal<DateEventDefinition | null>(null);
+  showMinigameTutorial = signal(false);
+  pendingCategory = signal<MinigameCategory | null>(null);
+
+  readonly minigameIntroTutorial = GAME_TUTORIALS.find(t => t.autoShowOn === 'minigames');
 
   unlockedDates = computed(() => this.minigameService.getUnlockedDateEvents());
   lockedDates = computed(() => this.minigameService.getLockedDateEvents());
@@ -94,6 +101,11 @@ export class InteractComponent {
 
   openCategory(category: MinigameCategory): void {
     if (category === 'training') {
+      if (this.tutorialService.shouldAutoShowMinigames()) {
+        this.pendingCategory.set('training');
+        this.showMinigameTutorial.set(true);
+        return;
+      }
       this.phase.set('training');
       return;
     }
@@ -102,6 +114,16 @@ export class InteractComponent {
       return;
     }
     this.phase.set('experiments');
+  }
+
+  dismissMinigameTutorial(): void {
+    this.tutorialService.markSeen(this.tutorialService.getMinigamesIntroId());
+    this.showMinigameTutorial.set(false);
+    const pending = this.pendingCategory();
+    if (pending) {
+      this.phase.set(pending);
+      this.pendingCategory.set(null);
+    }
   }
 
   selectTrainingGame(game: TrainingGameDefinition): void {
@@ -123,7 +145,10 @@ export class InteractComponent {
       return;
     }
 
-    const result = this.minigameService.applyTrainingResult(game.id as TrainingGameId, assignee, score);
+    const result =
+      game.id === 'runner'
+        ? this.minigameService.applyRunnerResult(assignee, score)
+        : this.minigameService.applyTrainingResult(game.id as TrainingGameId, assignee, score);
     this.trainingResult.set(result);
     this.phase.set('result');
   }
@@ -178,7 +203,13 @@ export class InteractComponent {
     }
 
     if (assignee.type === 'character') {
+      if (game.id === 'runner') {
+        return this.getText('runnerResultAffinity', result.affinityGain);
+      }
       return this.getText('minigameResultAffinity', result.affinityGain);
+    }
+    if (game.id === 'runner') {
+      return this.getText('runnerResultStat', game.statKey, result.statGain);
     }
     return this.getText('minigameResultStat', game.statKey, result.statGain);
   }

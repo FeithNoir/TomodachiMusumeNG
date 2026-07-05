@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { MinigameParticipant } from '@core/interfaces/minigame.interface';
 import { LocalizationService } from '@core/services/localization.service';
+import { MinigameSpriteComponent } from '@shared/minigame-sprite/minigame-sprite.component';
 
 interface BeatMarker {
   id: number;
@@ -23,7 +24,7 @@ interface BeatMarker {
 @Component({
   selector: 'app-rhythm-minigame',
   standalone: true,
-  imports: [],
+  imports: [MinigameSpriteComponent],
   templateUrl: './rhythm-minigame.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './rhythm-minigame.component.css',

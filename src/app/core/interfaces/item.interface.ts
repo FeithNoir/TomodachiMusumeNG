@@ -15,6 +15,7 @@ export interface ItemEffects {
     itemChance: number;
   };
   energy?: number;
+  satiety?: number;
 }
 
 // Interfaz principal del Ítem
@@ -30,6 +31,8 @@ export interface Item {
   buyPrice?: number;
   sellPrice?: number;
   recipeId?: string;
+  /** Optional emoji placeholder when no image asset exists. */
+  emoji?: string;
 }
 
 // Interfaz para la colección maestra (Diccionario)

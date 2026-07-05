@@ -36,6 +36,18 @@ export function initializeShopPrices(): void {
     if (['suit', 'head', 'stockings', 'hands', 'bra', 'pantsus', 'consumable'].includes(item.type)) {
       item.buyPrice = calculatePrice(120, itemLevel + 1);
       item.sellPrice = Math.floor(item.buyPrice / 3);
+      continue;
+    }
+
+    if (item.type === 'material') {
+      item.buyPrice = calculatePrice(35, 1);
+      item.sellPrice = Math.floor(item.buyPrice / 3);
+      continue;
+    }
+
+    if (item.type === 'recipe') {
+      item.buyPrice = calculatePrice(75, 2);
+      item.sellPrice = Math.floor(item.buyPrice / 3);
     }
   }
 }

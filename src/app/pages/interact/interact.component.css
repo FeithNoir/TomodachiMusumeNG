@@ -122,3 +122,37 @@ button.date-card {
 .experiments-icon {
   font-size: 3rem;
 }
+
+.tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 10, 30, 0.72);
+  border-radius: inherit;
+}
+
+.tutorial-pop {
+  max-width: 420px;
+  padding: 1.25rem;
+  text-align: center;
+  border: 2px solid rgba(251, 191, 36, 0.55);
+}
+
+.tutorial-pop__title {
+  margin: 0 0 0.75rem;
+  color: var(--gold-accent);
+}
+
+.tutorial-pop__body {
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.interact-modal {
+  position: relative;
+}

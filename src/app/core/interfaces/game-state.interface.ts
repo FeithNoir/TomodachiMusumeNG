@@ -1,4 +1,5 @@
 import { ActiveMission } from '@core/interfaces/mission-definition.interface';
+import { CharacterStats } from '@core/interfaces/character-stats.interface';
 import { Pet, IncubatingEgg } from '@core/interfaces/pet.interface';
 
 export interface GameState {
@@ -30,7 +31,15 @@ export interface GameState {
   incubatingEggs: IncubatingEgg[];
   petSlotCapacity: number;
   inventorySlotCapacity: number;
-  activeMission: ActiveMission | null;
+  activeMissions: ActiveMission[];
+  /** Best distance (meters) in the runner minigame. */
+  runnerHighScoreMeters: number;
+  /** Endurance tiers already granted from runner (1 per 2000m of high score). */
+  runnerEnduranceGranted: number;
+  /** Permanent stat bonuses from training minigames. */
+  trainingStatBonus: Partial<CharacterStats>;
+  /** Tutorial ids the player has seen. */
+  seenTutorials: string[];
   /** Seed for deterministic random mission slots between sessions. */
   missionBoardSeed: number;
   /** Unlocked conditional / one-time mission ids. */

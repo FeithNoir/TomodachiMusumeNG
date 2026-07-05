@@ -33,12 +33,7 @@ export class MinigameService {
 
   buildTrainingAssignees(energyCost: number): TrainingAssigneeOption[] {
     const options: TrainingAssigneeOption[] = [];
-    const active = this.gameState.gameState().activeMission;
-    const busyIds = new Set<string>();
-
-    if (active && Date.now() < active.endsAt) {
-      busyIds.add(active.assigneeId);
-    }
+    const busyIds = this.missionService.getBusyAssigneeIds();
 
     const energyOk = this.gameState.energy() >= energyCost;
     options.push({
@@ -176,5 +171,61 @@ export class MinigameService {
 
   isCharacterOnMission(): boolean {
     return this.missionService.isCharacterAway();
+  }
+
+  readonly runnerHighScore = computed(() => this.gameState.gameState().runnerHighScoreMeters);
+
+  recordRunnerRun(meters: number): { isNewRecord: boolean; enduranceGained: number } {
+    const state = this.gameState.gameState();
+    let isNewRecord = false;
+    let enduranceGained = 0;
+
+    if (meters > state.runnerHighScoreMeters) {
+      isNewRecord = true;
+      const newTiers = Math.floor(meters / 2000);
+      const delta = Math.max(0, newTiers - state.runnerEnduranceGranted);
+      enduranceGained = delta;
+
+      this.gameState.updateState(s => ({
+        ...s,
+        runnerHighScoreMeters: meters,
+        runnerEnduranceGranted: newTiers,
+        trainingStatBonus: {
+          ...s.trainingStatBonus,
+          endurance: (s.trainingStatBonus.endurance ?? 0) + delta,
+        },
+      }));
+
+      if (delta > 0) {
+        this.notifications.success(this.localization.t('runnerEnduranceGain', delta));
+      }
+    }
+
+    return { isNewRecord, enduranceGained };
+  }
+
+  applyRunnerResult(assignee: TrainingAssigneeOption, meters: number): TrainingResult {
+    const game = TRAINING_GAME_MAP['runner'];
+    let affinityGain = 0;
+    let statGain = 0;
+
+    if (assignee.type === 'character') {
+      this.gameState.updateEnergy(-game.energyCost);
+      this.recordRunnerRun(meters);
+      affinityGain = Math.max(1, Math.round(meters / 500));
+      this.characterService.updateAffinity(affinityGain);
+    } else {
+      statGain = Math.max(1, Math.round(meters / 400));
+      this.petService.trainPet(assignee.id, game.statKey, statGain);
+    }
+
+    this.notifications.success(this.localization.t('runnerRunComplete', meters));
+
+    return {
+      score: meters,
+      statGain,
+      affinityGain,
+      assigneeLabel: assignee.label,
+    };
   }
 }

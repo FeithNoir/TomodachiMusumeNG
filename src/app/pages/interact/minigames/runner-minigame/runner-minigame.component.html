@@ -1,19 +1,19 @@
-<div class="minigame-stage runner-stage" (click)="jump()" (keydown)="$event">
+<div class="minigame-stage runner-stage" (click)="jump()">
   <div class="minigame-hud">
-    <span>{{ getText('interactScore') }}: {{ score() }}</span>
-    <span class="minigame-hint">{{ getText('interactTapJump') }}</span>
+    <span>{{ getText('runnerMeters') }}: {{ meters() }}m</span>
+    <span>{{ getText('runnerHighScore') }}: {{ highScore() }}m</span>
   </div>
+
+  <div class="runner-stamina">
+    <div class="runner-stamina-fill" [style.width.%]="stamina()"></div>
+  </div>
+
+  <p class="minigame-hint">{{ getText('interactTapJump') }}</p>
 
   <div class="runner-ground"></div>
 
-  <div
-    class="runner-player"
-    [style.transform]="'translateY(' + (-playerY()) + 'px)'">
-    @if (participant().display === 'emoji') {
-      <span class="runner-emoji">{{ participant().src }}</span>
-    } @else {
-      <img [src]="participant().src" alt="" class="runner-sprite" />
-    }
+  <div class="runner-player" [style.transform]="'translateY(' + (-jumpHeight()) + 'px)'">
+    <app-minigame-sprite [participant]="participant()" [scale]="0.42"></app-minigame-sprite>
   </div>
 
   @for (obstacle of obstacles(); track obstacle.id) {
@@ -23,7 +23,11 @@
   @if (gameOver()) {
     <div class="minigame-overlay">
       <p>{{ getText('interactGameOver') }}</p>
-      <p class="overlay-score">{{ score() }} pts</p>
+      <p class="overlay-reason">{{ defeatReasonLabel() }}</p>
+      <p class="overlay-score">{{ meters() }}m</p>
+      @if (meters() > highScore()) {
+        <p class="overlay-record">{{ getText('runnerNewRecord') }}</p>
+      }
     </div>
   }
 </div>

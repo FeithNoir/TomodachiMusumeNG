@@ -23,10 +23,22 @@ export const recipes: { [key: string]: Recipe } = {
   },
   'leather_skirt_recipe': {
     result: 'leather_skirt',
-    ingredients:
-      [
-        { id: 'wood_plank', quantity: 2 }
-      ]
+    ingredients: [{ id: 'wood_plank', quantity: 2 }],
   },
-  // Aquí se podrían añadir más recetas...
+  'bread_recipe': {
+    result: 'bread',
+    ingredients: [{ id: 'wheat', quantity: 2 }],
+  },
+  'steak_recipe': {
+    result: 'grilled_steak',
+    ingredients: [{ id: 'meat', quantity: 2 }, { id: 'wheat', quantity: 1 }],
+  },
+  'omelette_recipe': {
+    result: 'omelette',
+    ingredients: [{ id: 'eggs', quantity: 2 }, { id: 'wheat', quantity: 1 }],
+  },
+  'guacamole_recipe': {
+    result: 'guacamole',
+    ingredients: [{ id: 'avocado', quantity: 2 }],
+  },
 };
