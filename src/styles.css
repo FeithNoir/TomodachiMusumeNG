@@ -481,6 +481,25 @@ body {
   box-shadow: inset 0 0 10px rgba(251, 191, 36, 0.2);
 }
 
+.item-rarity--common,
+.item-rarity--uncommon,
+.item-rarity--rare,
+.item-rarity--epic,
+.item-rarity--legendary {
+  background: var(--rarity-bg, var(--surface-subtle));
+  border-color: var(--rarity-border, var(--glass-border));
+  box-shadow: 0 0 14px var(--rarity-glow, transparent);
+}
+
+.item-rarity--common:hover,
+.item-rarity--uncommon:hover,
+.item-rarity--rare:hover,
+.item-rarity--epic:hover,
+.item-rarity--legendary:hover {
+  background: var(--rarity-bg, var(--gold-accent-muted));
+  border-color: var(--rarity-color, var(--gold-accent));
+}
+
 .item-card {
   background: var(--surface-muted);
   border: 1px solid var(--glass-border);

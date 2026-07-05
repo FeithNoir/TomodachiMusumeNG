@@ -1,5 +1,5 @@
 import { ActiveMission } from '@core/interfaces/mission-definition.interface';
-import { Pet } from '@core/interfaces/pet.interface';
+import { Pet, IncubatingEgg } from '@core/interfaces/pet.interface';
 
 export interface GameState {
   version: string;
@@ -27,6 +27,7 @@ export interface GameState {
   expression: { eyes: string; mouth: string };
   characterName: string;
   pets: Pet[];
+  incubatingEggs: IncubatingEgg[];
   petSlotCapacity: number;
   activeMission: ActiveMission | null;
   /** Seed for deterministic random mission slots between sessions. */

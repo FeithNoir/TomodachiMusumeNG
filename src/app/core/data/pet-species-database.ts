@@ -1,6 +1,12 @@
 import { PetSpecies } from '@core/interfaces/pet.interface';
 
 export const PET_SPECIES: Record<string, PetSpecies> = {
+  meadow_puff: {
+    id: 'meadow_puff',
+    name: { es: 'Burbuja de Prado', en: 'Meadow Puff' },
+    defaultVisual: { type: 'emoji', value: '🫧' },
+    baseStats: { attack: 2, defense: 2, magic: 2, health: 35, luck: 3, endurance: 40, stealth: 2 },
+  },
   forest_sprite: {
     id: 'forest_sprite',
     name: { es: 'Espíritu del Bosque', en: 'Forest Sprite' },

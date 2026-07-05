@@ -1,5 +1,6 @@
-import { CharacterStats } from '@core/interfaces/character-stats.interface';
+import { CharacterStats, StatKey } from '@core/interfaces/character-stats.interface';
 import { LocalizedText } from '@core/interfaces/localized-text.interface';
+import { ItemRarity } from '@core/data/item-rarity.config';
 
 /** Visual representation — emoji now, image path later. */
 export interface PetVisual {
@@ -30,4 +31,12 @@ export interface EggDefinition {
   speciesId: string;
   visual: PetVisual;
   name: LocalizedText;
+  rarity: ItemRarity;
+}
+
+export interface IncubatingEgg {
+  instanceId: string;
+  eggId: string;
+  acquiredAt: number;
+  hatchAt: number;
 }

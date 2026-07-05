@@ -1,11 +1,12 @@
-import { Injectable, computed, inject } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { EGG_DEFINITIONS } from '@core/data/egg-database';
+import { getEggIncubationMs } from '@core/data/egg-rarity.config';
 import { PET_SPECIES } from '@core/data/pet-species-database';
 import {
   DEFAULT_PET_SLOT_CAPACITY,
   PET_SLOT_UPGRADE_AMOUNT,
 } from '@core/data/game-config';
-import { Pet, PetVisual } from '@core/interfaces/pet.interface';
+import { IncubatingEgg, Pet, PetVisual } from '@core/interfaces/pet.interface';
 import { CharacterStats, StatKey } from '@core/interfaces/character-stats.interface';
 import { GameStateService } from '@core/services/game-state.service';
 import { LocalizationService } from '@core/services/localization.service';
@@ -20,7 +21,10 @@ export class PetService {
   private localization = inject(LocalizationService);
   private notifications = inject(NotificationService);
 
+  private clock = signal(Date.now());
+
   readonly pets = computed(() => this.gameState.gameState().pets);
+  readonly incubatingEggs = computed(() => this.gameState.gameState().incubatingEggs);
   readonly slotCapacity = computed(() => this.gameState.gameState().petSlotCapacity);
   readonly hasFreeSlot = computed(() => this.pets().length < this.slotCapacity());
 
@@ -28,27 +32,76 @@ export class PetService {
     return this.hasFreeSlot();
   }
 
-  hatchEgg(eggId: string): Pet | null {
+  /** Starts incubation instead of instant hatch. */
+  acquireEgg(eggId: string): boolean {
     const egg = EGG_DEFINITIONS[eggId];
     if (!egg) {
-      return null;
+      return false;
+    }
+
+    const incubationMs = getEggIncubationMs(egg.rarity);
+    const now = Date.now();
+    const entry: IncubatingEgg = {
+      instanceId: `egg_${now}_${Math.random().toString(36).slice(2, 7)}`,
+      eggId,
+      acquiredAt: now,
+      hatchAt: now + incubationMs,
+    };
+
+    this.gameState.updateState(state => ({
+      ...state,
+      incubatingEggs: [...state.incubatingEggs, entry],
+    }));
+
+    this.notifications.success(
+      this.localization.t('eggIncubatingMsg', this.localization.localized(egg.name))
+    );
+    return true;
+  }
+
+  tickIncubation(): void {
+    this.clock.set(Date.now());
+    const now = Date.now();
+    const ready = this.gameState.gameState().incubatingEggs.filter(egg => egg.hatchAt <= now);
+
+    for (const entry of ready) {
+      this.hatchIncubatingEgg(entry);
+    }
+  }
+
+  getIncubationProgress(entry: IncubatingEgg): number {
+    this.clock();
+    const total = entry.hatchAt - entry.acquiredAt;
+    if (total <= 0) {
+      return 100;
+    }
+    const elapsed = Date.now() - entry.acquiredAt;
+    return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
+  }
+
+  private hatchIncubatingEgg(entry: IncubatingEgg): void {
+    const egg = EGG_DEFINITIONS[entry.eggId];
+    if (!egg) {
+      this.removeIncubatingEgg(entry.instanceId);
+      return;
     }
 
     if (!this.canAddPet()) {
       this.notifications.warning(this.localization.t('petSlotsFullMsg'));
-      return null;
+      return;
     }
 
     const species = PET_SPECIES[egg.speciesId];
     if (!species) {
-      return null;
+      this.removeIncubatingEgg(entry.instanceId);
+      return;
     }
 
     const pet: Pet = {
       id: `pet_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       speciesId: species.id,
       name: this.localization.localized(species.name),
-      visual: { ...egg.visual },
+      visual: { ...species.defaultVisual },
       baseStats: buildPetBaseStats(species.baseStats),
       bonusStats: createEmptyBonusStats(),
       hatchedAt: Date.now(),
@@ -57,10 +110,17 @@ export class PetService {
     this.gameState.updateState(state => ({
       ...state,
       pets: [...state.pets, pet],
+      incubatingEggs: state.incubatingEggs.filter(e => e.instanceId !== entry.instanceId),
     }));
 
     this.notifications.success(this.localization.t('petHatchedMsg', pet.name));
-    return pet;
+  }
+
+  private removeIncubatingEgg(instanceId: string): void {
+    this.gameState.updateState(state => ({
+      ...state,
+      incubatingEggs: state.incubatingEggs.filter(e => e.instanceId !== instanceId),
+    }));
   }
 
   applyStatBonus(petId: string, bonus: Partial<CharacterStats>): void {
@@ -81,7 +141,6 @@ export class PetService {
     }));
   }
 
-  /** Training, food, and potions entry points. */
   trainPet(petId: string, stat: StatKey, amount: number = 1): void {
     this.applyStatBonus(petId, { [stat]: amount });
     this.notifications.info(this.localization.t('petTrainedMsg', stat));

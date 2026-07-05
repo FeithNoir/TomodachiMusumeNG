@@ -9,7 +9,9 @@ import { getMissionDurationMs } from '@core/data/mission-difficulty.config';
 import {
   MissionBoardEntry,
   MissionCondition,
+  MissionConditionStatus,
   MissionDefinition,
+  MissionStatRequirementStatus,
 } from '@core/interfaces/mission-definition.interface';
 import { CharacterStatsService } from '@core/services/character-stats.service';
 import { CharacterService } from '@core/services/character.service';
@@ -44,32 +46,66 @@ export class MissionBoardService {
 
   private toBoardEntry(definition: MissionDefinition): MissionBoardEntry {
     const durationMs = getMissionDurationMs(definition.difficulty, definition.durationMs);
-    const check = this.evaluateRequirements(definition);
+    const statStatuses = this.buildStatStatuses(definition);
+    const conditionStatuses = this.buildConditionStatuses(definition);
+    const currentEnergy = this.gameState.energy();
+    const energyMet = currentEnergy >= definition.energyCost;
+
+    const statsOk = statStatuses.every(s => s.met);
+    const conditionsOk = conditionStatuses.every(c => c.met);
+    const meetsRequirements = statsOk && conditionsOk;
 
     return {
       definition,
       durationMs,
-      meetsRequirements: check.ok,
-      lockedReasonKey: check.reasonKey,
+      meetsRequirements,
+      lockedReasonKey: !conditionsOk
+        ? 'missionLockedCondition'
+        : !statsOk
+          ? 'missionLockedStats'
+          : undefined,
+      statStatuses,
+      conditionStatuses,
+      energyCost: definition.energyCost,
+      currentEnergy,
+      energyMet,
     };
   }
 
-  private evaluateRequirements(definition: MissionDefinition): { ok: boolean; reasonKey?: string } {
-    for (const condition of definition.conditions ?? []) {
-      if (!this.meetsCondition(condition)) {
-        return { ok: false, reasonKey: 'missionLockedCondition' };
-      }
-    }
+  private buildStatStatuses(definition: MissionDefinition): MissionStatRequirementStatus[] {
+    const stats = this.characterStats.totalStats();
+    return (definition.statRequirements ?? []).map(req => ({
+      stat: req.stat,
+      required: req.minValue,
+      current: stats[req.stat],
+      met: stats[req.stat] >= req.minValue,
+    }));
+  }
 
-    if (definition.statRequirements?.length) {
-      const stats = this.characterStats.totalStats();
-      const failed = definition.statRequirements.some(req => stats[req.stat] < req.minValue);
-      if (failed) {
-        return { ok: false, reasonKey: 'missionLockedStats' };
-      }
-    }
+  private buildConditionStatuses(definition: MissionDefinition): MissionConditionStatus[] {
+    return (definition.conditions ?? []).map(condition => {
+      const current = this.getConditionCurrent(condition);
+      const required = condition.minValue ?? 0;
+      return {
+        type: condition.type,
+        current,
+        required,
+        met: this.meetsCondition(condition),
+      };
+    });
+  }
 
-    return { ok: true };
+  private getConditionCurrent(condition: MissionCondition): number {
+    switch (condition.type) {
+      case 'affinity':
+        return this.characterService.affinity();
+      case 'stat':
+        return condition.stat
+          ? this.characterStats.totalStats()[condition.stat]
+          : 0;
+      default:
+        return 0;
+    }
   }
 
   private meetsCondition(condition: MissionCondition): boolean {

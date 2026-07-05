@@ -65,8 +65,8 @@
 
 <!-- Modal de Misión -->
 @if (isMissionVisible()) {
-<div class="modal-overlay">
-  <app-mission (close)="closeActiveModal()"></app-mission>
+<div class="modal-overlay" (click)="closeActiveModal()">
+  <app-mission (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-mission>
 </div>
 }
 

@@ -307,9 +307,7 @@ export class MissionService {
     }
 
     for (const eggId of reward.eggsFound) {
-      if (this.petService.canAddPet()) {
-        this.petService.hatchEgg(eggId);
-      }
+      this.petService.acquireEgg(eggId);
     }
   }
 

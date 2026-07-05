@@ -45,6 +45,14 @@ export class EquipmentComponent {
     return this.itemCatalog.getItemPath(itemId);
   }
 
+  getRarityClass(itemId: string | null): string {
+    return itemId ? this.itemCatalog.getItemRarityClass(itemId) : '';
+  }
+
+  getRarityStyle(itemId: string | null): Record<string, string> | null {
+    return itemId ? this.itemCatalog.getItemRarityStyle(itemId) : null;
+  }
+
   getStatLabel(key: StatKey): string {
     return this.getText(`stat${key.charAt(0).toUpperCase()}${key.slice(1)}`);
   }

@@ -140,6 +140,14 @@ export class InventoryComponent {
     return this.itemCatalog.getItemPath(itemId);
   }
 
+  getRarityClass(itemId: string): string {
+    return this.itemCatalog.getItemRarityClass(itemId);
+  }
+
+  getRarityStyle(itemId: string): Record<string, string> | null {
+    return this.itemCatalog.getItemRarityStyle(itemId);
+  }
+
   isEquipped(itemId: string): boolean {
     return Object.values(this.equipped()).includes(itemId);
   }

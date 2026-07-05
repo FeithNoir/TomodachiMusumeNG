@@ -165,7 +165,7 @@ export class MissionComponent implements OnInit, OnDestroy {
         const speciesName = species ? this.localization.localized(species.name) : egg.speciesId;
         return `${this.localization.localized(egg.name)} → ${speciesName}`;
       });
-      text += `${this.getText('missionEggReward')}: ${eggNames.join(', ')}`;
+      text += `${this.getText('missionEggIncubating')}: ${eggNames.join(', ')}`;
     }
 
     return text;

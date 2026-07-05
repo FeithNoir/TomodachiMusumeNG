@@ -63,7 +63,7 @@ export class ShopService {
     }
 
     const equippedItems = Object.values(this.characterService.equipped());
-    if (equippedItems.includes(itemId) && currentQuantity === quantity) {
+    if (equippedItems.includes(itemId)) {
       return false;
     }
 
@@ -95,6 +95,11 @@ export class ShopService {
       this.gameStateService.updateMoney(-special.buyPrice);
       this.petService.expandSlotCapacity();
       return true;
+    }
+
+    if (special.type === 'egg' && special.eggId) {
+      this.gameStateService.updateMoney(-special.buyPrice);
+      return this.petService.acquireEgg(special.eggId);
     }
 
     return false;

@@ -1,10 +1,8 @@
 <div class="glass-panel modal-container modal-container--lg fade-in text-center">
 
-  @if (isComplete() || phase() === 'board' || phase() === 'assign') {
   <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
     <span>✕</span>
   </button>
-  }
 
   <div class="panel-header--stacked">
     <h3 class="modal-title">{{ title() }}</h3>

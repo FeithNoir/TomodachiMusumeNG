@@ -1,7 +1,7 @@
 <div class="mission-board">
   <div class="mission-board__toolbar">
     <h4 class="section-heading">{{ getText('missionBoardTitle') }}</h4>
-    <button type="button" class="tab-btn" (click)="refreshBoard.emit()">
+    <button type="button" class="btn-outline-gold mission-board__refresh" (click)="refreshBoard.emit()">
       {{ getText('missionRefreshBoard') }}
     </button>
   </div>
@@ -19,6 +19,25 @@
         </div>
         <h5 class="mission-card__title">{{ localizedName(entry) }}</h5>
         <p class="mission-card__desc text-dim">{{ localizedDescription(entry) }}</p>
+
+        @if (hasRequirements(entry)) {
+          <ul class="mission-card__reqs">
+            <li [class.mission-req--met]="entry.energyMet" [class.mission-req--unmet]="!entry.energyMet">
+              ⚡ {{ getText('energy') }}: {{ entry.currentEnergy }}/{{ entry.energyCost }}
+            </li>
+            @for (cond of entry.conditionStatuses; track cond.type) {
+              <li [class.mission-req--met]="cond.met" [class.mission-req--unmet]="!cond.met">
+                {{ getText('affinity') }}: {{ cond.current }}/{{ cond.required }}
+              </li>
+            }
+            @for (stat of entry.statStatuses; track stat.stat) {
+              <li [class.mission-req--met]="stat.met" [class.mission-req--unmet]="!stat.met">
+                {{ statLine(stat) }}
+              </li>
+            }
+          </ul>
+        }
+
         @if (!entry.meetsRequirements) {
           <span class="mission-card__lock">{{ getText(entry.lockedReasonKey ?? 'missionLockedStats') }}</span>
         }

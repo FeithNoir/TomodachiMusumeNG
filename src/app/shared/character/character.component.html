@@ -1,45 +1,51 @@
-<div id="characterContainer" class="character-container" (click)="onCharacterClick()">
-  <!-- Base Layer -->
-  <img id="characterBody" src="assets/img/character/base.png" alt="" class="character-layer">
+<div class="character-container">
+  <div class="character-sprite-stack" (click)="onCharacterClick()">
+    <img id="characterBody" src="/assets/img/character/base.png" alt="" class="character-layer">
 
-  <!-- Equipped items: Usando @if en lugar de *ngIf -->
-  @if (equipped().pantsus) {
-  <img [src]="getItemPath(equipped().pantsus)" alt="Pantsus" class="character-layer">
-  }
+    @if (equipped().pantsus) {
+    <img [src]="getItemPath(equipped().pantsus)" alt="Pantsus" class="character-layer">
+    }
 
-  @if (equipped().stockings) {
-  <img [src]="getItemPath(equipped().stockings)" alt="Stockings" class="character-layer">
-  }
+    @if (equipped().stockings) {
+    <img [src]="getItemPath(equipped().stockings)" alt="Stockings" class="character-layer">
+    }
 
-  @if (equipped().bottom) {
-  <img [src]="getItemPath(equipped().bottom)" alt="Bottom" class="character-layer">
-  }
+    @if (equipped().bottom) {
+    <img [src]="getItemPath(equipped().bottom)" alt="Bottom" class="character-layer">
+    }
 
-  @if (equipped().bra) {
-  <img [src]="getItemPath(equipped().bra)" alt="Bra" class="character-layer">
-  }
+    @if (equipped().bra) {
+    <img [src]="getItemPath(equipped().bra)" alt="Bra" class="character-layer">
+    }
 
-  @if (equipped().suit) {
-  <img [src]="getItemPath(equipped().suit)" alt="Suit" class="character-layer">
-  }
+    @if (equipped().suit) {
+    <img [src]="getItemPath(equipped().suit)" alt="Suit" class="character-layer">
+    }
 
-  @if (equipped().top) {
-  <img [src]="getItemPath(equipped().top)" alt="Top" class="character-layer">
-  }
+    @if (equipped().top) {
+    <img [src]="getItemPath(equipped().top)" alt="Top" class="character-layer">
+    }
 
-  @if (equipped().hands) {
-  <img [src]="getItemPath(equipped().hands)" alt="Hands" class="character-layer">
-  }
+    @if (equipped().hands) {
+    <img [src]="getItemPath(equipped().hands)" alt="Hands" class="character-layer">
+    }
 
-  @if (equipped().head) {
-  <img [src]="getItemPath(equipped().head)" alt="Head" class="character-layer">
-  }
+    @if (equipped().head) {
+    <img [src]="getItemPath(equipped().head)" alt="Head" class="character-layer">
+    }
 
-  <!-- Expressions (Siempre presentes, no necesitan if) -->
-  <img [src]="expression().eyes" alt="Eyes" class="character-layer">
-  <img [src]="expression().mouth" alt="Mouth" class="character-layer">
+    @if (useDualEyeLayers()) {
+      <img [src]="eyesOpenPath" alt="Eyes open" class="character-layer character-layer--eyes"
+           [class.character-layer--hidden]="eyesClosed()">
+      <img [src]="eyesBlinkPath" alt="Eyes blink" class="character-layer character-layer--eyes"
+           [class.character-layer--hidden]="!eyesClosed()">
+    } @else {
+      <img [src]="expression().eyes" alt="Eyes" class="character-layer character-layer--eyes">
+    }
 
-  <!-- Reaction Dialogue -->
+    <img [src]="expression().mouth" alt="Mouth" class="character-layer">
+  </div>
+
   @if (showReactionDialogue) {
   <div class="reaction-dialogue visible">
     {{ reactionText }}

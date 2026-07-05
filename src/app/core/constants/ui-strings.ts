@@ -169,7 +169,7 @@ export const UI_STRINGS: UiStringDictionary = {
   cancel: { es: 'Cancelar', en: 'Cancel' },
   back: { es: 'Volver', en: 'Back' },
   fundsInsufficientMsg: { es: 'No tienes suficiente dinero para comprar esto.', en: "You don't have enough money to buy this." },
-  noSellEquippedMsg: { es: 'No puedes vender la última unidad de un objeto que llevas equipado.', en: "You can't sell the last unit of an equipped item." },
+  noSellEquippedMsg: { es: 'No puedes vender objetos equipados.', en: 'You cannot sell equipped items.' },
   noItemsToSell: { es: 'No tienes nada que vender.', en: 'You have nothing to sell.' },
   invalidQuantityMsg: { es: 'Por favor, introduce una cantidad válida para vender.', en: 'Please enter a valid quantity to sell.' },
   buySuccessMsg: (name: string) => ({ es: `¡Has comprado ${name}!`, en: `You bought ${name}!` }),
@@ -251,5 +251,17 @@ export const UI_STRINGS: UiStringDictionary = {
   shopPetSlotUpgrade: {
     es: 'Expansión de Mascotas (+1)',
     en: 'Pet Slot Expansion (+1)',
+  },
+  shopCommonEgg: {
+    es: 'Huevo Común de Compañero',
+    en: 'Common Companion Egg',
+  },
+  eggIncubatingMsg: (name: string) => ({
+    es: `${name} está incubando...`,
+    en: `${name} is incubating...`,
+  }),
+  missionEggIncubating: {
+    es: 'Huevos en incubación',
+    en: 'Eggs incubating',
   },
 };

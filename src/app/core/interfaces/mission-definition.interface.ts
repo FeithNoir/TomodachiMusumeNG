@@ -55,11 +55,30 @@ export interface MissionRewardRoll {
   messageKey: string;
 }
 
+export interface MissionStatRequirementStatus {
+  stat: StatKey;
+  required: number;
+  current: number;
+  met: boolean;
+}
+
+export interface MissionConditionStatus {
+  type: MissionCondition['type'];
+  met: boolean;
+  current: number;
+  required: number;
+}
+
 export interface MissionBoardEntry {
   definition: MissionDefinition;
   durationMs: number;
   meetsRequirements: boolean;
   lockedReasonKey?: string;
+  statStatuses: MissionStatRequirementStatus[];
+  conditionStatuses: MissionConditionStatus[];
+  energyCost: number;
+  currentEnergy: number;
+  energyMet: boolean;
 }
 
 export interface MissionAssigneeOption {

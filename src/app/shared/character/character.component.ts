@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 
 import { CharacterService } from '@core/services/character.service';
 import { GameStateService } from '@core/services/game-state.service';
@@ -8,15 +8,21 @@ import {
   EXPRESSION_BLINK_MAX_MS,
   EXPRESSION_BLINK_MIN_MS,
   EXPRESSION_BLINK_MS,
+  EXPRESSION_EYES_BLINK,
+  EXPRESSION_EYES_IDLE,
 } from '@core/data/game-config';
-import { isDefaultIdleEyes } from '@core/utils/asset.util';
+import {
+  preloadCharacterBaseAssets,
+  preloadEquippedAssets,
+} from '@core/utils/asset-preload.util';
+import { normalizeAssetPath } from '@core/utils/asset.util';
 
 @Component({
   selector: 'app-character',
   standalone: true,
   imports: [],
   templateUrl: './character.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './character.component.css',
 })
 export class CharacterComponent implements OnInit, OnDestroy {
@@ -29,10 +35,26 @@ export class CharacterComponent implements OnInit, OnDestroy {
   public expression = this.characterService.expression;
   public playerName = this.gameStateService.playerName;
 
-  private blinkingInterval: ReturnType<typeof setInterval> | null = null;
+  readonly eyesOpenPath = normalizeAssetPath(EXPRESSION_EYES_IDLE);
+  readonly eyesBlinkPath = normalizeAssetPath(EXPRESSION_EYES_BLINK);
+
+  eyesClosed = signal(false);
+  showReactionDialogue = false;
+  reactionText = '';
+
+  private blinkTimeout: ReturnType<typeof setTimeout> | null = null;
   private blinkRestoreTimeout: ReturnType<typeof setTimeout> | null = null;
-  public showReactionDialogue = false;
-  public reactionText = '';
+
+  constructor() {
+    effect(() => {
+      preloadEquippedAssets(this.equipped(), id => this.itemCatalog.getItemPath(id));
+    });
+  }
+
+  useDualEyeLayers(): boolean {
+    const eyes = normalizeAssetPath(this.expression().eyes);
+    return eyes === this.eyesOpenPath || eyes === this.eyesBlinkPath;
+  }
 
   getItemPath(itemId: string | null): string {
     return this.itemCatalog.getItemPath(itemId);
@@ -40,32 +62,38 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.characterService.resetToDefaultExpression();
-    this.startBlinking();
+    preloadCharacterBaseAssets();
+    preloadEquippedAssets(this.equipped(), id => this.itemCatalog.getItemPath(id));
+    this.scheduleBlink();
   }
 
   ngOnDestroy(): void {
-    this.stopBlinking();
+    this.clearBlinkTimers();
+  }
+
+  private scheduleBlink(): void {
+    const delay =
+      Math.random() * (EXPRESSION_BLINK_MAX_MS - EXPRESSION_BLINK_MIN_MS) + EXPRESSION_BLINK_MIN_MS;
+
+    this.blinkTimeout = setTimeout(() => {
+      if (this.characterService.isDefaultIdleExpression() && this.useDualEyeLayers()) {
+        this.eyesClosed.set(true);
+        this.blinkRestoreTimeout = setTimeout(() => {
+          this.eyesClosed.set(false);
+          this.scheduleBlink();
+        }, EXPRESSION_BLINK_MS);
+      } else {
+        this.scheduleBlink();
+      }
+    }, delay);
+  }
+
+  private clearBlinkTimers(): void {
+    if (this.blinkTimeout) {
+      clearTimeout(this.blinkTimeout);
+    }
     if (this.blinkRestoreTimeout) {
       clearTimeout(this.blinkRestoreTimeout);
-    }
-  }
-
-  private startBlinking(): void {
-    this.blinkingInterval = setInterval(() => {
-      if (!isDefaultIdleEyes(this.expression().eyes)) {
-        return;
-      }
-
-      this.characterService.blink();
-      this.blinkRestoreTimeout = setTimeout(() => {
-        this.characterService.resetToDefaultExpression();
-      }, EXPRESSION_BLINK_MS);
-    }, Math.random() * (EXPRESSION_BLINK_MAX_MS - EXPRESSION_BLINK_MIN_MS) + EXPRESSION_BLINK_MIN_MS);
-  }
-
-  private stopBlinking(): void {
-    if (this.blinkingInterval) {
-      clearInterval(this.blinkingInterval);
     }
   }
 

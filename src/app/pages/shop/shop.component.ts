@@ -40,7 +40,14 @@ export class ShopComponent {
   public availableShopItems = this.shopService.availableShopItems;
 
   public sellableInventoryItems = computed(() =>
-    this.inventoryService.inventory().filter(item => this.itemCatalog.getItem(item.id)?.sellPrice !== undefined)
+    this.inventoryService.inventory().filter(item => {
+      const itemData = this.itemCatalog.getItem(item.id);
+      if (!itemData?.sellPrice) {
+        return false;
+      }
+      const equippedIds = Object.values(this.characterService.equipped());
+      return !equippedIds.includes(item.id);
+    })
   );
 
   public money = this.gameStateService.money;
@@ -80,6 +87,14 @@ export class ShopComponent {
     return this.getItemData(itemId)?.buyPrice ?? 0;
   }
 
+  getRarityClass(itemId: string): string {
+    return this.itemCatalog.getItemRarityClass(itemId);
+  }
+
+  getRarityStyle(itemId: string): Record<string, string> | null {
+    return this.itemCatalog.getItemRarityStyle(itemId);
+  }
+
   openMarket(): void {
     this.viewMode.set('market');
   }
@@ -95,24 +110,17 @@ export class ShopComponent {
   openSellConfirmation(itemId: string): void {
     const itemInInventory = this.inventoryService.inventory().find(i => i.id === itemId);
     const itemData = this.getItemData(itemId);
+    const equippedIds = Object.values(this.characterService.equipped());
 
-    if (!itemInInventory || !itemData?.sellPrice) {
-      return;
-    }
-
-    let maxQuantity = itemInInventory.quantity;
-    const equippedItems = Object.values(this.characterService.equipped());
-    if (equippedItems.includes(itemId)) {
-      maxQuantity--;
-    }
-
-    if (maxQuantity < 1) {
-      this.notifications.warning(this.getText('noSellEquippedMsg'));
+    if (!itemInInventory || !itemData?.sellPrice || equippedIds.includes(itemId)) {
+      if (equippedIds.includes(itemId)) {
+        this.notifications.warning(this.getText('noSellEquippedMsg'));
+      }
       return;
     }
 
     this.selectedItemToSell.set({ item: itemData, quantity: itemInInventory.quantity });
-    this.maxSellQuantity.set(maxQuantity);
+    this.maxSellQuantity.set(itemInInventory.quantity);
     this.sellQuantityInput.set(1);
     this.viewMode.set('sell-confirm');
   }

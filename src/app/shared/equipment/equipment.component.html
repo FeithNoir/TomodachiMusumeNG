@@ -37,7 +37,9 @@
 
       <div class="equipment-slot-grid">
         @for (slot of slots; track slot.key) {
-          <button type="button" class="equipment-slot interactive-card"
+          <button type="button"
+                  [class]="'equipment-slot interactive-card ' + getRarityClass(equipped()[slot.key])"
+                  [style]="getRarityStyle(equipped()[slot.key])"
                   [class.equipment-slot--filled]="equipped()[slot.key]"
                   (click)="handleEquippedSlotClick(slot.key)">
             <span class="slot-label">{{ getText(slot.labelKey) }}</span>

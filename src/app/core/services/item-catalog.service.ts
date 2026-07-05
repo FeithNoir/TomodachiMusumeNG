@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DEFAULT_LANGUAGE } from '@core/data/game-config';
 import { ITEM_STAT_META } from '@core/data/item-stat-overrides';
+import { getItemRarityClass, getItemRarityStyle, shouldShowItemRarity } from '@core/data/item-rarity.config';
 import { masterItemList } from '@core/data/item-database';
 import { CharacterStats, STAT_KEYS } from '@core/interfaces/character-stats.interface';
 import { Item } from '@core/interfaces/item.interface';
@@ -56,5 +57,21 @@ export class ItemCatalogService {
     }
 
     return normalizeAssetPath(masterItemList[itemId]?.path ?? '');
+  }
+
+  getItemRarityClass(itemId: string): string {
+    const item = masterItemList[itemId];
+    if (!item || !shouldShowItemRarity(itemId, item.type)) {
+      return '';
+    }
+    return getItemRarityClass(itemId);
+  }
+
+  getItemRarityStyle(itemId: string): Record<string, string> | null {
+    const item = masterItemList[itemId];
+    if (!item || !shouldShowItemRarity(itemId, item.type)) {
+      return null;
+    }
+    return getItemRarityStyle(itemId);
   }
 }
