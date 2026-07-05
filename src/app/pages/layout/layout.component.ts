@@ -15,8 +15,7 @@ import { TutorialComponent } from '../tutorial/tutorial.component';
 
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterService } from '../../core/services/character.service';
-// Importamos LocalizedText para los castings de idioma
-import { Dialogue, DialogueOption, LocalizedText } from '../../core/interfaces/dialogue.interface';
+import { Dialogue, DialogueOption } from '../../core/interfaces/dialogue.interface';
 import { dialogues } from '../../core/data/dialogue-database';
 
 type ActiveModal = SidebarAction | 'options' | null;
@@ -35,8 +34,8 @@ type ActiveModal = SidebarAction | 'options' | null;
     ShopComponent,
     MissionComponent,
     TutorialComponent,
-    OptionsComponent
-],
+    OptionsComponent,
+  ],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./layout.component.css'],
@@ -44,6 +43,7 @@ type ActiveModal = SidebarAction | 'options' | null;
 export class LayoutComponent {
   private gameStateService = inject(GameStateService);
   private characterService = inject(CharacterService);
+
   constructor() {
     this.gameStateService.syncCharacterState(this.characterService);
   }
@@ -51,7 +51,6 @@ export class LayoutComponent {
   private activeModal = signal<ActiveModal>(null);
   public currentDialogue = signal<Dialogue | null>(null);
 
-  // Señales computadas
   isDialogueVisible = computed(() => this.activeModal() === 'talk');
   isInventoryVisible = computed(() => this.activeModal() === 'equip');
   isCraftingVisible = computed(() => this.activeModal() === 'craft');
@@ -62,42 +61,18 @@ export class LayoutComponent {
 
   public hasCompletedIntro = this.gameStateService.hasCompletedIntro;
 
-  // --- HELPERS PARA LA VISTA (HTML) ---
-
-  // Helper para obtener el texto principal del diálogo ya traducido y con el nombre
-  get currentDialogueText(): string {
-    const dialogue = this.currentDialogue();
-    if (!dialogue) return '';
-
-    const lang = this.gameStateService.language() as keyof LocalizedText;
-    const playerName = this.gameStateService.playerName();
-
-    // 1. Ejecutamos la función pasando el nombre
-    // 2. Accedemos al idioma
-    return dialogue.text(playerName)[lang] || dialogue.text(playerName)['en'];
-  }
-
-  // Helper para obtener el texto de una opción
-  getOptionText(option: DialogueOption): string {
-    const lang = this.gameStateService.language() as keyof LocalizedText;
-    return option.text[lang] || option.text['en'];
-  }
-  // ------------------------------------
-
   handleSidebarAction(action: SidebarAction): void {
     if (action === 'talk') {
       this.startRandomDialogue();
     } else {
       this.activeModal.set(action);
     }
-    console.log(`Action received: ${action}`);
   }
 
   handleMenuAction(action: string): void {
     if (action === 'options') {
       this.activeModal.set('options');
     }
-    console.log(`Menu action: ${action}`);
   }
 
   closeActiveModal(): void {
@@ -106,26 +81,20 @@ export class LayoutComponent {
   }
 
   private startRandomDialogue(): void {
-    // CORRECCIÓN 1: Convertimos el objeto de diálogos a un array para usar .length
     const dialogueList = Object.values(dialogues);
+    if (dialogueList.length === 0) {
+      return;
+    }
 
-    if (dialogueList.length === 0) return;
-
-    // Elegimos uno al azar
     const randomIndex = Math.floor(Math.random() * dialogueList.length);
-    const selectedDialogue = dialogueList[randomIndex];
-
-    // CORRECCIÓN 2: No intentamos modificar el objeto ni "procesar" el texto aquí.
-    // Pasamos el objeto Dialogue puro. La transformación se hace en los getters (helpers) de arriba.
+    const selectedDialogue = dialogueList[randomIndex] as Dialogue;
     this.currentDialogue.set(selectedDialogue);
-
     this.activeModal.set('talk');
   }
 
   handleDialogueOption(option: DialogueOption): void {
     if (option.affinityChange) {
       this.characterService.updateAffinity(option.affinityChange);
-      console.log(`Affinity changed by: ${option.affinityChange}`);
     }
     this.closeActiveModal();
   }

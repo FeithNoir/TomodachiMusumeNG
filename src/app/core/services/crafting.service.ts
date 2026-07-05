@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GameStateService } from './game-state.service';
 import { InventoryService } from './inventory.service';
 import { recipes } from '../data/recipe-database';
@@ -9,10 +9,10 @@ import { masterItemList } from '../data/item-database';
 })
 export class CraftingService {
 
-  constructor(
-    private gameStateService: GameStateService,
-    private inventoryService: InventoryService
-  ) { }
+  constructor() { }
+
+  private gameStateService = inject(GameStateService);
+  private inventoryService = inject(InventoryService);
 
   /**
    * Attempts to craft an item based on the provided ingredients.

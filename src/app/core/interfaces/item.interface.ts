@@ -1,23 +1,9 @@
-// Reutilizamos la interfaz de idioma si ya la tienes en otro archivo,
-// o la definimos aquí si prefieres mantenerlo autocontenido.
-export interface LocalizedText {
-  es: string;
-  en: string;
-  [key: string]: string; // Add index signature
-}
+export type { LocalizedText } from './localized-text.interface';
+import type { LocalizedText } from './localized-text.interface';
 
 // Definimos un tipo cerrado para las categorías.
 // Esto evita errores tipográficos (ej: escribir 'wepon' en lugar de 'weapon').
-export type EquippableItemCategory =
-  | 'bra'
-  | 'pantsus'
-  | 'top'
-  | 'bottom'
-  | 'suit'
-  | 'head'
-  | 'stockings'
-  | 'hands'
-  | 'weapon';
+export type EquippableItemCategory = | 'bra' | 'pantsus' | 'top' | 'bottom' | 'suit' | 'head' | 'stockings' | 'hands' | 'weapon';
 
 export type ItemCategory = EquippableItemCategory | 'consumable' | 'material' | 'recipe';
 

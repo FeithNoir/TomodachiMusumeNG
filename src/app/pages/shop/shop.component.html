@@ -37,19 +37,21 @@
 
     <div class="items-grid scroll-area">
       @for (itemId of availableShopItems(); track itemId) {
-      <div class="item-card">
-        <div class="item-visual">
-          <img [src]="getItemData(itemId).path" [alt]="getItemName(itemId)" class="item-img">
+        @if (getItemData(itemId); as item) {
+        <div class="item-card">
+          <div class="item-visual">
+            <img [src]="getItemPath(itemId)" [alt]="getItemName(itemId)" class="item-img">
+          </div>
+          <div class="item-info">
+            <p class="item-name">{{ getItemName(itemId) }}</p>
+            <p class="item-price">💰 {{ item.buyPrice }}</p>
+          </div>
+          <button (click)="buyItem(itemId)" class="btn-outline-gold"
+                  [disabled]="money() < (item.buyPrice || 0)">
+            {{ getText('buy') }}
+          </button>
         </div>
-        <div class="item-info">
-          <p class="item-name">{{ getItemName(itemId) }}</p>
-          <p class="item-price">💰 {{ getItemData(itemId).buyPrice }}</p>
-        </div>
-        <button (click)="buyItem(itemId)" class="btn-outline-gold"
-                [disabled]="money() < (getItemData(itemId).buyPrice || 0)">
-          {{ getText('buy') }}
-        </button>
-      </div>
+        }
       }
     </div>
   </div>
@@ -64,19 +66,21 @@
 
     <div class="items-grid scroll-area">
       @for (item of sellableInventoryItems(); track item.id) {
-      <div class="item-card">
-        <div class="item-visual">
-          <img [src]="getItemData(item.id).path" [alt]="getItemName(item.id)" class="item-img">
-          <span class="badge-qty">x{{ item.quantity }}</span>
+        @if (getItemData(item.id); as itemData) {
+        <div class="item-card">
+          <div class="item-visual">
+            <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
+            <span class="badge-qty">x{{ item.quantity }}</span>
+          </div>
+          <div class="item-info">
+            <p class="item-name">{{ getItemName(item.id) }}</p>
+            <p class="item-price">💰 {{ itemData.sellPrice }}</p>
+          </div>
+          <button (click)="openSellConfirmation(item.id)" class="btn-outline-gold">
+            {{ getText('sell') }}
+          </button>
         </div>
-        <div class="item-info">
-          <p class="item-name">{{ getItemName(item.id) }}</p>
-          <p class="item-price">💰 {{ getItemData(item.id).sellPrice }}</p>
-        </div>
-        <button (click)="openSellConfirmation(item.id)" class="btn-outline-gold">
-          {{ getText('sell') }}
-        </button>
-      </div>
+        }
       } @empty {
       <div class="empty-state">{{ getText('noItemsToSell') }}</div>
       }
@@ -90,7 +94,7 @@
     <h3 class="modal-title">{{ getText('sellConfirmTitle') }}</h3>
 
     <div class="confirm-item-preview">
-      <img [src]="getItemData(selection.item.id).path" class="preview-img item-img" [alt]="getItemName(selection.item.id)">
+      <img [src]="getItemPath(selection.item.id)" class="preview-img item-img" [alt]="getItemName(selection.item.id)">
       <p class="preview-name">{{ getItemName(selection.item.id) }}</p>
     </div>
 

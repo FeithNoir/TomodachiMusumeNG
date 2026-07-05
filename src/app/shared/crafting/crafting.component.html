@@ -16,7 +16,7 @@
         @for (slot of craftingSlots(); track $index; let i = $index) {
           <div class="interactive-card craft-slot" (click)="removeFromCraftingSlot(i)">
             @if (slot) {
-              <img [src]="getItemData(slot).path"
+              <img [src]="getItemPath(slot)"
                    class="craft-slot-img item-img"
                    [title]="getItemName(slot)"
                    [alt]="getItemName(slot)">
@@ -40,7 +40,7 @@
       <div id="craftingMaterialsGrid" class="materials-grid grid-slot-area scroll-area">
         @for (item of materialsInInventory(); track item.id) {
           <div class="material-card" (click)="addToCraftingSlot(item.id)">
-            <img [src]="getItemData(item.id).path"
+            <img [src]="getItemPath(item.id)"
                  class="material-img item-img"
                  [alt]="getItemName(item.id)">
             <p class="material-label">{{ getItemName(item.id) }} (x{{ item.quantity }})</p>

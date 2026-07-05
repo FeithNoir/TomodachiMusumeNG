@@ -16,7 +16,7 @@
          (click)="handleItemClick(item.id)">
 
       <div class="item-visual">
-        <img [src]="getItemData(item.id).path" [alt]="getItemName(item.id)" class="item-img">
+        <img [src]="getItemPath(item.id)" [alt]="getItemName(item.id)" class="item-img">
       </div>
 
       <span class="badge-count">{{ item.quantity }}</span>
@@ -27,7 +27,7 @@
     </div>
     } @empty {
     <div class="empty-state">
-      <p>{{ getText('noItemsMsg') || 'No tienes objetos en el inventario.' }}</p>
+      <p>{{ getText('noItemsMsg') }}</p>
     </div>
     }
   </div>

@@ -4,21 +4,21 @@ import { PersistenceService } from './persistence.service';
 import { CharacterService } from './character.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameStateService {
   private readonly SAVE_KEY = 'tomodachiMusumeSave';
-  private readonly GAME_VERSION = "0.0.1";
+  private readonly GAME_VERSION = '0.0.1';
 
-  private initialGameState: GameState = {
+  private readonly initialGameState: GameState = {
     version: this.GAME_VERSION,
     language: 'en',
     affinity: 10,
     money: 100,
     energy: 100,
     satiety: 0,
-    playerName: "Jefe",
-    guildName: "Oniriums",
+    playerName: 'Jefe',
+    guildName: 'Oniriums',
     hasCompletedIntro: false,
     inventory: [
       { id: 'cheap_shirt', quantity: 1 },
@@ -39,7 +39,7 @@ export class GameStateService {
     },
     knownRecipes: [],
     expression: { eyes: 'assets/img/expressions/eyes_1.png', mouth: 'assets/img/expressions/mouth_1.png' },
-    characterName: "Eleanora",
+    characterName: 'Eleanora',
   };
 
   public gameState = signal<GameState>(this.initialGameState);
@@ -53,15 +53,23 @@ export class GameStateService {
   public hasCompletedIntro = computed(() => this.gameState().hasCompletedIntro);
 
   private persistenceService = inject(PersistenceService);
+  private isHydrating = true;
+  private persistChanges = false;
 
   constructor() {
-    effect(() => {
-      this.saveGame();
-    });
     this.loadGame();
+    this.persistChanges = true;
+
+    effect(() => {
+      this.gameState();
+      if (!this.persistChanges || this.isHydrating) {
+        return;
+      }
+
+      untracked(() => this.saveGame());
+    });
   }
 
-  // Método para sincronizar desde el exterior (p.ej. desde un AppInitializer o Layout)
   public syncCharacterState(charService: CharacterService): void {
     effect(() => {
       const affinity = charService.affinity();
@@ -73,76 +81,48 @@ export class GameStateService {
           ...state,
           affinity,
           equipped,
-          expression
+          expression,
         }));
       });
     });
 
-    // Carga inicial HACIA el CharacterService
     const current = this.gameState();
     charService.affinity.set(current.affinity);
     charService.equipped.set(current.equipped);
     charService.expression.set(current.expression);
   }
 
-  // --- MÉTODOS AÑADIDOS PARA TITLE COMPONENT ---
-
-  /**
-   * Comprueba si existe una partida guardada válida en el LocalStorage.
-   * Verifica también que la versión coincida.
-   */
   hasSaveData(): boolean {
-    const savedData = localStorage.getItem(this.SAVE_KEY);
-    if (!savedData) return false;
-
-    try {
-      const parsedState = JSON.parse(savedData);
-      // Solo devolvemos true si existe y la versión es compatible
-      return parsedState.version === this.GAME_VERSION;
-    } catch (e) {
+    if (!this.persistenceService.hasSavedData(this.SAVE_KEY)) {
       return false;
     }
+
+    const parsedState = this.persistenceService.load(this.SAVE_KEY) as GameState | null;
+    return parsedState?.version === this.GAME_VERSION;
   }
 
-  /**
-   * Borra los datos guardados e inicia un estado limpio.
-   * Es esencialmente un alias o wrapper para newGame().
-   */
   clearSaveData(): void {
     this.persistenceService.clear(this.SAVE_KEY);
     this.newGame();
   }
 
-  // ---------------------------------------------
-
-  async loadGame(): Promise<void> {
-    try {
-      const parsedState = await this.persistenceService.load(this.SAVE_KEY);
-      if (parsedState) {
-        if (parsedState.version === this.GAME_VERSION) {
-          this.gameState.set(parsedState);
-          console.log('Game loaded successfully.');
-        } else {
-          console.warn(`Saved game version mismatch. Expected ${this.GAME_VERSION}, got ${parsedState.version}. Starting new game.`);
-          this.newGame();
-        }
-      } else {
-        console.log('No saved game found. Starting new game.');
-        this.newGame();
-      }
-    } catch (error) {
-      console.error('Error loading game state:', error);
-      this.newGame();
+  loadGame(): void {
+    if (this.persistenceService.isElectron()) {
+      void this.loadFromElectron();
+      return;
     }
+
+    this.applyLoadedState(this.persistenceService.load(this.SAVE_KEY));
   }
 
-  async saveGame(): Promise<void> {
-    await this.persistenceService.save(this.SAVE_KEY, this.gameState());
+  saveGame(): void {
+    this.persistenceService.save(this.SAVE_KEY, this.gameState());
   }
 
   newGame(): void {
-    // Restauramos el estado inicial clonándolo para evitar referencias
-    this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)));
+    this.isHydrating = true;
+    this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+    this.isHydrating = false;
     console.log('New game initialized.');
   }
 
@@ -187,5 +167,42 @@ export class GameStateService {
       }
       return state;
     });
+  }
+
+  private async loadFromElectron(): Promise<void> {
+    try {
+      const parsedState = await this.persistenceService.loadFromElectron();
+      this.applyLoadedState(parsedState);
+    } catch (error) {
+      console.error('Error loading game state from Electron:', error);
+      this.newGame();
+    }
+  }
+
+  private applyLoadedState(parsedState: unknown): void {
+    this.isHydrating = true;
+
+    try {
+      if (parsedState && typeof parsedState === 'object' && 'version' in parsedState) {
+        const state = parsedState as GameState;
+        if (state.version === this.GAME_VERSION) {
+          this.gameState.set(state);
+          console.log('Game loaded successfully.');
+        } else {
+          console.warn(
+            `Saved game version mismatch. Expected ${this.GAME_VERSION}, got ${state.version}. Starting new game.`
+          );
+          this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+        }
+      } else {
+        console.log('No saved game found. Starting new game.');
+        this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+      }
+    } catch (error) {
+      console.error('Error applying loaded game state:', error);
+      this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+    } finally {
+      this.isHydrating = false;
+    }
   }
 }

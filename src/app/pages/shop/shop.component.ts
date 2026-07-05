@@ -5,8 +5,9 @@ import { ShopService } from '../../core/services/shop.service';
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterService } from '../../core/services/character.service';
 import { InventoryService } from '../../core/services/inventory.service';
-import { masterItemList } from '../../core/data/item-database';
-import { Item, LocalizedText } from '../../core/interfaces/item.interface';
+import { ItemCatalogService } from '../../core/services/item-catalog.service';
+import { LocalizationService } from '../../core/services/localization.service';
+import { Item } from '../../core/interfaces/item.interface';
 
 type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
 
@@ -16,66 +17,64 @@ type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
   imports: [FormsModule],
   templateUrl: './shop.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './shop.component.css'
+  styleUrl: './shop.component.css',
 })
 export class ShopComponent {
   private shopService = inject(ShopService);
   private gameStateService = inject(GameStateService);
   private inventoryService = inject(InventoryService);
   private characterService = inject(CharacterService);
+  private itemCatalog = inject(ItemCatalogService);
+  private localization = inject(LocalizationService);
 
   @Output() closeShop = new EventEmitter<void>();
 
   public viewMode = signal<ShopViewMode>('market');
-  public selectedItemToSell = signal<{ item: Item, quantity: number } | null>(null);
+  public selectedItemToSell = signal<{ item: Item; quantity: number } | null>(null);
   public sellQuantityInput = signal<number>(1);
   public maxSellQuantity = signal<number>(1);
 
-  // Nota: Si shopService devuelve IDs, esto está bien. Si devuelve objetos Item, el HTML debe ajustarse.
   public availableShopItems = this.shopService.availableShopItems;
 
-  public sellableInventoryItems = computed(() => {
-    return this.inventoryService.inventory().filter(item => masterItemList[item.id].sellPrice !== undefined);
-  });
+  public sellableInventoryItems = computed(() =>
+    this.inventoryService.inventory().filter(item => this.itemCatalog.getItem(item.id)?.sellPrice !== undefined)
+  );
 
-  // Mantenemos language aquí porque se usa en los helpers locales (getItemName)
-  public language = this.gameStateService.language;
   public money = this.gameStateService.money;
   public Math = Math;
+  readonly getText = this.localization.t.bind(this.localization);
 
-  constructor() { }
-
-  // --- MÉTODOS AUXILIARES ---
-
-  /**
-   * Delega la obtención de textos al servicio.
-   * Esto mantiene el HTML limpio usando la misma sintaxis {{ getText(...) }}
-   */
-  getText(key: string, ...args: any[]): string {
-    return this.shopService.getText(key, ...args);
-  }
-
-  getItemData(itemId: string): Item {
-    return masterItemList[itemId];
+  getItemData(itemId: string): Item | undefined {
+    return this.itemCatalog.getItem(itemId);
   }
 
   getItemName(itemId: string): string {
-    const item = masterItemList[itemId];
-    const currentLang = this.language() as keyof LocalizedText;
-    return item?.name[currentLang] || item?.name['en'] || itemId;
+    return this.itemCatalog.getItemName(itemId);
   }
 
-  // --- TRANSICIONES DE VISTA ---
+  getItemPath(itemId: string): string {
+    return this.itemCatalog.getItemPath(itemId);
+  }
 
-  openMarket(): void { this.viewMode.set('market'); }
-  openBuy(): void { this.viewMode.set('buy'); }
-  openSell(): void { this.viewMode.set('sell'); }
+  openMarket(): void {
+    this.viewMode.set('market');
+  }
+
+  openBuy(): void {
+    this.viewMode.set('buy');
+  }
+
+  openSell(): void {
+    this.viewMode.set('sell');
+  }
 
   openSellConfirmation(itemId: string): void {
     const itemInInventory = this.inventoryService.inventory().find(i => i.id === itemId);
     const itemData = this.getItemData(itemId);
 
-    if (!itemInInventory || !itemData.sellPrice) return;
+    if (!itemInInventory || !itemData?.sellPrice) {
+      return;
+    }
 
     let maxQuantity = itemInInventory.quantity;
     const equippedItems = Object.values(this.characterService.equipped());
@@ -94,8 +93,6 @@ export class ShopComponent {
     this.viewMode.set('sell-confirm');
   }
 
-  // --- ACCIONES ---
-
   buyItem(itemId: string): void {
     if (this.shopService.buyItem(itemId, 1)) {
       console.log(this.getText('buySuccessMsg', this.getItemName(itemId)));
@@ -113,7 +110,6 @@ export class ShopComponent {
 
     if (this.shopService.sellItem(itemToSell.item.id, quantity)) {
       const totalGain = itemToSell.item.sellPrice! * quantity;
-
       console.log(this.getText('sellSuccessMsg', quantity, this.getItemName(itemToSell.item.id), totalGain));
       this.viewMode.set('sell');
     }

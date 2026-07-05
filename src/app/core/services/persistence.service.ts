@@ -1,69 +1,91 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PersistenceService {
-    public isElectron: boolean = false;
+  readonly isElectron = signal(this.detectElectron());
 
-    constructor() {
-        this.checkEnvironment();
+  hasSavedData(key: string): boolean {
+    if (this.isElectron()) {
+      return false;
     }
 
-    private async checkEnvironment() {
-        // @ts-ignore
-        if (window.electronAPI) {
-            this.isElectron = true;
-            console.log('Running in Electron environment.');
-        } else {
-            console.log('Running in Browser environment.');
-        }
+    return localStorage.getItem(key) !== null;
+  }
+
+  save(key: string, data: unknown): void {
+    if (this.isElectron()) {
+      void this.saveToElectron(data);
+      return;
     }
 
-    async save(key: string, data: any): Promise<boolean> {
-        if (this.isElectron) {
-            // @ts-ignore
-            const result = await window.electronAPI.saveGame(data);
-            return result.success;
-        } else {
-            try {
-                localStorage.setItem(key, JSON.stringify(data));
-                return true;
-            } catch (e) {
-                console.error('LocalStorage save error:', e);
-                return false;
-            }
-        }
+    this.saveToLocalStorage(key, data);
+  }
+
+  load(key: string): unknown | null {
+    if (this.isElectron()) {
+      return null;
     }
 
-    async load(key: string): Promise<any | null> {
-        if (this.isElectron) {
-            // @ts-ignore
-            const result = await window.electronAPI.loadGame();
-            return result.success ? result.data : null;
-        } else {
-            try {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : null;
-            } catch (e) {
-                console.error('LocalStorage load error:', e);
-                return null;
-            }
-        }
+    return this.loadFromLocalStorage(key);
+  }
+
+  loadFromElectron(): Promise<unknown | null> {
+    if (!this.isElectron()) {
+      return Promise.resolve(null);
     }
 
-    clear(key: string): void {
-        if (!this.isElectron) {
-            localStorage.removeItem(key);
-        }
-        // Note: In Electron, we might want to implement a 'clear' in main.js if needed,
-        // but for now we just overwrite with initial state.
-    }
+    return window.electronAPI!.loadGame().then(result => (result.success ? result.data ?? null : null));
+  }
 
-    quit(): void {
-        if (this.isElectron) {
-            // @ts-ignore
-            window.electronAPI.quitApp();
-        }
+  clear(key: string): void {
+    if (!this.isElectron()) {
+      localStorage.removeItem(key);
     }
+  }
+
+  quit(): void {
+    if (this.isElectron()) {
+      window.electronAPI!.quitApp();
+    }
+  }
+
+  private detectElectron(): boolean {
+    return typeof window !== 'undefined' && !!window.electronAPI;
+  }
+
+  private saveToLocalStorage(key: string, data: unknown): boolean {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      return true;
+    } catch (error) {
+      console.error('LocalStorage save error:', error);
+      return false;
+    }
+  }
+
+  private loadFromLocalStorage(key: string): unknown | null {
+    try {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : null;
+    } catch (error) {
+      console.error('LocalStorage load error:', error);
+      return null;
+    }
+  }
+
+  private saveToElectron(data: unknown): Promise<boolean> {
+    return window.electronAPI!.saveGame(data).then(result => result.success);
+  }
+}
+
+declare global {
+  interface Window {
+    electronAPI?: {
+      saveGame: (data: unknown) => Promise<{ success: boolean }>;
+      loadGame: () => Promise<{ success: boolean; data?: unknown }>;
+      quitApp: () => void;
+    };
+  }
 }

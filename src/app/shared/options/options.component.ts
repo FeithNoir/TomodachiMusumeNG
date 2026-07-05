@@ -1,42 +1,31 @@
 import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { GameStateService } from '../../core/services/game-state.service';
-import { LocalizedText } from '../../core/interfaces/item.interface';
-
-const UI_TEXTS: Record<string, LocalizedText> = {
-    optionsTitle: { es: 'Opciones', en: 'Options' },
-    languageLabel: { es: 'Idioma', en: 'Language' },
-    closeBtn: { es: 'Cerrar', en: 'Close' },
-    english: { es: 'Inglés', en: 'English' },
-    spanish: { es: 'Español', en: 'Spanish' },
-};
+import { LocalizationService } from '../../core/services/localization.service';
 
 @Component({
-    selector: 'app-options',
-    standalone: true,
-    imports: [],
-    templateUrl: './options.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./options.component.css']
+  selector: 'app-options',
+  standalone: true,
+  imports: [],
+  templateUrl: './options.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./options.component.css'],
 })
 export class OptionsComponent {
-    private gameStateService = inject(GameStateService);
+  private gameStateService = inject(GameStateService);
+  private localization = inject(LocalizationService);
 
-    @Output() close = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
 
-    public currentLang = this.gameStateService.language;
+  public currentLang = this.gameStateService.language;
+  readonly getText = this.localization.t.bind(this.localization);
 
-    setLanguage(lang: string): void {
-        this.gameStateService.setLanguage(lang);
-        this.gameStateService.saveGame();
-    }
+  setLanguage(lang: string): void {
+    this.gameStateService.setLanguage(lang);
+    this.gameStateService.saveGame();
+  }
 
-    getText(key: string): string {
-        const lang = this.currentLang() as keyof LocalizedText;
-        return UI_TEXTS[key]?.[lang] || UI_TEXTS[key]?.['en'] || key;
-    }
-
-    onClose(): void {
-        this.close.emit();
-    }
+  onClose(): void {
+    this.close.emit();
+  }
 }
