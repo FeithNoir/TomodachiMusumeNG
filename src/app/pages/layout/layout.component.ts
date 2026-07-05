@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+
 import { RouterOutlet } from '@angular/router';
 
 import { CraftingComponent } from '../../shared/crafting/crafting.component';
@@ -25,11 +25,20 @@ type ActiveModal = SidebarAction | 'options' | null;
   selector: 'app-layout',
   standalone: true,
   imports: [
-    CommonModule, RouterOutlet, CraftingComponent, DialogueComponent,
-    InfoComponent, InventoryComponent, MenuComponent, SidebarComponent,
-    ShopComponent, MissionComponent, TutorialComponent, OptionsComponent
-  ],
+    RouterOutlet,
+    CraftingComponent,
+    DialogueComponent,
+    InfoComponent,
+    InventoryComponent,
+    MenuComponent,
+    SidebarComponent,
+    ShopComponent,
+    MissionComponent,
+    TutorialComponent,
+    OptionsComponent
+],
   templateUrl: './layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent {

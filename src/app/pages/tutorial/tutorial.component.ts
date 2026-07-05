@@ -1,5 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { GameStateService } from '../../core/services/game-state.service';
 
@@ -14,8 +14,9 @@ export enum TutorialStep {
 @Component({
   selector: 'app-tutorial',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './tutorial.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './tutorial.component.css'
 })
 export class TutorialComponent {

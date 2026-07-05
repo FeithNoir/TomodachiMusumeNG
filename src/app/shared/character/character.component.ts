@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { CharacterService } from '../../core/services/character.service';
 import { GameStateService } from '../../core/services/game-state.service';
 import { LocalizedText } from '../../core/interfaces/item.interface';
@@ -8,8 +8,9 @@ import { masterItemList } from '../../core/data/item-database';
 @Component({
   selector: 'app-character',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './character.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './character.component.css'
 })
 export class CharacterComponent implements OnInit, OnDestroy {

@@ -1,5 +1,7 @@
 <!-- Menú Lateral Moderno -->
-<div class="menu-overlay" *ngIf="isOpen()" (click)="close()"></div>
+@if (isOpen()) {
+  <div class="menu-overlay" (click)="close()"></div>
+}
 
 <div class="menu-drawer" [class.open]="isOpen()">
   <div class="menu-header">

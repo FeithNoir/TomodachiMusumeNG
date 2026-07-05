@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterService } from '../../core/services/character.service';
@@ -17,6 +17,7 @@ const UI_TEXTS: Record<string, LocalizedText> = {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './info.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './info.component.css'
 })
 export class InfoComponent {

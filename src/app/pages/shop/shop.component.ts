@@ -1,5 +1,5 @@
-import { Component, computed, inject, signal, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { ShopService } from '../../core/services/shop.service';
 import { GameStateService } from '../../core/services/game-state.service';
@@ -13,8 +13,9 @@ type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './shop.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './shop.component.css'
 })
 export class ShopComponent {

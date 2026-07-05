@@ -1,5 +1,5 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { GameStateService } from '../../core/services/game-state.service';
 import { LocalizedText } from '../../core/interfaces/item.interface';
 
@@ -14,8 +14,9 @@ const UI_TEXTS: Record<string, LocalizedText> = {
 @Component({
     selector: 'app-options',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './options.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./options.component.css']
 })
 export class OptionsComponent {

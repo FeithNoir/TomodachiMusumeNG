@@ -1,6 +1,6 @@
 # 🎨 Tomodachi Musume Ng
 
-An anime-style virtual pet game built with **Angular 19** and optional **Electron** desktop packaging. Care for **Eleanora** in her barracks room — talk, equip outfits, feed her, send her on missions, craft gear, and trade at the market. Game state persists to `localStorage` in the browser or SQLite when running as a desktop app.
+An anime-style virtual pet game built with **Angular 22** and optional **Electron** desktop packaging. Care for **Eleanora** in her barracks room — talk, equip outfits, feed her, send her on missions, craft gear, and trade at the market. Game state persists to `localStorage` in the browser or SQLite when running as a desktop app.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/FeithNoir/TomodachiMusume/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/FeithNoir/TomodachiMusume)](https://github.com/FeithNoir/TomodachiMusume/issues)

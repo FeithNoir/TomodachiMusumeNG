@@ -1,5 +1,5 @@
-import { Component, computed, inject, signal, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { CraftingService } from '../../core/services/crafting.service';
 import { InventoryService } from '../../core/services/inventory.service';
 import { GameStateService } from '../../core/services/game-state.service';
@@ -29,8 +29,9 @@ const UI_TEXTS: Record<string, LocalizedText | TextFunction> = {
 @Component({
   selector: 'app-crafting',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './crafting.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './crafting.component.css'
 })
 export class CraftingComponent {

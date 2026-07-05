@@ -1,6 +1,7 @@
-import { Injectable, signal, effect, computed, inject } from '@angular/core';
+import { Injectable, signal, effect, computed, inject, untracked } from '@angular/core';
 import { GameState } from '../interfaces/game-state.interface';
 import { PersistenceService } from './persistence.service';
+import { CharacterService } from './character.service';
 
 @Injectable({
   providedIn: 'root'
@@ -61,21 +62,21 @@ export class GameStateService {
   }
 
   // Método para sincronizar desde el exterior (p.ej. desde un AppInitializer o Layout)
-  public syncCharacterState(charService: any): void {
+  public syncCharacterState(charService: CharacterService): void {
     effect(() => {
       const affinity = charService.affinity();
       const equipped = charService.equipped();
       const expression = charService.expression();
 
-      // Actualizamos el estado interno sin disparar efectos innecesarios si es posible,
-      // pero aquí el set() es lo más sencillo.
-      this.gameState.update(state => ({
-        ...state,
-        affinity,
-        equipped,
-        expression
-      }));
-    }, { allowSignalWrites: true });
+      untracked(() => {
+        this.gameState.update(state => ({
+          ...state,
+          affinity,
+          equipped,
+          expression
+        }));
+      });
+    });
 
     // Carga inicial HACIA el CharacterService
     const current = this.gameState();

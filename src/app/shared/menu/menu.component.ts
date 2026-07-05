@@ -1,5 +1,5 @@
-import { Component, inject, signal, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { GameStateService } from '../../core/services/game-state.service';
 import { PersistenceService } from '../../core/services/persistence.service';
@@ -17,8 +17,9 @@ const UI_TEXTS: Record<string, LocalizedText> = {
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {

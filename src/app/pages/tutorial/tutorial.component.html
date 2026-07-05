@@ -41,7 +41,10 @@
                 "Me gustaría saber más de ti... ¿Cómo te llamas?"
                 }
             </p>
-            <input type="text" [(ngModel)]="playerNameInput" class="name-input"
+            <input type="text"
+                   [ngModel]="playerNameInput()"
+                   (ngModelChange)="playerNameInput.set($event)"
+                   class="name-input"
                 [placeholder]="selectedLang() === 'en' ? 'Enter your name...' : 'Introduce tu nombre...'"
                 (keyup.enter)="confirmName()">
             <button (click)="confirmName()" class="btn-tutorial btn-spaced" [disabled]="!playerNameInput()">

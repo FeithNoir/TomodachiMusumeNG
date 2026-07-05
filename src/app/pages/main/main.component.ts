@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
+
 import { GameStateService } from '../../core/services/game-state.service';
 import { CharacterComponent } from '../../shared/character/character.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [CommonModule, CharacterComponent],
+  imports: [CharacterComponent],
   templateUrl: './main.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit, OnDestroy {

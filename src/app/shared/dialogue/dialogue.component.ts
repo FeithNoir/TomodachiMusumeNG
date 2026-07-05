@@ -1,20 +1,21 @@
-import { Component, inject, input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { Dialogue, DialogueOption, LocalizedText } from '../../core/interfaces/dialogue.interface';
 import { GameStateService } from '../../core/services/game-state.service';
 
 @Component({
   selector: 'app-dialogue',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './dialogue.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./dialogue.component.css']
 })
 export class DialogueComponent {
   private gameStateService = inject(GameStateService);
 
   // El diálogo actual se recibe como una entrada (input) desde el componente padre.
-  dialogue = input.required<Dialogue | null>();
+  dialogue = input<Dialogue | null>(null);
 
   // Evento que se emite cuando el jugador selecciona una opción.
   @Output() optionSelected = new EventEmitter<DialogueOption>();

@@ -1,13 +1,14 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { GameStateService } from '../../core/services/game-state.service';
 
 @Component({
   selector: 'app-title',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './title.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./title.component.css']
 })
 export class TitleComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { MissionService, MissionReward } from '../../core/services/mission.service';
 import { GameStateService } from '../../core/services/game-state.service';
@@ -22,6 +22,7 @@ const UI_TEXTS: Record<string, LocalizedText> = {
   standalone: true,
   imports: [CommonModule, DecimalPipe],
   templateUrl: './mission.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./mission.component.css']
 })
 export class MissionComponent implements OnInit, OnDestroy {

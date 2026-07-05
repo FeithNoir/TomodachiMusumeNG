@@ -1,5 +1,5 @@
-import { Component, inject, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+
 import { Router } from '@angular/router';
 import { GameStateService } from '../../core/services/game-state.service';
 import { PersistenceService } from '../../core/services/persistence.service';
@@ -21,8 +21,9 @@ const UI_TEXTS: Record<string, LocalizedText> = {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './sidebar.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
