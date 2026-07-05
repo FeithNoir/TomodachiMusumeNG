@@ -12,12 +12,6 @@ export interface Dialogue {
   options: DialogueOption[];
 }
 
-export interface AffinityReaction {
-  text: LocalizedText;
-  eyes: string;
-  mouth: string;
-}
-
 export interface DialogueCollection {
   [key: string]: Dialogue;
 }

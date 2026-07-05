@@ -1,13 +1,13 @@
 import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { ShopService } from '../../core/services/shop.service';
-import { GameStateService } from '../../core/services/game-state.service';
-import { CharacterService } from '../../core/services/character.service';
-import { InventoryService } from '../../core/services/inventory.service';
-import { ItemCatalogService } from '../../core/services/item-catalog.service';
-import { LocalizationService } from '../../core/services/localization.service';
-import { Item } from '../../core/interfaces/item.interface';
+import { ShopService } from '@core/services/shop.service';
+import { GameStateService } from '@core/services/game-state.service';
+import { CharacterService } from '@core/services/character.service';
+import { InventoryService } from '@core/services/inventory.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { Item } from '@core/interfaces/item.interface';
 
 type ShopViewMode = 'market' | 'buy' | 'sell' | 'sell-confirm';
 

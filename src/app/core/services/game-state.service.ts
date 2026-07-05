@@ -1,48 +1,15 @@
 import { Injectable, signal, effect, computed, inject, untracked } from '@angular/core';
-import { GameState } from '../interfaces/game-state.interface';
-import { PersistenceService } from './persistence.service';
-import { CharacterService } from './character.service';
+import { GAME_SAVE_KEY, GAME_VERSION, ENERGY_MAX, SATIETY_MAX } from '@core/data/game-config';
+import { cloneInitialGameState } from '@core/data/initial-game-state';
+import { GameState } from '@core/interfaces/game-state.interface';
+import { PersistenceService } from '@core/services/persistence.service';
+import { CharacterService } from '@core/services/character.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameStateService {
-  private readonly SAVE_KEY = 'tomodachiMusumeSave';
-  private readonly GAME_VERSION = '0.0.1';
-
-  private readonly initialGameState: GameState = {
-    version: this.GAME_VERSION,
-    language: 'en',
-    affinity: 10,
-    money: 100,
-    energy: 100,
-    satiety: 0,
-    playerName: 'Jefe',
-    guildName: 'Oniriums',
-    hasCompletedIntro: false,
-    inventory: [
-      { id: 'cheap_shirt', quantity: 1 },
-      { id: 'cheap_pants', quantity: 1 },
-      { id: 'bra_1', quantity: 1 },
-      { id: 'pantsus_1', quantity: 1 },
-    ],
-    equipped: {
-      top: 'cheap_shirt',
-      bottom: 'cheap_pants',
-      suit: null,
-      head: null,
-      stockings: null,
-      bra: 'bra_1',
-      pantsus: 'pantsus_1',
-      hands: null,
-      weapon: null,
-    },
-    knownRecipes: [],
-    expression: { eyes: 'assets/img/expressions/eyes_1.png', mouth: 'assets/img/expressions/mouth_1.png' },
-    characterName: 'Eleanora',
-  };
-
-  public gameState = signal<GameState>(this.initialGameState);
+  public gameState = signal<GameState>(cloneInitialGameState());
 
   public money = computed(() => this.gameState().money);
   public energy = computed(() => this.gameState().energy);
@@ -93,16 +60,16 @@ export class GameStateService {
   }
 
   hasSaveData(): boolean {
-    if (!this.persistenceService.hasSavedData(this.SAVE_KEY)) {
+    if (!this.persistenceService.hasSavedData(GAME_SAVE_KEY)) {
       return false;
     }
 
-    const parsedState = this.persistenceService.load(this.SAVE_KEY) as GameState | null;
-    return parsedState?.version === this.GAME_VERSION;
+    const parsedState = this.persistenceService.load(GAME_SAVE_KEY) as GameState | null;
+    return parsedState?.version === GAME_VERSION;
   }
 
   clearSaveData(): void {
-    this.persistenceService.clear(this.SAVE_KEY);
+    this.persistenceService.clear(GAME_SAVE_KEY);
     this.newGame();
   }
 
@@ -112,16 +79,16 @@ export class GameStateService {
       return;
     }
 
-    this.applyLoadedState(this.persistenceService.load(this.SAVE_KEY));
+    this.applyLoadedState(this.persistenceService.load(GAME_SAVE_KEY));
   }
 
   saveGame(): void {
-    this.persistenceService.save(this.SAVE_KEY, this.gameState());
+    this.persistenceService.save(GAME_SAVE_KEY, this.gameState());
   }
 
   newGame(): void {
     this.isHydrating = true;
-    this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+    this.gameState.set(cloneInitialGameState());
     this.isHydrating = false;
     console.log('New game initialized.');
   }
@@ -132,14 +99,14 @@ export class GameStateService {
 
   updateEnergy(amount: number): void {
     this.gameState.update(state => {
-      const newEnergy = Math.max(0, Math.min(100, state.energy + amount));
+      const newEnergy = Math.max(0, Math.min(ENERGY_MAX, state.energy + amount));
       return { ...state, energy: newEnergy };
     });
   }
 
   updateSatiety(amount: number): void {
     this.gameState.update(state => {
-      const newSatiety = Math.max(0, Math.min(100, state.satiety + amount));
+      const newSatiety = Math.max(0, Math.min(SATIETY_MAX, state.satiety + amount));
       return { ...state, satiety: newSatiety };
     });
   }
@@ -185,22 +152,22 @@ export class GameStateService {
     try {
       if (parsedState && typeof parsedState === 'object' && 'version' in parsedState) {
         const state = parsedState as GameState;
-        if (state.version === this.GAME_VERSION) {
+        if (state.version === GAME_VERSION) {
           this.gameState.set(state);
           console.log('Game loaded successfully.');
         } else {
           console.warn(
-            `Saved game version mismatch. Expected ${this.GAME_VERSION}, got ${state.version}. Starting new game.`
+            `Saved game version mismatch. Expected ${GAME_VERSION}, got ${state.version}. Starting new game.`
           );
-          this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+          this.gameState.set(cloneInitialGameState());
         }
       } else {
         console.log('No saved game found. Starting new game.');
-        this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+        this.gameState.set(cloneInitialGameState());
       }
     } catch (error) {
       console.error('Error applying loaded game state:', error);
-      this.gameState.set(JSON.parse(JSON.stringify(this.initialGameState)) as GameState);
+      this.gameState.set(cloneInitialGameState());
     } finally {
       this.isHydrating = false;
     }

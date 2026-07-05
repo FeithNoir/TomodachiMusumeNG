@@ -1,4 +1,4 @@
-import { UiStringDictionary } from '../interfaces/localized-text.interface';
+import { UiStringDictionary } from '@core/interfaces/localized-text.interface';
 
 export const UI_STRINGS: UiStringDictionary = {
   // Sidebar

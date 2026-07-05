@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { masterItemList } from '../data/item-database';
-import { Item } from '../interfaces/item.interface';
-import { resolveLocalizedText } from '../utils/localization.util';
-import { GameStateService } from './game-state.service';
+import { masterItemList } from '@core/data/item-database';
+import { Item } from '@core/interfaces/item.interface';
+import { resolveLocalizedText } from '@core/utils/localization.util';
+import { GameStateService } from '@core/services/game-state.service';
 
 @Injectable({
   providedIn: 'root',

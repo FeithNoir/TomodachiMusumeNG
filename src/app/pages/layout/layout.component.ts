@@ -2,21 +2,21 @@ import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@a
 
 import { RouterOutlet } from '@angular/router';
 
-import { CraftingComponent } from '../../shared/crafting/crafting.component';
-import { DialogueComponent } from '../../shared/dialogue/dialogue.component';
-import { InfoComponent } from '../../shared/info/info.component';
-import { InventoryComponent } from '../../shared/inventory/inventory.component';
-import { MenuComponent } from '../../shared/menu/menu.component';
-import { SidebarComponent, SidebarAction } from '../../shared/sidebar/sidebar.component';
-import { OptionsComponent } from '../../shared/options/options.component';
-import { ShopComponent } from '../shop/shop.component';
-import { MissionComponent } from '../mission/mission.component';
-import { TutorialComponent } from '../tutorial/tutorial.component';
+import { CraftingComponent } from '@shared/crafting/crafting.component';
+import { DialogueComponent } from '@shared/dialogue/dialogue.component';
+import { InfoComponent } from '@shared/info/info.component';
+import { InventoryComponent } from '@shared/inventory/inventory.component';
+import { MenuComponent } from '@shared/menu/menu.component';
+import { SidebarComponent, SidebarAction } from '@shared/sidebar/sidebar.component';
+import { OptionsComponent } from '@shared/options/options.component';
+import { ShopComponent } from '@pages/shop/shop.component';
+import { MissionComponent } from '@pages/mission/mission.component';
+import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 
-import { GameStateService } from '../../core/services/game-state.service';
-import { CharacterService } from '../../core/services/character.service';
-import { Dialogue, DialogueOption } from '../../core/interfaces/dialogue.interface';
-import { dialogues } from '../../core/data/dialogue-database';
+import { GameStateService } from '@core/services/game-state.service';
+import { CharacterService } from '@core/services/character.service';
+import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
+import { dialogues } from '@core/data/dialogue-database';
 
 type ActiveModal = SidebarAction | 'options' | null;
 

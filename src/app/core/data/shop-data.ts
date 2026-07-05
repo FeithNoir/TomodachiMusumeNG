@@ -1,4 +1,4 @@
-import { masterItemList } from './item-database';
+import { masterItemList } from '@core/data/item-database';
 
 // --- FUNCIÓN DE CÁLCULO DE PRECIOS ---
 // Base: 100, Factor: 1.5. Nivel 1: 100, Nivel 2: ~183, Nivel 3: ~294

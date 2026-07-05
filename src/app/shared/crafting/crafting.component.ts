@@ -1,10 +1,10 @@
 import { Component, computed, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { CraftingService } from '../../core/services/crafting.service';
-import { InventoryService } from '../../core/services/inventory.service';
-import { ItemCatalogService } from '../../core/services/item-catalog.service';
-import { LocalizationService } from '../../core/services/localization.service';
-import { Item } from '../../core/interfaces/item.interface';
+import { CraftingService } from '@core/services/crafting.service';
+import { InventoryService } from '@core/services/inventory.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { Item } from '@core/interfaces/item.interface';
 
 @Component({
   selector: 'app-crafting',

@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { GameStateService } from './game-state.service';
-import { InventoryService } from './inventory.service';
-import { recipes } from '../data/recipe-database';
-import { masterItemList } from '../data/item-database';
+import { GameStateService } from '@core/services/game-state.service';
+import { InventoryService } from '@core/services/inventory.service';
+import { recipes } from '@core/data/recipe-database';
+import { masterItemList } from '@core/data/item-database';
 
 @Injectable({
   providedIn: 'root'

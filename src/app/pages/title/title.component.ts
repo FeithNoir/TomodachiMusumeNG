@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { GameStateService } from '../../core/services/game-state.service';
+import { GameStateService } from '@core/services/game-state.service';
 
 @Component({
   selector: 'app-title',

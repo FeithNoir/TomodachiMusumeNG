@@ -1,10 +1,10 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { GameStateService } from './game-state.service';
-import { CharacterService } from './character.service';
-import { InventoryService } from './inventory.service';
-import { ItemCatalogService } from './item-catalog.service';
-import { LocalizationService } from './localization.service';
-import { shopInventory } from '../data/shop-data';
+import { GameStateService } from '@core/services/game-state.service';
+import { CharacterService } from '@core/services/character.service';
+import { InventoryService } from '@core/services/inventory.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { shopInventory } from '@core/data/shop-data';
 
 @Injectable({
   providedIn: 'root',

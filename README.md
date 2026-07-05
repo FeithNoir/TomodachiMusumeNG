@@ -10,7 +10,7 @@ An anime-style virtual pet game built with **Angular 22** and optional **Electro
 * **Layered Character System**: Eleanora's appearance is dynamically rendered using a layer system, allowing seamless equipment and expression changes.
 * **Dynamic Reactions**: Eleanora reacts to clicks with different expressions and dialogue based on her current affinity level.
 * **Persistent Data**: Game state (player name, stats, inventory, equipment) auto-saves to `localStorage` or Electron SQLite.
-* **i18n Support**: Spanish and English via the `LocalizedText` pattern; language selectable on the title screen and in options.
+* **i18n Support**: Spanish and English via `LocalizationService` and `UI_STRINGS`; language selectable on the title screen and in options.
 * **Core Stats System**:
   * **Affinity** — influenced by dialogues and actions; unlocks equipment and interactions.
   * **Energy** — consumed by missions; passively regenerates over time.
@@ -49,7 +49,6 @@ Contributors and AI collaborators should follow these documents before adding fe
 ### Future Integrations
 
 - [ ] **Backend & Database** — cloud saves for cross-device play.
-- [ ] **Centralized i18n** — extract scattered `LocalizedText` maps into a shared strings module.
 
 ## 🛠️ Installation & Usage
 
@@ -94,7 +93,12 @@ TomodachiMusumeNg/
 │   └── img/                  # Character layers, items, backgrounds
 ├── src/
 │   ├── app/
-│   │   ├── core/             # Data, interfaces, services
+│   │   ├── core/
+│   │   │   ├── constants/    # UI_STRINGS and shared static config
+│   │   │   ├── data/         # Game databases, balance config, initial state
+│   │   │   ├── interfaces/   # TypeScript domain contracts
+│   │   │   ├── services/     # Injectable business logic
+│   │   │   └── utils/        # Pure helpers (localization resolution)
 │   │   ├── pages/            # Title, layout shell, main view, modals
 │   │   └── shared/           # Character, sidebar, inventory, dialogue…
 │   └── styles.css            # Design tokens & global UI classes (pure CSS)
@@ -102,6 +106,17 @@ TomodachiMusumeNg/
 ├── design_guidelines.md        # Local only (gitignored)
 └── README.md
 ```
+
+### Path aliases (`tsconfig.json`)
+
+| Alias | Target |
+| :--- | :--- |
+| `@core/*` | `src/app/core/*` |
+| `@shared/*` | `src/app/shared/*` |
+| `@pages/*` | `src/app/pages/*` |
+| `@assets/*` | `public/assets/*` |
+
+Use aliases for cross-layer imports (e.g. `@core/services/game-state.service`, `@shared/character/character.component`).
 
 ## 🤝 Contributing
 

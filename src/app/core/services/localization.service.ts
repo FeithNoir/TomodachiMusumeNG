@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { UI_STRINGS } from '../constants/ui-strings';
-import { LocalizedText } from '../interfaces/localized-text.interface';
-import { Dialogue, DialogueOption } from '../interfaces/dialogue.interface';
-import { resolveLocalizedText, resolveUiString } from '../utils/localization.util';
-import { GameStateService } from './game-state.service';
-import { ItemCatalogService } from './item-catalog.service';
+import { UI_STRINGS } from '@core/constants/ui-strings';
+import { LocalizedText } from '@core/interfaces/localized-text.interface';
+import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
+import { resolveLocalizedText, resolveUiString } from '@core/utils/localization.util';
+import { GameStateService } from '@core/services/game-state.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
 
 @Injectable({
   providedIn: 'root',

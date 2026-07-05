@@ -1,19 +1,23 @@
 import { Injectable, inject } from '@angular/core';
-import { GameStateService } from './game-state.service';
-import { InventoryService } from './inventory.service';
-import { MissionReward } from '../interfaces/mission.interface';
+import { GameStateService } from '@core/services/game-state.service';
+import { InventoryService } from '@core/services/inventory.service';
+import {
+  MISSION_BASE_MONEY_REWARD,
+  MISSION_ITEM_DROPS,
+  MISSION_NOTHING_CHANCE_PERCENT,
+} from '@core/data/mission-config';
+import { MISSION_ENERGY_COST } from '@core/data/game-config';
+import { MissionReward } from '@core/interfaces/mission.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MissionService {
-  private readonly MISSION_ENERGY_COST = 10;
-
   private gameStateService = inject(GameStateService);
   private inventoryService = inject(InventoryService);
 
   hasEnoughEnergy(): boolean {
-    return this.gameStateService.energy() >= this.MISSION_ENERGY_COST;
+    return this.gameStateService.energy() >= MISSION_ENERGY_COST;
   }
 
   startMission(): boolean {
@@ -22,7 +26,7 @@ export class MissionService {
       return false;
     }
 
-    this.gameStateService.updateEnergy(-this.MISSION_ENERGY_COST);
+    this.gameStateService.updateEnergy(-MISSION_ENERGY_COST);
     return true;
   }
 
@@ -33,12 +37,15 @@ export class MissionService {
     let messageKey = 'missionReturn';
 
     const rand = Math.random() * 100;
-    if (rand < 30) {
+    if (rand < MISSION_NOTHING_CHANCE_PERCENT) {
       messageKey = 'missionReturnNothing';
     } else {
-      moneyEarned = 20;
-      if (Math.random() > 0.5) {
-        itemsFound.push({ id: 'wood_plank', quantity: 1 });
+      moneyEarned = MISSION_BASE_MONEY_REWARD;
+
+      for (const drop of MISSION_ITEM_DROPS) {
+        if (Math.random() > drop.dropChance) {
+          itemsFound.push({ id: drop.id, quantity: drop.quantity });
+        }
       }
     }
 

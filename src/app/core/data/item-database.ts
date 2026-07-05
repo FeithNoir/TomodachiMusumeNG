@@ -1,4 +1,4 @@
-import { ItemCollection } from '../interfaces/item.interface';
+import { ItemCollection } from '@core/interfaces/item.interface';
 
 export const masterItemList: ItemCollection = {
   // ---- Ropa Interior ----

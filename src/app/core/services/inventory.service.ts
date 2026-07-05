@@ -1,14 +1,12 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { GameStateService } from './game-state.service';
-import { ItemCatalogService } from './item-catalog.service';
+import { INVENTORY_MAX_SLOTS, INVENTORY_MAX_STACK_SIZE } from '@core/data/game-config';
+import { GameStateService } from '@core/services/game-state.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InventoryService {
-  private readonly MAX_INVENTORY_SLOTS = 20;
-  private readonly MAX_STACK_SIZE = 10;
-
   private gameStateService = inject(GameStateService);
   private itemCatalog = inject(ItemCatalogService);
 
@@ -29,7 +27,7 @@ export class InventoryService {
       const existingItem = currentInventory[existingItemIndex];
       const newQuantity = existingItem.quantity + quantity;
 
-      if (newQuantity <= this.MAX_STACK_SIZE) {
+      if (newQuantity <= INVENTORY_MAX_STACK_SIZE) {
         const updatedInventory = [...currentInventory];
         updatedInventory[existingItemIndex] = { ...existingItem, quantity: newQuantity };
         this.gameStateService.updateInventory(updatedInventory);
@@ -40,7 +38,7 @@ export class InventoryService {
       return false;
     }
 
-    if (currentInventory.length < this.MAX_INVENTORY_SLOTS) {
+    if (currentInventory.length < INVENTORY_MAX_SLOTS) {
       const updatedInventory = [...currentInventory, { id: itemId, quantity }];
       this.gameStateService.updateInventory(updatedInventory);
       return true;

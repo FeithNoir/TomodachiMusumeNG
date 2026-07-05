@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { MissionService } from '../../core/services/mission.service';
-import { ItemCatalogService } from '../../core/services/item-catalog.service';
-import { LocalizationService } from '../../core/services/localization.service';
-import { MissionReward } from 'src/app/core/interfaces/mission.interface';
+import { MissionService } from '@core/services/mission.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { MissionReward } from '@core/interfaces/mission.interface';
 
 @Component({
   selector: 'app-mission',

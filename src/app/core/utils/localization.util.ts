@@ -1,4 +1,4 @@
-import { LocalizedText, UiStringDictionary } from '../interfaces/localized-text.interface';
+import { LocalizedText, UiStringDictionary } from '@core/interfaces/localized-text.interface';
 
 export function resolveLocalizedText(
   entry: LocalizedText,

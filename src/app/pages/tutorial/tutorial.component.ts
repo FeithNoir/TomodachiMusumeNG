@@ -1,7 +1,7 @@
 import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { GameStateService } from '../../core/services/game-state.service';
+import { GameStateService } from '@core/services/game-state.service';
 
 export enum TutorialStep {
   LANGUAGE,

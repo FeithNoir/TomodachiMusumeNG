@@ -1,4 +1,4 @@
-import { Recipe } from '../interfaces/recipe.interface';
+import { Recipe } from '@core/interfaces/recipe.interface';
 
 export const recipes: { [key: string]: Recipe } = {
   'steel_sword_recipe': {

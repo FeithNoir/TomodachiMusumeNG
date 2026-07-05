@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
 
-import { CharacterComponent } from '../../shared/character/character.component';
-import { GameLoopService } from '../../core/services/game-loop.service';
+import { CharacterComponent } from '@shared/character/character.component';
+import { GameLoopService } from '@core/services/game-loop.service';
 
 @Component({
   selector: 'app-main',

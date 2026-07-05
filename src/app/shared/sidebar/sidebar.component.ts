@@ -1,6 +1,6 @@
 import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { LocalizationService } from '../../core/services/localization.service';
+import { LocalizationService } from '@core/services/localization.service';
 
 export type SidebarAction = 'talk' | 'equip' | 'interact' | 'mission' | 'market' | 'craft';
 

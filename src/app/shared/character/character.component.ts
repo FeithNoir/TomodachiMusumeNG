@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
 
-import { CharacterService } from '../../core/services/character.service';
-import { GameStateService } from '../../core/services/game-state.service';
-import { ItemCatalogService } from '../../core/services/item-catalog.service';
-import { LocalizationService } from '../../core/services/localization.service';
+import { CharacterService } from '@core/services/character.service';
+import { GameStateService } from '@core/services/game-state.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-character',

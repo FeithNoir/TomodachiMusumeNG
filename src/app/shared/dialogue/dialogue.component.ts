@@ -1,7 +1,7 @@
 import { Component, inject, input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { Dialogue, DialogueOption } from '../../core/interfaces/dialogue.interface';
-import { LocalizationService } from '../../core/services/localization.service';
+import { Dialogue, DialogueOption } from '@core/interfaces/dialogue.interface';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-dialogue',

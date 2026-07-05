@@ -1,4 +1,4 @@
-import { DialogueCollection } from '../interfaces/dialogue.interface';
+import { DialogueCollection } from '@core/interfaces/dialogue.interface';
 
 export const dialogues: DialogueCollection = {
   // Escena 1: Entrenamiento

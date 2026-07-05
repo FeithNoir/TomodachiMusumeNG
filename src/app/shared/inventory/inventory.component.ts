@@ -1,11 +1,13 @@
 import { Component, inject, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { InventoryService } from '../../core/services/inventory.service';
-import { CharacterService } from '../../core/services/character.service';
-import { GameStateService } from '../../core/services/game-state.service';
-import { ItemCatalogService } from '../../core/services/item-catalog.service';
-import { LocalizationService } from '../../core/services/localization.service';
-import { EquippableItemCategory, Item } from '../../core/interfaces/item.interface';
+import { InventoryService } from '@core/services/inventory.service';
+import { CharacterService } from '@core/services/character.service';
+import { GameStateService } from '@core/services/game-state.service';
+import { ItemCatalogService } from '@core/services/item-catalog.service';
+import { LocalizationService } from '@core/services/localization.service';
+import { INVENTORY_MAX_SLOTS } from '@core/data/game-config';
+import { isEquippableCategory } from '@core/data/equippable-categories';
+import { Item } from '@core/interfaces/item.interface';
 
 @Component({
   selector: 'app-inventory',
@@ -26,7 +28,7 @@ export class InventoryComponent {
 
   public inventory = this.inventoryService.inventory;
   public equipped = this.characterService.equipped;
-  public maxInventorySlots = 20;
+  public maxInventorySlots = INVENTORY_MAX_SLOTS;
   readonly getText = this.localization.t.bind(this.localization);
 
   getItemData(itemId: string): Item | undefined {
@@ -58,10 +60,7 @@ export class InventoryComponent {
       return;
     }
 
-    const equipableTypes: EquippableItemCategory[] = [
-      'top', 'bottom', 'suit', 'head', 'stockings', 'bra', 'pantsus', 'hands', 'weapon',
-    ];
-    if (!equipableTypes.includes(itemType as EquippableItemCategory)) {
+    if (!isEquippableCategory(itemType)) {
       console.warn(this.getText('cannotEquipMsg'));
       return;
     }
@@ -74,7 +73,7 @@ export class InventoryComponent {
         console.warn(this.getText('braPantsusUnequipMsg', affinityReq));
         return;
       }
-      this.characterService.unequipItem(itemType as EquippableItemCategory);
+      this.characterService.unequipItem(itemType);
     } else {
       if (itemType !== 'bra' && itemType !== 'pantsus' && this.characterService.affinity() < affinityReq) {
         console.warn(this.getText('insufficientAffinityMsg', affinityReq));

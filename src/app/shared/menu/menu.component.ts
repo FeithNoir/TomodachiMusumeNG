@@ -1,9 +1,9 @@
 import { Component, inject, signal, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router } from '@angular/router';
-import { GameStateService } from '../../core/services/game-state.service';
-import { PersistenceService } from '../../core/services/persistence.service';
-import { LocalizationService } from '../../core/services/localization.service';
+import { GameStateService } from '@core/services/game-state.service';
+import { PersistenceService } from '@core/services/persistence.service';
+import { LocalizationService } from '@core/services/localization.service';
 
 @Component({
   selector: 'app-menu',
