@@ -1,5 +1,4 @@
-<!-- Menú de Acciones Principal (Dock Moderno) -->
-<div class="sidebar-dock">
+<div class="sidebar-dock shell-surface">
   @for (btn of menuActions; track btn.id) {
   <button [id]="btn.id" class="dock-item" (click)="onAction(btn.action)" [title]="getText(btn.label)">
     <div class="icon-wrapper">

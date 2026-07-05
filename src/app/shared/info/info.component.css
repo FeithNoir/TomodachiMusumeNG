@@ -8,9 +8,6 @@
   left: 0;
   right: 0;
   height: 60px;
-  background: var(--shell-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
@@ -21,42 +18,10 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-.info-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--gold-accent-muted);
-  padding: 0.4rem 1rem;
-  border-radius: 9999px;
-  border: 1px solid var(--glass-border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: default;
+.affinity .stat-icon {
+  filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.5));
 }
 
-.info-pill:hover {
-  background: rgba(251, 191, 36, 0.4);
-  transform: translateY(-2px);
-  border-color: var(--gold-accent);
-  box-shadow: 0 0 15px var(--gold-accent-muted);
-}
-
-.info-icon {
-  font-size: 1.25rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.info-value {
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-  letter-spacing: 0.05em;
-}
-
-/* Specific Pill Highlights if needed */
-.affinity .info-icon { filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.5)); }
-
-/* Mobile Responsiveness */
 @media (max-width: 640px) {
   .info-top-bar {
     height: 50px;
@@ -64,15 +29,15 @@
     padding: 0 0.5rem;
   }
 
-  .info-pill {
+  .stat-pill {
     padding: 0.3rem 0.75rem;
   }
 
-  .info-value {
+  .stat-value {
     font-size: 0.9rem;
   }
 
-  .info-icon {
+  .stat-icon {
     font-size: 1rem;
   }
 }
@@ -84,10 +49,12 @@
     scrollbar-width: none;
     padding-left: 1rem;
   }
+
   .info-top-bar::-webkit-scrollbar {
     display: none;
   }
-  .info-pill {
+
+  .stat-pill {
     flex-shrink: 0;
   }
 }

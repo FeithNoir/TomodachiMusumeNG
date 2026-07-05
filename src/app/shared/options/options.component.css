@@ -2,38 +2,10 @@
   display: contents;
 }
 
-.options-container {
-  width: 95%;
-  max-width: 450px;
-  max-height: 85vh;
-  padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  overflow: hidden;
-}
-
-.options-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid var(--glass-border);
-  padding-bottom: 1rem;
-}
-
 .header-icon {
   width: 1.75rem;
   height: 1.75rem;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.options-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--gold-accent);
-  margin: 0;
 }
 
 .options-content {
@@ -42,25 +14,8 @@
   padding-right: 0.5rem;
 }
 
-.options-content::-webkit-scrollbar {
-  width: 4px;
-}
-.options-content::-webkit-scrollbar-thumb {
-  background: var(--glass-border);
-  border-radius: 2px;
-}
-
 .options-section {
   margin-bottom: 1.5rem;
-}
-
-.section-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  margin-bottom: 1rem;
-  letter-spacing: 0.1em;
 }
 
 .language-grid {
@@ -75,10 +30,10 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-muted);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  color: #fff;
+  color: var(--text-white);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -90,7 +45,7 @@
 }
 
 .lang-btn.active {
-  background: rgba(251, 191, 36, 0.15);
+  background: var(--gold-active-bg);
   border-color: var(--gold-accent);
   box-shadow: 0 0 15px var(--gold-accent-muted);
 }
@@ -106,22 +61,4 @@
 
 .options-footer {
   margin-top: 1rem;
-}
-
-.finish-btn {
-  width: 100%;
-  padding: 1rem;
-  background: var(--gold-accent);
-  color: #000;
-  border: none;
-  border-radius: var(--radius-md);
-  font-weight: 800;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.finish-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
 }

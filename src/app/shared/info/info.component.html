@@ -1,21 +1,21 @@
-<div class="info-top-bar">
-  <div class="info-pill affinity" [title]="getText('affinity')">
-    <span class="info-icon">❤️</span>
-    <span class="info-value">{{ affinity() }}</span>
+<div class="info-top-bar shell-surface">
+  <div class="stat-pill affinity" [title]="getText('affinity')">
+    <span class="stat-icon">❤️</span>
+    <span class="stat-value">{{ affinity() }}</span>
   </div>
 
-  <div class="info-pill money" [title]="getText('money')">
-    <span class="info-icon">💰</span>
-    <span class="info-value">${{ money() }}</span>
+  <div class="stat-pill money" [title]="getText('money')">
+    <span class="stat-icon">💰</span>
+    <span class="stat-value">${{ money() }}</span>
   </div>
 
-  <div class="info-pill energy" [title]="getText('energy')">
-    <span class="info-icon">⚡</span>
-    <span class="info-value">{{ energy() | number:'1.0-0' }}</span>
+  <div class="stat-pill energy" [title]="getText('energy')">
+    <span class="stat-icon">⚡</span>
+    <span class="stat-value">{{ energy() | number:'1.0-0' }}</span>
   </div>
 
-  <div class="info-pill satiety" [title]="getText('satiety')">
-    <span class="info-icon">🍱</span>
-    <span class="info-value">{{ satiety() | number:'1.0-0' }}</span>
+  <div class="stat-pill satiety" [title]="getText('satiety')">
+    <span class="stat-icon">🍱</span>
+    <span class="stat-value">{{ satiety() | number:'1.0-0' }}</span>
   </div>
 </div>

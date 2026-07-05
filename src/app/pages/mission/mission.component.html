@@ -1,4 +1,4 @@
-<div class="glass-panel mission-container fade-in">
+<div class="glass-panel modal-container modal-container--sm fade-in text-center">
 
   @if (isComplete()) {
   <button class="close-btn-round" (click)="onClose()">
@@ -6,16 +6,14 @@
   </button>
   }
 
-  <div class="mission-header">
-    <h3 class="mission-title">{{ title() }}</h3>
+  <div class="panel-header--stacked">
+    <h3 class="modal-title">{{ title() }}</h3>
   </div>
 
   <div class="mission-content">
     @if (!isComplete()) {
-    <div class="mission-status-container">
-      <div class="spinner-container">
-        <div class="glass-spinner"></div>
-      </div>
+    <div class="mission-status">
+      <div class="glass-spinner"></div>
 
       <div class="progress-section">
         <div class="progress-bar-container">
@@ -35,7 +33,7 @@
 
   @if (isComplete()) {
   <div class="mission-footer">
-    <button class="finish-btn" (click)="onClose()">
+    <button class="btn-finish" (click)="onClose()">
       {{ getText('close') || 'Cerrar' }}
     </button>
   </div>

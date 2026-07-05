@@ -1,52 +1,52 @@
-<div class="glass-panel crafting-container fade-in">
+<div class="glass-panel modal-container modal-container--xl fade-in">
 
   <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
     <span>✕</span>
   </button>
 
-  <div class="crafting-header">
-    <h3 class="crafting-title">{{ getText('craftingTitle') }}</h3>
+  <div class="panel-header--stacked">
+    <h3 class="modal-title">{{ getText('craftingTitle') }}</h3>
   </div>
 
   <div class="crafting-layout">
     <div class="crafting-column">
-      <h4 class="section-label">{{ getText('craftingSlots') }}</h4>
+      <h4 class="section-heading">{{ getText('craftingSlots') }}</h4>
 
-      <div id="craftingSlotsGrid" class="crafting-slots-grid">
+      <div id="craftingSlotsGrid" class="crafting-slots-grid grid-slot-area">
         @for (slot of craftingSlots(); track $index; let i = $index) {
-          <div class="craft-slot" (click)="removeFromCraftingSlot(i)">
+          <div class="interactive-card craft-slot" (click)="removeFromCraftingSlot(i)">
             @if (slot) {
               <img [src]="getItemData(slot).path"
-                   class="craft-slot-img"
+                   class="craft-slot-img item-img"
                    [title]="getItemName(slot)"
                    [alt]="getItemName(slot)">
             } @else {
-              <span class="craft-slot-empty">{{ getText('emptySlot') }}</span>
+              <span class="text-dim craft-slot-empty">{{ getText('emptySlot') }}</span>
             }
           </div>
         }
       </div>
 
       <button id="attemptCraftButton"
-              class="craft-action-btn primary"
+              class="btn-action btn-success mt-sm"
               (click)="attemptCraft()">
         {{ getText('craftItem') }}
       </button>
     </div>
 
     <div class="crafting-column">
-      <h4 class="section-label">{{ getText('availableMaterials') }}</h4>
+      <h4 class="section-heading">{{ getText('availableMaterials') }}</h4>
 
-      <div id="craftingMaterialsGrid" class="materials-grid">
+      <div id="craftingMaterialsGrid" class="materials-grid grid-slot-area scroll-area">
         @for (item of materialsInInventory(); track item.id) {
           <div class="material-card" (click)="addToCraftingSlot(item.id)">
             <img [src]="getItemData(item.id).path"
-                 class="material-img"
+                 class="material-img item-img"
                  [alt]="getItemName(item.id)">
             <p class="material-label">{{ getItemName(item.id) }} (x{{ item.quantity }})</p>
           </div>
         } @empty {
-          <p class="materials-empty">{{ getText('noMaterials') }}</p>
+          <p class="empty-state">{{ getText('noMaterials') }}</p>
         }
       </div>
     </div>

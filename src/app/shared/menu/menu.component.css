@@ -16,10 +16,10 @@
   left: 0;
   height: 100%;
   width: 320px;
-  background: rgba(45, 20, 5, 0.7); /* Deep amber/brown with glass effect */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(251, 191, 36, 0.2);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border-right: 1px solid var(--glass-border);
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -49,7 +49,7 @@
 
 .menu-divider {
   height: 1px;
-  background: linear-gradient(to right, rgba(251, 191, 36, 0.4), transparent);
+  background: linear-gradient(to right, var(--glass-border), transparent);
   width: 100%;
   margin: 1rem 0;
 }
@@ -66,10 +66,10 @@
   align-items: center;
   gap: 1.25rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(251, 191, 36, 0.1);
-  border-radius: 1.25rem;
-  color: #fff;
+  background: var(--surface-muted);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-white);
   font-size: 1.05rem;
   font-weight: 600;
   text-decoration: none;
@@ -143,11 +143,11 @@
 .menu-toggle-btn {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 1rem;
-  background: rgba(120, 53, 15, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: var(--radius-md);
+  background: var(--shell-bg);
+  backdrop-filter: blur(var(--shell-blur));
+  -webkit-backdrop-filter: blur(var(--shell-blur));
+  border: 1px solid var(--glass-border);
   cursor: pointer;
   display: flex;
   align-items: center;

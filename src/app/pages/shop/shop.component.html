@@ -1,4 +1,4 @@
-<div class="glass-panel shop-container fade-in">
+<div class="glass-panel modal-container modal-container--lg modal-container--scroll fade-in">
 
   <button class="close-btn-round" (click)="onClose()">
     <span>✕</span>
@@ -6,50 +6,47 @@
 
   @switch (viewMode()) {
 
-  <!-- Market View -->
   @case ('market') {
-  <div class="shop-view">
-    <div class="shop-header">
-      <h3 class="shop-title">{{ getText('marketTitle') }}</h3>
-      <div class="shop-wallet">💰 {{ money() }}</div>
+  <div class="shop-view fade-in-soft">
+    <div class="panel-header">
+      <h3 class="modal-title">{{ getText('marketTitle') }}</h3>
+      <span class="pill pill--md">💰 {{ money() }}</span>
     </div>
 
-    <p class="shop-prompt">{{ getText('marketPrompt') }}</p>
+    <p class="text-prompt">{{ getText('marketPrompt') }}</p>
 
-    <div class="button-stack">
-      <button (click)="openBuy()" class="shop-action-btn primary">
+    <div class="btn-stack">
+      <button (click)="openBuy()" class="btn-action btn-primary">
         <span class="btn-icon">🛒</span>
-        <span class="btn-label">{{ getText('buy') }}</span>
+        <span>{{ getText('buy') }}</span>
       </button>
-      <button (click)="openSell()" class="shop-action-btn secondary">
+      <button (click)="openSell()" class="btn-action btn-secondary">
         <span class="btn-icon">📦</span>
-        <span class="btn-label">{{ getText('sell') }}</span>
+        <span>{{ getText('sell') }}</span>
       </button>
     </div>
   </div>
   }
 
-  <!-- Buy View -->
   @case ('buy') {
-  <div class="shop-view full-height">
-    <div class="shop-header">
-      <h3 class="shop-title">{{ getText('buyTitle') }}</h3>
-      <button (click)="openMarket()" class="back-link">← {{ getText('back') }}</button>
+  <div class="shop-view shop-view--full">
+    <div class="panel-header">
+      <h3 class="modal-title">{{ getText('buyTitle') }}</h3>
+      <button (click)="openMarket()" class="btn-back">← {{ getText('back') }}</button>
     </div>
 
-    <div class="items-grid">
+    <div class="items-grid scroll-area">
       @for (itemId of availableShopItems(); track itemId) {
-      <div class="shop-item-card">
+      <div class="item-card">
         <div class="item-visual">
           <img [src]="getItemData(itemId).path" [alt]="getItemName(itemId)" class="item-img">
         </div>
-
         <div class="item-info">
           <p class="item-name">{{ getItemName(itemId) }}</p>
           <p class="item-price">💰 {{ getItemData(itemId).buyPrice }}</p>
         </div>
-
-        <button (click)="buyItem(itemId)" class="buy-btn" [disabled]="money() < (getItemData(itemId).buyPrice || 0)">
+        <button (click)="buyItem(itemId)" class="btn-outline-gold"
+                [disabled]="money() < (getItemData(itemId).buyPrice || 0)">
           {{ getText('buy') }}
         </button>
       </div>
@@ -58,50 +55,46 @@
   </div>
   }
 
-  <!-- Sell View -->
   @case ('sell') {
-  <div class="shop-view full-height">
-    <div class="shop-header">
-      <h3 class="shop-title">{{ getText('sellTitle') }}</h3>
-      <button (click)="openMarket()" class="back-link">← {{ getText('back') }}</button>
+  <div class="shop-view shop-view--full">
+    <div class="panel-header">
+      <h3 class="modal-title">{{ getText('sellTitle') }}</h3>
+      <button (click)="openMarket()" class="btn-back">← {{ getText('back') }}</button>
     </div>
 
-    <div class="items-grid">
+    <div class="items-grid scroll-area">
       @for (item of sellableInventoryItems(); track item.id) {
-      <div class="shop-item-card sell-card">
+      <div class="item-card">
         <div class="item-visual">
           <img [src]="getItemData(item.id).path" [alt]="getItemName(item.id)" class="item-img">
-          <span class="qty-badge">x{{ item.quantity }}</span>
+          <span class="badge-qty">x{{ item.quantity }}</span>
         </div>
-
         <div class="item-info">
           <p class="item-name">{{ getItemName(item.id) }}</p>
-          <p class="item-price profit">💰 {{ getItemData(item.id).sellPrice }}</p>
+          <p class="item-price">💰 {{ getItemData(item.id).sellPrice }}</p>
         </div>
-
-        <button (click)="openSellConfirmation(item.id)" class="sell-btn">
+        <button (click)="openSellConfirmation(item.id)" class="btn-outline-gold">
           {{ getText('sell') }}
         </button>
       </div>
       } @empty {
-      <div class="empty-msg">{{ getText('noItemsToSell') }}</div>
+      <div class="empty-state">{{ getText('noItemsToSell') }}</div>
       }
     </div>
   </div>
   }
 
-  <!-- Sell Confirmation View -->
   @case ('sell-confirm') {
-  <div class="shop-view centered-content">
+  <div class="shop-view shop-view--confirm modal-container--centered">
     @if (selectedItemToSell(); as selection) {
-    <h3 class="confirm-title">{{ getText('sellConfirmTitle') }}</h3>
+    <h3 class="modal-title">{{ getText('sellConfirmTitle') }}</h3>
 
     <div class="confirm-item-preview">
-      <img [src]="getItemData(selection.item.id).path" class="preview-img">
+      <img [src]="getItemData(selection.item.id).path" class="preview-img item-img" [alt]="getItemName(selection.item.id)">
       <p class="preview-name">{{ getItemName(selection.item.id) }}</p>
     </div>
 
-    <p class="confirm-prompt">{{ getText('sellConfirmPrompt') }}</p>
+    <p class="text-prompt">{{ getText('sellConfirmPrompt') }}</p>
 
     <div class="qty-selector">
       <button class="qty-adjust" (click)="sellQuantityInput.set(Math.max(1, sellQuantityInput() - 1))">-</button>
@@ -111,11 +104,11 @@
         (click)="sellQuantityInput.set(Math.min(maxSellQuantity(), sellQuantityInput() + 1))">+</button>
     </div>
 
-    <div class="button-stack">
-      <button (click)="confirmSell()" class="shop-action-btn primary confirm">
+    <div class="btn-stack">
+      <button (click)="confirmSell()" class="btn-action btn-primary">
         {{ getText('confirmSell') }} (💰 {{ (selection.item.sellPrice || 0) * sellQuantityInput() }})
       </button>
-      <button (click)="openSell()" class="shop-action-btn secondary">{{ getText('cancel') }}</button>
+      <button (click)="openSell()" class="btn-action btn-secondary">{{ getText('cancel') }}</button>
     </div>
     }
   </div>

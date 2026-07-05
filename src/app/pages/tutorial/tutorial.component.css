@@ -110,23 +110,15 @@
 }
 
 .name-input:focus {
-  border-bottom-color: #fbbf24; /* amber-400 */
+  border-bottom-color: var(--gold-accent);
 }
 
 /* Animations */
 .fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+  animation: fadeInTutorial 0.8s ease-out forwards;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInTutorial {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.btn-spaced {
-  margin-top: 1rem;
-}
-
-.btn-spaced-lg {
-  margin-top: 1.5rem;
 }

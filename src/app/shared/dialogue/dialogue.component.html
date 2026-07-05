@@ -1,31 +1,26 @@
-<div class="dialogue-floating-container fade-in">
+<div class="dialogue-floating-container slide-up">
   <div class="glass-panel dialogue-box">
-
     <button class="close-btn-round" (click)="onClose()">
       <span>✕</span>
     </button>
 
-    <!-- Character Name Tag -->
     <div class="name-tag">
-      {{ dialogue()?.character || '???' }}
+      {{ dialogue()?.character || 'Eleanora' }}
     </div>
 
-    <!-- Dialogue Text -->
     <div class="dialogue-content">
       <p class="dialogue-text">
         {{ processedText }}
       </p>
     </div>
 
-    <!-- Dialogue Options -->
     <div class="options-grid">
-      @for (option of dialogue()?.options; track option.text) {
+      @for (option of dialogue()?.options; track option.text.en) {
       <button class="dialogue-option-button" (click)="onOptionClick(option)">
         <span class="option-text">{{ getLocalizedOptionText(option) }}</span>
         <span class="option-arrow">→</span>
       </button>
       }
     </div>
-
   </div>
 </div>

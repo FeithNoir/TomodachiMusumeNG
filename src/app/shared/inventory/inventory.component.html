@@ -1,34 +1,32 @@
-<div class="glass-panel inventory-container fade-in">
+<div class="glass-panel modal-container modal-container--md fade-in">
 
   <button class="close-btn-round" (click)="onClose()">
     <span>✕</span>
   </button>
 
-  <div class="inventory-header">
-    <h3 class="inventory-title">
-      {{ getText('inventoryTitle') }}
-    </h3>
-    <div class="inventory-stats">
-      <span class="slots-pill">{{ inventory().length }} / {{ maxInventorySlots }}</span>
-    </div>
+  <div class="panel-header">
+    <h3 class="modal-title">{{ getText('inventoryTitle') }}</h3>
+    <span class="pill pill--sm">{{ inventory().length }} / {{ maxInventorySlots }}</span>
   </div>
 
-  <div class="inventory-grid">
+  <div class="inventory-grid scroll-area">
     @for (item of inventory(); track item.id) {
-    <div class="inventory-item-card" [class.equipped]="isEquipped(item.id)" (click)="handleItemClick(item.id)">
+    <div class="interactive-card inventory-item"
+         [class.interactive-card--equipped]="isEquipped(item.id)"
+         (click)="handleItemClick(item.id)">
 
-      <div class="item-img-container">
+      <div class="item-visual">
         <img [src]="getItemData(item.id).path" [alt]="getItemName(item.id)" class="item-img">
       </div>
 
-      <div class="item-quantity-tag">{{ item.quantity }}</div>
+      <span class="badge-count">{{ item.quantity }}</span>
 
       @if (isEquipped(item.id)) {
-      <div class="equipped-tag">E</div>
+      <span class="badge-equipped">E</span>
       }
     </div>
     } @empty {
-    <div class="empty-inventory">
+    <div class="empty-state">
       <p>{{ getText('noItemsMsg') || 'No tienes objetos en el inventario.' }}</p>
     </div>
     }
