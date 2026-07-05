@@ -1,0 +1,91 @@
+.runner-stage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #87ceeb 0%, #e0f4ff 55%, #c4a574 55%, #8b6914 100%);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  user-select: none;
+}
+
+.minigame-hud {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  z-index: 5;
+  color: var(--text-primary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.minigame-hint {
+  opacity: 0.85;
+  font-size: 0.72rem;
+}
+
+.minigame-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  gap: 0.25rem;
+}
+
+.overlay-score {
+  font-size: 1.25rem;
+  color: var(--gold-accent);
+  font-weight: 700;
+}
+
+.runner-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 44%;
+  background: linear-gradient(180deg, #a67c52, #6b4f2a);
+}
+
+.runner-player {
+  position: absolute;
+  left: 48px;
+  bottom: 44%;
+  width: 56px;
+  height: 72px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: transform 0.05s linear;
+  z-index: 2;
+}
+
+.runner-sprite {
+  max-height: 100%;
+  transform: scale(0.5);
+  transform-origin: bottom center;
+  pointer-events: none;
+}
+
+.runner-emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.runner-obstacle {
+  position: absolute;
+  bottom: 44%;
+  width: 28px;
+  height: 36px;
+  background: linear-gradient(180deg, #5c4033, #3d2817);
+  border-radius: 4px 4px 2px 2px;
+  z-index: 1;
+}

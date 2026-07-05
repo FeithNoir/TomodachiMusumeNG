@@ -1,0 +1,135 @@
+@if (phase() === 'date-play' && selectedDate(); as dateEvent) {
+  <app-date-event-view
+    [event]="dateEvent"
+    (back)="goBack()"
+    (completed)="onDateCompleted()">
+  </app-date-event-view>
+} @else {
+  <div class="glass-panel modal-container modal-container--lg fade-in text-center interact-modal">
+
+    <button class="close-btn-round" (click)="onClose()" [attr.aria-label]="getText('close')">
+      <span>✕</span>
+    </button>
+
+    <div class="panel-header--stacked">
+      <h3 class="modal-title">{{ title() }}</h3>
+    </div>
+
+    <div class="interact-content">
+      @if (phase() === 'hub') {
+        <div class="category-grid">
+          <button type="button" class="category-card interactive-card" (click)="openCategory('training')">
+            <span class="category-icon">💪</span>
+            <span class="category-name">{{ getText('interactCategoryTraining') }}</span>
+            <span class="category-desc text-dim">{{ getText('interactCategoryTrainingDesc') }}</span>
+          </button>
+          <button type="button" class="category-card interactive-card" (click)="openCategory('dates')">
+            <span class="category-icon">💕</span>
+            <span class="category-name">{{ getText('interactCategoryDates') }}</span>
+            <span class="category-desc text-dim">{{ getText('interactCategoryDatesDesc') }}</span>
+          </button>
+          <button type="button" class="category-card interactive-card" (click)="openCategory('experiments')">
+            <span class="category-icon">🧪</span>
+            <span class="category-name">{{ getText('interactCategoryExperiments') }}</span>
+            <span class="category-desc text-dim">{{ getText('interactCategoryExperimentsDesc') }}</span>
+          </button>
+        </div>
+      }
+
+      @if (phase() === 'training') {
+        <div class="training-grid">
+          @for (game of trainingGames; track game.id) {
+            <button type="button" class="training-card interactive-card" (click)="selectTrainingGame(game)">
+              <span class="training-icon">{{ game.icon }}</span>
+              <span class="training-name">{{ localized(game.name) }}</span>
+              <span class="training-desc text-dim">{{ localized(game.description) }}</span>
+            </button>
+          }
+        </div>
+        <button type="button" class="btn-outline-gold interact-back" (click)="goBack()">
+          {{ getText('interactBack') }}
+        </button>
+      }
+
+      @if (phase() === 'assign' && selectedGame(); as game) {
+        <app-training-assignee-picker
+          [assignees]="assigneeOptions()"
+          [energyCost]="game.energyCost"
+          (assigneeSelected)="onAssigneeSelected($event)"
+          (back)="goBack()">
+        </app-training-assignee-picker>
+      }
+
+      @if (phase() === 'playing' && participant(); as actor) {
+        @if (selectedGame()?.id === 'runner') {
+          <app-runner-minigame [participant]="actor" (finished)="onGameFinished($event)"></app-runner-minigame>
+        }
+        @if (selectedGame()?.id === 'rhythm') {
+          <app-rhythm-minigame [participant]="actor" (finished)="onGameFinished($event)"></app-rhythm-minigame>
+        }
+        @if (selectedGame()?.id === 'slice') {
+          <app-slice-minigame [participant]="actor" (finished)="onGameFinished($event)"></app-slice-minigame>
+        }
+      }
+
+      @if (phase() === 'result' && trainingResult(); as result) {
+        <div class="result-panel">
+          <p class="result-score">{{ getText('interactScore') }}: {{ result.score }}</p>
+          <p class="result-bonus">{{ resultSummary() }}</p>
+          <p class="text-dim">{{ result.assigneeLabel }}</p>
+          <button type="button" class="btn-finish" (click)="goBack()">
+            {{ getText('interactFinish') }}
+          </button>
+        </div>
+      }
+
+      @if (phase() === 'dates') {
+        @if (unlockedDates().length === 0 && lockedDates().length === 0 && completedDates().length > 0) {
+          <p class="text-dim">{{ getText('dateEventNoAvailable') }}</p>
+        }
+
+        <div class="date-list">
+          @for (event of unlockedDates(); track event.id) {
+            <button type="button" class="date-card interactive-card" (click)="selectDateEvent(event)">
+              <span class="date-card-name">{{ localized(event.name) }}</span>
+              <span class="date-card-meta text-dim">♥ {{ event.requiredAffinity }}+</span>
+            </button>
+          }
+
+          @for (event of lockedDates(); track event.id) {
+            <div class="date-card date-card--locked">
+              <span class="date-card-name">{{ localized(event.name) }}</span>
+              <span class="date-card-meta">{{ getText('dateEventLocked', event.requiredAffinity) }}</span>
+            </div>
+          }
+
+          @for (event of completedDates(); track event.id) {
+            <div class="date-card date-card--completed">
+              <span class="date-card-name">{{ localized(event.name) }}</span>
+              <span class="date-card-meta">{{ getText('dateEventCompleted') }}</span>
+            </div>
+          }
+        </div>
+
+        @if (unlockedDates().length === 0 && lockedDates().length > 0) {
+          <p class="text-dim date-hint">{{ getText('dateEventNoAvailable') }}</p>
+        }
+
+        <button type="button" class="btn-outline-gold interact-back" (click)="goBack()">
+          {{ getText('interactBack') }}
+        </button>
+      }
+
+      @if (phase() === 'experiments') {
+        <div class="experiments-panel">
+          <span class="experiments-icon">🧪</span>
+          <p>{{ getText('experimentsComingSoon') }}</p>
+          <p class="text-dim">{{ getText('experimentsHint') }}</p>
+        </div>
+        <button type="button" class="btn-outline-gold interact-back" (click)="goBack()">
+          {{ getText('interactBack') }}
+        </button>
+      }
+    </div>
+  </div>
+}

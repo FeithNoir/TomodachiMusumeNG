@@ -13,6 +13,7 @@ import { SidebarComponent, SidebarAction } from '@shared/sidebar/sidebar.compone
 import { OptionsComponent } from '@shared/options/options.component';
 import { ShopComponent } from '@pages/shop/shop.component';
 import { MissionComponent } from '@pages/mission/mission.component';
+import { InteractComponent } from '@pages/interact/interact.component';
 import { TutorialComponent } from '@pages/tutorial/tutorial.component';
 
 import { GameStateService } from '@core/services/game-state.service';
@@ -39,6 +40,7 @@ type ActiveModal = SidebarAction | 'options' | null;
     SidebarComponent,
     ShopComponent,
     MissionComponent,
+    InteractComponent,
     TutorialComponent,
     OptionsComponent,
   ],

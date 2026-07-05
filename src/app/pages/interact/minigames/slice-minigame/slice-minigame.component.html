@@ -1,0 +1,35 @@
+<div class="minigame-stage slice-stage">
+  <div class="minigame-hud">
+    <span>{{ getText('interactScore') }}: {{ hits() }}/{{ maxTargets }}</span>
+    <span class="minigame-hint">{{ getText('interactTapSlice') }}</span>
+  </div>
+
+  @for (target of targets(); track target.id) {
+    @if (!target.sliced) {
+      <button
+        type="button"
+        class="slice-target"
+        [style.left.px]="target.x"
+        [style.top.px]="target.y"
+        (click)="sliceTarget(target.id, $event)">
+        {{ target.emoji }}
+      </button>
+    }
+  }
+
+  <div class="slice-fighter" [class.slice-fighter--slash]="slash()">
+    @if (participant().display === 'emoji') {
+      <span class="slice-emoji">{{ participant().src }}</span>
+    } @else {
+      <img [src]="participant().src" alt="" class="slice-sprite" />
+    }
+    <span class="slice-sword">⚔️</span>
+  </div>
+
+  @if (gameOver()) {
+    <div class="minigame-overlay">
+      <p>{{ getText('interactGameOver') }}</p>
+      <p class="overlay-score">{{ hits() }} / {{ maxTargets }}</p>
+    </div>
+  }
+</div>

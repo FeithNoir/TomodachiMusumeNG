@@ -1,0 +1,34 @@
+<div class="minigame-stage rhythm-stage" (click)="tryHit()">
+  <div class="minigame-hud">
+    <span>{{ getText('interactScore') }}: {{ hits() }}/{{ maxBeats }}</span>
+    <span class="minigame-hint">{{ getText('interactTapRhythm') }}</span>
+  </div>
+
+  <div class="rhythm-lane">
+    @for (marker of markers(); track marker.id) {
+      @if (!marker.hit) {
+        <div
+          class="rhythm-marker"
+          [class.rhythm-marker--missed]="marker.missed"
+          [style.top.px]="marker.y">
+        </div>
+      }
+    }
+    <div class="rhythm-hit-zone"></div>
+  </div>
+
+  <div class="rhythm-player" [style.transform]="'scale(' + jumpScale() + ')'">
+    @if (participant().display === 'emoji') {
+      <span class="rhythm-emoji">{{ participant().src }}</span>
+    } @else {
+      <img [src]="participant().src" alt="" class="rhythm-sprite" />
+    }
+  </div>
+
+  @if (gameOver()) {
+    <div class="minigame-overlay">
+      <p>{{ getText('interactGameOver') }}</p>
+      <p class="overlay-score">{{ hits() }} / {{ maxBeats }}</p>
+    </div>
+  }
+</div>

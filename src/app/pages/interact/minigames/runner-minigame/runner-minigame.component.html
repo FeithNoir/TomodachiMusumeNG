@@ -1,0 +1,29 @@
+<div class="minigame-stage runner-stage" (click)="jump()" (keydown)="$event">
+  <div class="minigame-hud">
+    <span>{{ getText('interactScore') }}: {{ score() }}</span>
+    <span class="minigame-hint">{{ getText('interactTapJump') }}</span>
+  </div>
+
+  <div class="runner-ground"></div>
+
+  <div
+    class="runner-player"
+    [style.transform]="'translateY(' + (-playerY()) + 'px)'">
+    @if (participant().display === 'emoji') {
+      <span class="runner-emoji">{{ participant().src }}</span>
+    } @else {
+      <img [src]="participant().src" alt="" class="runner-sprite" />
+    }
+  </div>
+
+  @for (obstacle of obstacles(); track obstacle.id) {
+    <div class="runner-obstacle" [style.left.px]="obstacle.x"></div>
+  }
+
+  @if (gameOver()) {
+    <div class="minigame-overlay">
+      <p>{{ getText('interactGameOver') }}</p>
+      <p class="overlay-score">{{ score() }} pts</p>
+    </div>
+  }
+</div>

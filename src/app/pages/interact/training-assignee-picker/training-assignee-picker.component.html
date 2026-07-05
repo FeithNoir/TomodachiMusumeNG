@@ -1,0 +1,34 @@
+<div class="assignee-picker">
+  <p class="text-dim assignee-hint">{{ getText('interactEnergyCost', energyCost) }}</p>
+
+  <div class="assignee-grid">
+    @for (option of assignees; track option.id) {
+      <button
+        type="button"
+        class="assignee-card interactive-card"
+        [class.assignee-card--disabled]="!option.available"
+        (click)="selectAssignee(option)">
+        <div class="assignee-visual">
+          @if (isCharacter(option)) {
+            <img [src]="displayVisual(option)" alt="" class="assignee-img assignee-img--character" />
+          } @else if (isEmoji(option)) {
+            <span class="assignee-emoji">{{ displayVisual(option) }}</span>
+          } @else {
+            <img [src]="displayVisual(option)" alt="" class="assignee-img" />
+          }
+        </div>
+        <span class="assignee-label">{{ option.label }}</span>
+        <span class="assignee-type text-dim">
+          {{ option.type === 'character' ? getText('missionAssigneeTypeCharacter') : getText('missionAssigneeTypePet') }}
+        </span>
+        @if (!option.available && option.unavailableReasonKey) {
+          <span class="assignee-lock">{{ getText(option.unavailableReasonKey) }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  <button type="button" class="btn-outline-gold assignee-back" (click)="back.emit()">
+    {{ getText('interactBack') }}
+  </button>
+</div>

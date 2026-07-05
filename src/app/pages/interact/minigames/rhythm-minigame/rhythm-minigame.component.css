@@ -1,0 +1,103 @@
+.rhythm-stage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1e1b4b, #312e81 40%, #4338ca 100%);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  user-select: none;
+}
+
+.minigame-hud {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  z-index: 5;
+  color: #fff;
+}
+
+.minigame-hint {
+  opacity: 0.85;
+  font-size: 0.72rem;
+}
+
+.rhythm-lane {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 100%;
+}
+
+.rhythm-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fef08a, var(--gold-accent));
+  box-shadow: 0 0 12px var(--gold-accent-muted);
+}
+
+.rhythm-marker--missed {
+  opacity: 0.3;
+}
+
+.rhythm-hit-zone {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 36px;
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rhythm-player {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform-origin: center bottom;
+  margin-left: -40px;
+  width: 80px;
+  height: 90px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+
+.rhythm-sprite {
+  max-height: 100%;
+  transform: scale(0.45);
+  transform-origin: bottom center;
+}
+
+.rhythm-emoji {
+  font-size: 2.6rem;
+}
+
+.minigame-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+}
+
+.overlay-score {
+  color: var(--gold-accent);
+  font-weight: 700;
+}

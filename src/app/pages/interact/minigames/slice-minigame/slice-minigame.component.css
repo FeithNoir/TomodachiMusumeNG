@@ -1,0 +1,90 @@
+.slice-stage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #422006, #713f12 50%, #92400e 100%);
+  border: 1px solid var(--glass-border);
+  user-select: none;
+}
+
+.minigame-hud {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  z-index: 5;
+  color: #fff;
+}
+
+.minigame-hint {
+  opacity: 0.85;
+  font-size: 0.72rem;
+}
+
+.slice-target {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.1s ease;
+}
+
+.slice-target:hover {
+  transform: scale(1.1);
+}
+
+.slice-fighter {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+  z-index: 3;
+}
+
+.slice-fighter--slash .slice-sword {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+.slice-sprite {
+  max-height: 72px;
+  transform: scale(0.42);
+  transform-origin: bottom right;
+}
+
+.slice-emoji {
+  font-size: 2.2rem;
+}
+
+.slice-sword {
+  font-size: 1.6rem;
+  transition: transform 0.12s ease;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+}
+
+.minigame-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+}
+
+.overlay-score {
+  color: var(--gold-accent);
+  font-weight: 700;
+}

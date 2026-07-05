@@ -264,4 +264,71 @@ export const UI_STRINGS: UiStringDictionary = {
     es: 'Huevos en incubación',
     en: 'Eggs incubating',
   },
+
+  // Interact / Minigames
+  interactTitle: { es: 'Interactuar', en: 'Interact' },
+  interactCategoryTraining: { es: 'Entrenamiento', en: 'Training' },
+  interactCategoryTrainingDesc: {
+    es: 'Minijuegos para mejorar habilidades.',
+    en: 'Minigames to improve skills.',
+  },
+  interactCategoryDates: { es: 'Citas', en: 'Dates' },
+  interactCategoryDatesDesc: {
+    es: 'Eventos especiales según tu afinidad.',
+    en: 'Special events based on your affinity.',
+  },
+  interactCategoryExperiments: { es: 'Experimentos', en: 'Experiments' },
+  interactCategoryExperimentsDesc: {
+    es: 'Prueba pociones especiales (próximamente).',
+    en: 'Test special potions (coming soon).',
+  },
+  interactBack: { es: 'Volver', en: 'Back' },
+  interactSelectGame: { es: 'Elige un entrenamiento', en: 'Choose training' },
+  interactSelectAssignee: { es: 'Elige participante', en: 'Choose participant' },
+  interactEnergyCost: (cost: number) => ({
+    es: `Coste de energía (personaje): ${cost}`,
+    en: `Energy cost (character): ${cost}`,
+  }),
+  interactStartGame: { es: 'Comenzar', en: 'Start' },
+  interactScore: { es: 'Puntuación', en: 'Score' },
+  interactTapJump: { es: 'Toca o Espacio para saltar', en: 'Tap or Space to jump' },
+  interactTapRhythm: { es: 'Toca o Espacio al ritmo', en: 'Tap or Space to the beat' },
+  interactTapSlice: { es: 'Toca los objetivos para cortar', en: 'Tap targets to slice' },
+  interactGameOver: { es: '¡Fin del juego!', en: 'Game over!' },
+  interactFinish: { es: 'Terminar', en: 'Finish' },
+  minigameTrainingComplete: (score: number) => ({
+    es: `Entrenamiento completado (${score} pts).`,
+    en: `Training complete (${score} pts).`,
+  }),
+  minigameResultAffinity: (amount: number) => ({
+    es: `+${amount} afinidad`,
+    en: `+${amount} affinity`,
+  }),
+  minigameResultStat: (stat: string, amount: number) => ({
+    es: `+${amount} ${stat} (mascota)`,
+    en: `+${amount} ${stat} (pet)`,
+  }),
+  dateEventsTitle: { es: 'Citas', en: 'Dates' },
+  dateEventLocked: (affinity: number) => ({
+    es: `Requiere afinidad ${affinity}`,
+    en: `Requires affinity ${affinity}`,
+  }),
+  dateEventCompleted: { es: 'Completada', en: 'Completed' },
+  dateEventComplete: (affinity: number) => ({
+    es: `Cita completada (+${affinity} afinidad).`,
+    en: `Date complete (+${affinity} affinity).`,
+  }),
+  dateEventNoAvailable: {
+    es: 'No hay citas disponibles por ahora. Sube tu afinidad.',
+    en: 'No dates available yet. Raise your affinity.',
+  },
+  experimentsTitle: { es: 'Experimentos', en: 'Experiments' },
+  experimentsComingSoon: {
+    es: 'Los experimentos con pociones especiales se implementarán pronto.',
+    en: 'Special potion experiments will be implemented soon.',
+  },
+  experimentsHint: {
+    es: 'Vuelve más adelante para mezclar ingredientes raros.',
+    en: 'Come back later to mix rare ingredients.',
+  },
 };

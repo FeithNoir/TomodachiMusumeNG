@@ -48,6 +48,7 @@ export const INITIAL_GAME_STATE: GameState = {
   activeMission: null,
   missionBoardSeed: Date.now(),
   missionFlags: [],
+  completedDateEvents: [],
 };
 
 export function cloneInitialGameState(): GameState {
@@ -69,6 +70,7 @@ export function normalizeGameState(raw: Partial<GameState>): GameState {
     activeMission: raw.activeMission ?? null,
     missionBoardSeed: raw.missionBoardSeed ?? defaults.missionBoardSeed,
     missionFlags: raw.missionFlags ?? defaults.missionFlags,
+    completedDateEvents: raw.completedDateEvents ?? defaults.completedDateEvents,
   };
 }
 

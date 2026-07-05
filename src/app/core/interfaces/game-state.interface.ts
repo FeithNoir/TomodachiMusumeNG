@@ -34,4 +34,6 @@ export interface GameState {
   missionBoardSeed: number;
   /** Unlocked conditional / one-time mission ids. */
   missionFlags: string[];
+  /** Completed one-time date event ids. */
+  completedDateEvents: string[];
 }

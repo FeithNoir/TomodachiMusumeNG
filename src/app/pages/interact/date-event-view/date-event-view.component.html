@@ -1,0 +1,31 @@
+<div
+  class="date-scene"
+  [style.backgroundImage]="'url(' + event.background + ')'"
+  [style.filter]="backgroundFilter()">
+  <div class="date-scene-overlay">
+    <button type="button" class="close-btn-round date-close" (click)="back.emit()">
+      <span>✕</span>
+    </button>
+
+    <h3 class="date-title">{{ localized(event.name) }}</h3>
+
+    @if (phase() === 'intro') {
+      <p class="date-text">{{ localized(event.intro) }}</p>
+      <div class="date-choices">
+        @for (choice of event.choices; track choice.id) {
+          <button type="button" class="dialogue-option-button" (click)="selectChoice(choice.id)">
+            <span class="option-text">{{ localized(choice.text) }}</span>
+            <span class="option-arrow">→</span>
+          </button>
+        }
+      </div>
+    }
+
+    @if (phase() === 'response' || phase() === 'done') {
+      <p class="date-text">{{ responseText() }}</p>
+      <button type="button" class="btn-finish" (click)="onContinue()">
+        {{ getText('interactFinish') }}
+      </button>
+    }
+  </div>
+</div>

@@ -70,6 +70,13 @@
 </div>
 }
 
+<!-- Modal de Interactuar / Minijuegos -->
+@if (isInteractVisible()) {
+<div class="modal-overlay" (click)="closeActiveModal()">
+  <app-interact (click)="$event.stopPropagation()" (close)="closeActiveModal()"></app-interact>
+</div>
+}
+
 <!-- Modal de Opciones -->
 @if (isOptionsVisible()) {
 <div class="modal-overlay">
