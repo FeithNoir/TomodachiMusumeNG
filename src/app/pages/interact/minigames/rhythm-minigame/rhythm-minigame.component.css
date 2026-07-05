@@ -1,13 +1,6 @@
 .rhythm-stage {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #1e1b4b, #312e81 40%, #4338ca 100%);
-  border: 1px solid var(--glass-border);
   cursor: pointer;
-  user-select: none;
+  background: linear-gradient(180deg, #1e1b4b, #312e81 40%, #4338ca 100%);
 }
 
 .minigame-hud {
@@ -100,4 +93,16 @@
 .overlay-score {
   color: var(--gold-accent);
   font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .rhythm-hit-zone {
+    width: 64px;
+    height: 42px;
+  }
+
+  .rhythm-marker {
+    width: 32px;
+    height: 32px;
+  }
 }

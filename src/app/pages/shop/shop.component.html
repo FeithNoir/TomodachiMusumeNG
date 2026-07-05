@@ -1,4 +1,4 @@
-<div class="glass-panel modal-container modal-container--lg modal-container--scroll fade-in">
+<div class="glass-panel modal-container modal-container--lg fade-in">
 
   <button class="close-btn-round" (click)="onClose()">
     <span>✕</span>
@@ -99,7 +99,8 @@
       <button (click)="openMarket()" class="btn-back">← {{ getText('back') }}</button>
     </div>
 
-    <div class="items-grid scroll-area">
+    <div class="scroll-area shop-sell-list">
+      <div class="items-grid">
       @for (item of sellableInventoryItems(); track item.id) {
         @if (getItemData(item.id); as itemData) {
         <div class="item-card">
@@ -119,6 +120,7 @@
       } @empty {
       <div class="empty-state">{{ getText('noItemsToSell') }}</div>
       }
+      </div>
     </div>
   </div>
   }

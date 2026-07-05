@@ -4,6 +4,7 @@
 
 .interact-modal {
   max-width: 720px;
+  position: relative;
 }
 
 .interact-content {
@@ -11,6 +12,7 @@
   flex-direction: column;
   gap: 1.25rem;
   text-align: left;
+  min-height: 0;
 }
 
 .category-grid,
@@ -153,6 +155,9 @@ button.date-card {
   white-space: pre-line;
 }
 
-.interact-modal {
-  position: relative;
+@media (max-width: 480px) {
+  .category-grid,
+  .training-grid {
+    grid-template-columns: 1fr;
+  }
 }

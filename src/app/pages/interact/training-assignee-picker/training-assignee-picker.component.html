@@ -1,7 +1,7 @@
 <div class="assignee-picker">
   <p class="text-dim assignee-hint">{{ getText('interactEnergyCost', energyCost) }}</p>
 
-  <div class="assignee-grid">
+  <div class="assignee-grid scroll-area">
     @for (option of assignees; track option.id) {
       <button
         type="button"
@@ -10,7 +10,7 @@
         (click)="selectAssignee(option)">
         <div class="assignee-visual">
           @if (isCharacter(option)) {
-            <img [src]="displayVisual(option)" alt="" class="assignee-img assignee-img--character" />
+            <app-minigame-sprite [participant]="characterParticipant" [scale]="0.42" />
           } @else if (isEmoji(option)) {
             <span class="assignee-emoji">{{ displayVisual(option) }}</span>
           } @else {

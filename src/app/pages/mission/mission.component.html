@@ -8,7 +8,7 @@
     <h3 class="modal-title">{{ title() }}</h3>
   </div>
 
-  <div class="mission-content">
+  <div class="mission-content scroll-area">
     @if (phase() === 'board') {
       <app-mission-board
         [entries]="boardEntries()"

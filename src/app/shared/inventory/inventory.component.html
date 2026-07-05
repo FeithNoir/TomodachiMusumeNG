@@ -24,6 +24,7 @@
     <p class="equip-mode-banner">{{ getText('equipModeBanner') }}</p>
   }
 
+  <div class="inventory-body scroll-area">
   <app-catalog-filter
     [tabs]="filterTabs"
     [activeTab]="activeTab()"
@@ -33,7 +34,7 @@
   </app-catalog-filter>
 
   @if (activeTab() === 'armor') {
-    <div class="armor-section scroll-area">
+    <div class="armor-section">
       @for (group of armorSetGroups(); track group.setId) {
         <section class="armor-set-group">
           <h4 class="section-heading">{{ group.label }}</h4>
@@ -66,7 +67,7 @@
       }
     </div>
   } @else if (activeTab() === 'recipe') {
-    <div class="recipe-section scroll-area">
+    <div class="recipe-section">
       @for (entry of knownRecipeEntries(); track entry.recipeId) {
         <div class="recipe-card">
           <span class="recipe-name">{{ entry.itemName }}</span>
@@ -97,7 +98,7 @@
       </div>
     </div>
   } @else {
-    <div class="inventory-grid scroll-area">
+    <div class="inventory-grid">
       @for (item of filteredInventory(); track item.id) {
         <button type="button"
                 [class]="'interactive-card inventory-item ' + getRarityClass(item.id)"
@@ -123,4 +124,5 @@
       }
     </div>
   }
+  </div>
 </div>

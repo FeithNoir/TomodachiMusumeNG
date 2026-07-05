@@ -8,6 +8,7 @@
     <span class="pill pill--sm">{{ getText('companionsSlots', slotsUsed(), slotCapacity()) }}</span>
   </div>
 
+  <div class="companions-body scroll-area">
   @if (incubatingEggs().length > 0) {
     <section class="companions-section">
       <h4 class="section-heading">{{ getText('companionsIncubating') }}</h4>
@@ -41,7 +42,7 @@
     @if (pets().length === 0) {
       <p class="empty-state">{{ getText('companionsEmpty') }}</p>
     } @else {
-      <div class="companions-grid scroll-area">
+      <div class="companions-grid">
         @for (pet of pets(); track pet.id) {
           <div class="companion-card interactive-card">
             <div class="companion-visual">
@@ -65,4 +66,5 @@
       </div>
     }
   </section>
+  </div>
 </div>

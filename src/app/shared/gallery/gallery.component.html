@@ -21,20 +21,27 @@
     }
   </div>
 
-  <div class="gallery-grid scroll-area">
-    @for (entry of entries(); track entry.id) {
-      <article
-        class="gallery-card"
-        [class.gallery-card--locked]="!isUnlocked(entry.id)">
-        <div class="gallery-preview">
-          @if (isUnlocked(entry.id)) {
-            <img [src]="entry.previewPath" [alt]="localized(entry.name)" class="gallery-img" />
-          } @else {
-            <div class="gallery-locked">🔒</div>
-          }
-        </div>
-        <p class="gallery-name">{{ localized(entry.name) }}</p>
-      </article>
+  <div class="gallery-body scroll-area">
+    @for (group of entryGroups(); track group.setId) {
+      @if (group.label) {
+        <h4 class="section-heading gallery-set-heading">{{ group.label }}</h4>
+      }
+      <div class="gallery-grid">
+        @for (entry of group.entries; track entry.id) {
+          <article
+            class="gallery-card"
+            [class.gallery-card--locked]="!isUnlocked(entry.id)">
+            <div class="gallery-preview">
+              @if (isUnlocked(entry.id)) {
+                <img [src]="entry.previewPath" [alt]="localized(entry.name)" class="gallery-img" />
+              } @else {
+                <div class="gallery-locked">🔒</div>
+              }
+            </div>
+            <p class="gallery-name">{{ localized(entry.name) }}</p>
+          </article>
+        }
+      </div>
     }
   </div>
 </div>

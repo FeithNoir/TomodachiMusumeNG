@@ -27,6 +27,8 @@
     @if (equipped().head) {
       <img [src]="getItemPath(equipped().head)" alt="" class="minigame-sprite-layer" />
     }
+    <img [src]="expression().eyes" alt="" class="minigame-sprite-layer minigame-sprite-layer--face" />
+    <img [src]="expression().mouth" alt="" class="minigame-sprite-layer minigame-sprite-layer--face" />
     @if (equipped().weapon) {
       <img [src]="getItemPath(equipped().weapon)" alt="" class="minigame-sprite-layer minigame-sprite-layer--weapon" />
     }

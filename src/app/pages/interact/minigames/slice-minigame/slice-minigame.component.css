@@ -1,12 +1,5 @@
 .slice-stage {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  overflow: hidden;
-  border-radius: 12px;
   background: linear-gradient(180deg, #422006, #713f12 50%, #92400e 100%);
-  border: 1px solid var(--glass-border);
-  user-select: none;
 }
 
 .minigame-hud {
@@ -30,6 +23,8 @@
   position: absolute;
   width: 44px;
   height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
@@ -87,4 +82,12 @@
 .overlay-score {
   color: var(--gold-accent);
   font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .slice-target {
+    width: 52px;
+    height: 52px;
+    font-size: 1.65rem;
+  }
 }

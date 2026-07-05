@@ -58,6 +58,8 @@
 
 .equipment-layout {
   display: block;
+  min-height: 0;
+  flex: 1;
 }
 
 .equipment-layout--split {

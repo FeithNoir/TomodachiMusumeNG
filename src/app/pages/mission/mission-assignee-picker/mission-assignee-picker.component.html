@@ -1,6 +1,8 @@
 <div class="assignee-picker">
   <div class="assignee-picker__header">
-    <button type="button" class="tab-btn" (click)="back.emit()">{{ getText('back') }}</button>
+    <button type="button" class="btn-outline-gold assignee-back-btn" (click)="back.emit()">
+      ← {{ getText('back') }}
+    </button>
     <h4 class="section-heading">{{ getText('missionSelectAssignee') }}</h4>
   </div>
 
@@ -12,8 +14,10 @@
               class="assignee-card"
               [class.assignee-card--disabled]="!option.available"
               (click)="selectAssignee(option)">
-        <div class="assignee-card__avatar">
-          @if (isEmoji(option)) {
+        <div class="assignee-card__avatar" [class.assignee-card__avatar--character]="isCharacter(option)">
+          @if (isCharacter(option)) {
+            <app-minigame-sprite [participant]="characterParticipant" [scale]="0.34" />
+          } @else if (isEmoji(option)) {
             <span class="assignee-emoji">{{ displayVisual(option) }}</span>
           } @else {
             <img [src]="displayVisual(option)" [alt]="option.label" class="assignee-img">

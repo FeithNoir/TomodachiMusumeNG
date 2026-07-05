@@ -20,6 +20,8 @@ export class MinigameSpriteComponent {
 
   equipped = this.characterService.equipped;
 
+  expression = this.characterService.expression;
+
   getItemPath(itemId: string | null): string {
     return this.itemCatalog.getItemPath(itemId);
   }
