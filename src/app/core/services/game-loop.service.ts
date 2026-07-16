@@ -5,6 +5,7 @@ import { GameStateService } from '@core/services/game-state.service';
 import { MissionService } from '@core/services/mission.service';
 import { MissionRewardService } from '@core/services/mission-reward.service';
 import { PetService } from '@core/services/pet.service';
+import { TemporaryEffectService } from '@core/services/temporary-effect.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class GameLoopService {
   private missionService = inject(MissionService);
   private missionRewardService = inject(MissionRewardService);
   private petService = inject(PetService);
+  private tempEffects = inject(TemporaryEffectService);
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private missionIntervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -39,6 +41,7 @@ export class GameLoopService {
     this.missionIntervalId = setInterval(() => {
       this.missionService.tickClock();
       this.petService.tickIncubation();
+      this.tempEffects.tickExpiredEffects();
       this.resolveCompletedMission();
     }, MISSION_TICK_MS);
   }

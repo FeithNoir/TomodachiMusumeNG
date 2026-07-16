@@ -1,6 +1,7 @@
 export type { LocalizedText } from './localized-text.interface';
 import type { LocalizedText } from './localized-text.interface';
 import type { CharacterStats } from './character-stats.interface';
+import type { TemporaryStatBoost } from './temporary-effect.interface';
 
 // Definimos un tipo cerrado para las categorías.
 // Esto evita errores tipográficos (ej: escribir 'wepon' en lugar de 'weapon').
@@ -16,6 +17,7 @@ export interface ItemEffects {
   };
   energy?: number;
   satiety?: number;
+  temporaryBoost?: TemporaryStatBoost;
 }
 
 // Interfaz principal del Ítem

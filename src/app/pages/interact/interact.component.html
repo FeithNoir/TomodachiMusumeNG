@@ -28,6 +28,11 @@
             <span class="category-name">{{ getText('interactCategoryDates') }}</span>
             <span class="category-desc text-dim">{{ getText('interactCategoryDatesDesc') }}</span>
           </button>
+          <button type="button" class="category-card interactive-card" (click)="openCategory('feeding')">
+            <span class="category-icon">🍽️</span>
+            <span class="category-name">{{ getText('interactCategoryFeeding') }}</span>
+            <span class="category-desc text-dim">{{ getText('interactCategoryFeedingDesc') }}</span>
+          </button>
           <button type="button" class="category-card interactive-card" (click)="openCategory('experiments')">
             <span class="category-icon">🧪</span>
             <span class="category-name">{{ getText('interactCategoryExperiments') }}</span>
@@ -82,6 +87,33 @@
           }
           <p class="result-bonus">{{ resultSummary() }}</p>
           <p class="text-dim">{{ result.assigneeLabel }}</p>
+          <button type="button" class="btn-finish" (click)="goBack()">
+            {{ getText('interactFinish') }}
+          </button>
+        </div>
+      }
+
+      @if (phase() === 'feeding-assign') {
+        <app-training-assignee-picker
+          [assignees]="assigneeOptions()"
+          [energyCost]="0"
+          (assigneeSelected)="onFeedingAssigneeSelected($event)"
+          (back)="goBack()">
+        </app-training-assignee-picker>
+      }
+
+      @if (phase() === 'feeding-select' && selectedAssignee(); as assignee) {
+        <app-feeding-food-picker
+          [assignee]="assignee"
+          (foodSelected)="onFoodSelected($event)"
+          (back)="goBack()">
+        </app-feeding-food-picker>
+      }
+
+      @if (phase() === 'feeding-result' && feedingResult(); as result) {
+        <div class="result-panel">
+          <p class="result-score">{{ getText('feedingFed', result.assigneeLabel) }}</p>
+          <p class="result-bonus">{{ feedingResultSummary() }}</p>
           <button type="button" class="btn-finish" (click)="goBack()">
             {{ getText('interactFinish') }}
           </button>

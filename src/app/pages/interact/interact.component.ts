@@ -19,9 +19,11 @@ import {
 } from '@core/interfaces/minigame.interface';
 import { LocalizationService } from '@core/services/localization.service';
 import { MinigameService } from '@core/services/minigame.service';
+import { FeedingService, FeedingResult } from '@core/services/feeding.service';
 import { TutorialService } from '@core/services/tutorial.service';
 import { GAME_TUTORIALS } from '@core/data/tutorials.config';
 import { TrainingAssigneePickerComponent } from '@pages/interact/training-assignee-picker/training-assignee-picker.component';
+import { FeedingFoodPickerComponent } from '@pages/interact/feeding-food-picker/feeding-food-picker.component';
 import { RunnerMinigameComponent } from '@pages/interact/minigames/runner-minigame/runner-minigame.component';
 import { RhythmMinigameComponent } from '@pages/interact/minigames/rhythm-minigame/rhythm-minigame.component';
 import { SliceMinigameComponent } from '@pages/interact/minigames/slice-minigame/slice-minigame.component';
@@ -35,13 +37,17 @@ type InteractPhase =
   | 'dates'
   | 'date-play'
   | 'experiments'
-  | 'result';
+  | 'result'
+  | 'feeding-assign'
+  | 'feeding-select'
+  | 'feeding-result';
 
 @Component({
   selector: 'app-interact',
   standalone: true,
   imports: [
     TrainingAssigneePickerComponent,
+    FeedingFoodPickerComponent,
     RunnerMinigameComponent,
     RhythmMinigameComponent,
     SliceMinigameComponent,
@@ -54,6 +60,7 @@ type InteractPhase =
 export class InteractComponent {
   private localization = inject(LocalizationService);
   readonly minigameService = inject(MinigameService);
+  private feedingService = inject(FeedingService);
   private tutorialService = inject(TutorialService);
 
   @Output() close = new EventEmitter<void>();
@@ -67,6 +74,7 @@ export class InteractComponent {
   selectedAssignee = signal<TrainingAssigneeOption | null>(null);
   participant = signal<MinigameParticipant | null>(null);
   trainingResult = signal<TrainingResult | null>(null);
+  feedingResult = signal<FeedingResult | null>(null);
   selectedDate = signal<DateEventDefinition | null>(null);
   showMinigameTutorial = signal(false);
   pendingCategory = signal<MinigameCategory | null>(null);
@@ -85,6 +93,12 @@ export class InteractComponent {
         return this.getText('interactSelectGame');
       case 'assign':
         return this.getText('interactSelectAssignee');
+      case 'feeding-assign':
+        return this.getText('feedingSelectAssignee');
+      case 'feeding-select':
+        return this.getText('feedingTitle');
+      case 'feeding-result':
+        return this.getText('feedingResultTitle');
       case 'playing':
         return this.localization.localized(this.selectedGame()?.name ?? { es: '', en: '' });
       case 'dates':
@@ -113,6 +127,11 @@ export class InteractComponent {
       this.phase.set('dates');
       return;
     }
+    if (category === 'feeding') {
+      this.assigneeOptions.set(this.feedingService.buildFeedingAssignees());
+      this.phase.set('feeding-assign');
+      return;
+    }
     this.phase.set('experiments');
   }
 
@@ -121,7 +140,7 @@ export class InteractComponent {
     this.showMinigameTutorial.set(false);
     const pending = this.pendingCategory();
     if (pending) {
-      this.phase.set(pending);
+      this.openCategory(pending);
       this.pendingCategory.set(null);
     }
   }
@@ -136,6 +155,23 @@ export class InteractComponent {
     this.selectedAssignee.set(option);
     this.participant.set(this.minigameService.toParticipant(option));
     this.phase.set('playing');
+  }
+
+  onFeedingAssigneeSelected(option: TrainingAssigneeOption): void {
+    this.selectedAssignee.set(option);
+    this.phase.set('feeding-select');
+  }
+
+  onFoodSelected(itemId: string): void {
+    const assignee = this.selectedAssignee();
+    if (!assignee) {
+      return;
+    }
+    const result = this.feedingService.feed(assignee, itemId);
+    if (result) {
+      this.feedingResult.set(result);
+      this.phase.set('feeding-result');
+    }
   }
 
   onGameFinished(score: number): void {
@@ -172,6 +208,20 @@ export class InteractComponent {
     }
     if (current === 'assign') {
       this.phase.set('training');
+      return;
+    }
+    if (current === 'feeding-select') {
+      this.phase.set('feeding-assign');
+      return;
+    }
+    if (current === 'feeding-result') {
+      this.resetFeeding();
+      this.phase.set('feeding-assign');
+      return;
+    }
+    if (current === 'feeding-assign') {
+      this.resetFeeding();
+      this.phase.set('hub');
       return;
     }
     if (current === 'training' || current === 'dates' || current === 'experiments') {
@@ -214,10 +264,41 @@ export class InteractComponent {
     return this.getText('minigameResultStat', game.statKey, result.statGain);
   }
 
+  feedingResultSummary(): string {
+    const result = this.feedingResult();
+    const assignee = this.selectedAssignee();
+    if (!result || !assignee) {
+      return '';
+    }
+
+    if (assignee.type === 'character') {
+      if (result.preference === 'liked') {
+        return this.getText('feedingResultAffinityLiked', result.affinityDelta);
+      }
+      if (result.preference === 'disliked') {
+        return this.getText('feedingResultAffinityDisliked', Math.abs(result.affinityDelta));
+      }
+      return this.getText('feedingResultNeutral');
+    }
+
+    if (result.preference === 'liked') {
+      return this.getText('feedingResultBondLiked', result.bondDelta);
+    }
+    if (result.preference === 'disliked') {
+      return this.getText('feedingResultBondDisliked', Math.abs(result.bondDelta));
+    }
+    return this.getText('feedingResultNeutral');
+  }
+
   private resetTraining(): void {
     this.selectedGame.set(null);
     this.selectedAssignee.set(null);
     this.participant.set(null);
     this.trainingResult.set(null);
+  }
+
+  private resetFeeding(): void {
+    this.selectedAssignee.set(null);
+    this.feedingResult.set(null);
   }
 }

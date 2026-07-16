@@ -1,0 +1,72 @@
+.feeding-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 0;
+  flex: 1;
+}
+
+.feeding-hint {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.feeding-food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.65rem;
+}
+
+.feeding-food-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.feeding-food-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.feeding-food-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.feeding-food-qty {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.food-pref {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.food-pref--liked {
+  color: #86efac;
+}
+
+.food-pref--disliked {
+  color: #fca5a5;
+}
+
+.food-pref--neutral {
+  color: var(--text-dim);
+}
+
+.feeding-back {
+  align-self: center;
+}
+
+@media (max-width: 480px) {
+  .feeding-food-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

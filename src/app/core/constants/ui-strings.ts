@@ -314,6 +314,11 @@ export const UI_STRINGS: UiStringDictionary = {
     es: 'Eventos especiales según tu afinidad.',
     en: 'Special events based on your affinity.',
   },
+  interactCategoryFeeding: { es: 'Alimentar', en: 'Feed' },
+  interactCategoryFeedingDesc: {
+    es: 'Comparte comida con Eleanora o tus mascotas.',
+    en: 'Share meals with Eleanora or your pets.',
+  },
   interactCategoryExperiments: { es: 'Experimentos', en: 'Experiments' },
   interactCategoryExperimentsDesc: {
     es: 'Prueba pociones especiales (próximamente).',
@@ -388,4 +393,73 @@ export const UI_STRINGS: UiStringDictionary = {
     es: 'Vuelve más adelante para mezclar ingredientes raros.',
     en: 'Come back later to mix rare ingredients.',
   },
+
+  feedingTitle: { es: 'Alimentar', en: 'Feed' },
+  feedingSelectAssignee: { es: '¿A quién alimentas?', en: 'Who do you feed?' },
+  feedingSelectFood: (name: string) => ({
+    es: `Elige comida para ${name}`,
+    en: `Choose food for ${name}`,
+  }),
+  feedingNoFoodInBag: {
+    es: 'No tienes comida en la mochila. Cocina o compra en el mercado.',
+    en: 'You have no food in your bag. Cook or buy at the market.',
+  },
+  feedingNoItem: { es: 'No tienes ese alimento.', en: 'You do not have that food.' },
+  feedingPrefLiked: { es: 'Le encanta', en: 'Loves it' },
+  feedingPrefDisliked: { es: 'No le gusta', en: 'Dislikes it' },
+  feedingPrefNeutral: { es: 'Neutral', en: 'Neutral' },
+  feedingLikedMsg: (name: string) => ({
+    es: `¡A ${name} le encantó!`,
+    en: `They loved ${name}!`,
+  }),
+  feedingDislikedMsg: (name: string) => ({
+    es: `No le gustó ${name}...`,
+    en: `They did not like ${name}...`,
+  }),
+  feedingNeutralMsg: (name: string) => ({
+    es: `${name} estaba bien.`,
+    en: `${name} was okay.`,
+  }),
+  feedingAffinityGain: (amount: number) => ({
+    es: `+${amount} afinidad`,
+    en: `+${amount} affinity`,
+  }),
+  feedingAffinityLoss: (amount: number) => ({
+    es: `-${amount} afinidad`,
+    en: `-${amount} affinity`,
+  }),
+  feedingBondGain: (amount: number) => ({
+    es: `+${amount} vínculo con la mascota`,
+    en: `+${amount} pet bond`,
+  }),
+  feedingBondLoss: (amount: number) => ({
+    es: `-${amount} vínculo con la mascota`,
+    en: `-${amount} pet bond`,
+  }),
+  feedingResultTitle: { es: 'Comida servida', en: 'Meal served' },
+  feedingFed: (name: string) => ({
+    es: `Alimentaste a ${name}`,
+    en: `You fed ${name}`,
+  }),
+  feedingResultAffinityLiked: (amount: number) => ({
+    es: `Le encantó (+${amount} afinidad)`,
+    en: `She loved it (+${amount} affinity)`,
+  }),
+  feedingResultAffinityDisliked: (amount: number) => ({
+    es: `No le gustó (-${amount} afinidad)`,
+    en: `She disliked it (-${amount} affinity)`,
+  }),
+  feedingResultBondLiked: (amount: number) => ({
+    es: `La mascota está feliz (+${amount} vínculo)`,
+    en: `Pet is happy (+${amount} bond)`,
+  }),
+  feedingResultBondDisliked: (amount: number) => ({
+    es: `La mascota no quedó contenta (-${amount} vínculo)`,
+    en: `Pet was unhappy (-${amount} bond)`,
+  }),
+  feedingResultNeutral: {
+    es: 'Reacción neutral — sin cambio de afinidad.',
+    en: 'Neutral reaction — no affinity change.',
+  },
+  companionsBond: { es: 'Vínculo', en: 'Bond' },
 };

@@ -1,4 +1,6 @@
 import { CharacterStats, StatKey } from '@core/interfaces/character-stats.interface';
+import { FoodPreferences } from '@core/interfaces/food-preferences.interface';
+import { ActiveTemporaryEffect } from '@core/interfaces/temporary-effect.interface';
 import { LocalizedText } from '@core/interfaces/localized-text.interface';
 import { ItemRarity } from '@core/data/item-rarity.config';
 
@@ -23,6 +25,10 @@ export interface Pet {
   baseStats: CharacterStats;
   /** Bonuses from training, food, and potions (no equipment). */
   bonusStats: Partial<CharacterStats>;
+  /** Bond with the player (feeding/training). */
+  bond: number;
+  foodPreferences: FoodPreferences;
+  temporaryEffects: ActiveTemporaryEffect[];
   hatchedAt: number;
 }
 

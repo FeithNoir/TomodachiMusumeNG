@@ -1,6 +1,7 @@
 import { ActiveMission } from '@core/interfaces/mission-definition.interface';
 import { CharacterStats } from '@core/interfaces/character-stats.interface';
 import { Pet, IncubatingEgg } from '@core/interfaces/pet.interface';
+import { ActiveTemporaryEffect } from '@core/interfaces/temporary-effect.interface';
 
 export interface GameState {
   version: string;
@@ -38,6 +39,8 @@ export interface GameState {
   runnerEnduranceGranted: number;
   /** Permanent stat bonuses from training minigames. */
   trainingStatBonus: Partial<CharacterStats>;
+  /** Timed stat boosts on Eleanora from food and potions. */
+  characterTemporaryEffects: ActiveTemporaryEffect[];
   /** Tutorial ids the player has seen. */
   seenTutorials: string[];
   /** Seed for deterministic random mission slots between sessions. */

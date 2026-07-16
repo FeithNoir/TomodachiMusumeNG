@@ -1,4 +1,5 @@
 import { ItemCollection } from '@core/interfaces/item.interface';
+import { FOOD_AND_POTION_ITEMS } from '@core/data/food-items.database';
 
 export const masterItemList: ItemCollection = {
   // ---- Ropa Interior ----
@@ -335,7 +336,10 @@ export const masterItemList: ItemCollection = {
     type: 'consumable',
     path: 'assets/img/items/wood.png',
     emoji: '🍞',
-    effects: { satiety: 15 },
+    effects: {
+      satiety: 15,
+      temporaryBoost: { stats: { health: 1 }, durationMs: 60_000 },
+    },
   },
   'grilled_steak': {
     id: 'grilled_steak',
@@ -343,7 +347,11 @@ export const masterItemList: ItemCollection = {
     type: 'consumable',
     path: 'assets/img/items/iron.png',
     emoji: '🥩',
-    effects: { satiety: 25, energy: 5 },
+    effects: {
+      satiety: 25,
+      energy: 5,
+      temporaryBoost: { stats: { attack: 2 }, durationMs: 120_000 },
+    },
   },
   'omelette': {
     id: 'omelette',
@@ -351,7 +359,11 @@ export const masterItemList: ItemCollection = {
     type: 'consumable',
     path: 'assets/img/items/wood.png',
     emoji: '🍳',
-    effects: { satiety: 18, energy: 8 },
+    effects: {
+      satiety: 18,
+      energy: 8,
+      temporaryBoost: { stats: { stealth: 2 }, durationMs: 90_000 },
+    },
   },
   'guacamole': {
     id: 'guacamole',
@@ -359,7 +371,11 @@ export const masterItemList: ItemCollection = {
     type: 'consumable',
     path: 'assets/img/items/wood.png',
     emoji: '🥑',
-    effects: { satiety: 12, energy: 10 },
+    effects: {
+      satiety: 12,
+      energy: 10,
+      temporaryBoost: { stats: { stealth: 2 }, durationMs: 90_000 },
+    },
   },
 
   // ---- Recetas de comida (ítems aprendibles) ----
@@ -387,4 +403,6 @@ export const masterItemList: ItemCollection = {
     recipeId: 'omelette_recipe',
     emoji: '📜',
   },
+
+  ...FOOD_AND_POTION_ITEMS,
 };

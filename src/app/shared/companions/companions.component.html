@@ -53,6 +53,7 @@
               }
             </div>
             <p class="companion-name">{{ pet.name }}</p>
+            <span class="companion-bond">{{ getText('companionsBond') }}: {{ pet.bond }}</span>
             <div class="companion-stats">
               @for (key of statKeys; track key) {
                 <span class="companion-stat">

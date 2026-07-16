@@ -2,7 +2,7 @@ import { LocalizedText } from '@core/interfaces/localized-text.interface';
 import { PetVisual } from '@core/interfaces/pet.interface';
 import { StatKey } from '@core/interfaces/character-stats.interface';
 
-export type MinigameCategory = 'training' | 'dates' | 'experiments';
+export type MinigameCategory = 'training' | 'dates' | 'experiments' | 'feeding';
 export type TrainingGameId = 'runner' | 'rhythm' | 'slice';
 
 export interface TrainingGameDefinition {

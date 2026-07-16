@@ -1,5 +1,7 @@
 <div class="assignee-picker">
-  <p class="text-dim assignee-hint">{{ getText('interactEnergyCost', energyCost) }}</p>
+  @if (energyCost > 0) {
+    <p class="text-dim assignee-hint">{{ getText('interactEnergyCost', energyCost) }}</p>
+  }
 
   <div class="assignee-grid scroll-area">
     @for (option of assignees; track option.id) {

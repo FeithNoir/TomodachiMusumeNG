@@ -1,4 +1,5 @@
 import { Recipe } from '@core/interfaces/recipe.interface';
+import { FOOD_AND_POTION_RECIPES } from '@core/data/food-recipes.database';
 
 export const recipes: { [key: string]: Recipe } = {
   'steel_sword_recipe': {
@@ -41,4 +42,5 @@ export const recipes: { [key: string]: Recipe } = {
     result: 'guacamole',
     ingredients: [{ id: 'avocado', quantity: 2 }],
   },
+  ...FOOD_AND_POTION_RECIPES,
 };

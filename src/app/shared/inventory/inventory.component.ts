@@ -12,6 +12,7 @@ import { InventoryUiService } from '@core/services/inventory-ui.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
+import { TemporaryEffectService } from '@core/services/temporary-effect.service';
 import { EquipResult } from '@core/interfaces/notification.interface';
 import { resolveLocalizedText } from '@core/utils/localization.util';
 import { CatalogFilterComponent } from '@shared/catalog-filter/catalog-filter.component';
@@ -40,6 +41,7 @@ export class InventoryComponent {
   private itemCatalog = inject(ItemCatalogService);
   private localization = inject(LocalizationService);
   private notifications = inject(NotificationService);
+  private tempEffects = inject(TemporaryEffectService);
 
   @Input() embedded = false;
   @Output() close = new EventEmitter<void>();
@@ -233,6 +235,10 @@ export class InventoryComponent {
 
     if (itemData.effects?.satiety) {
       this.gameStateService.updateSatiety(itemData.effects.satiety);
+    }
+
+    if (itemData.effects?.temporaryBoost) {
+      this.tempEffects.applyCharacterBoost(itemId, itemData.effects.temporaryBoost);
     }
 
     this.inventoryService.removeItem(itemId, 1);

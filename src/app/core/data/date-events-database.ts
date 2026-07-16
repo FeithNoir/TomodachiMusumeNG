@@ -5,7 +5,7 @@ export const DATE_EVENTS: DateEventDefinition[] = [
     id: 'date_sunset_walk',
     requiredAffinity: 20,
     name: { es: 'Paseo al Atardecer', en: 'Sunset Walk' },
-    background: '/assets/img/bg.jpg',
+    background: '/assets/img/backgrounds/sunset_fores_bg.',
     intro: {
       es: 'El cielo se tiñe de naranja mientras caminan juntos por el sendero.',
       en: 'The sky turns orange as you walk together along the path.',
@@ -37,7 +37,7 @@ export const DATE_EVENTS: DateEventDefinition[] = [
     id: 'date_tea_salon',
     requiredAffinity: 40,
     name: { es: 'Té en el Salón', en: 'Tea in the Salon' },
-    background: '/assets/img/bg.jpg',
+    background: '/assets/img/backgrounds/tea_party_bg.png',
     intro: {
       es: 'Preparan té aromático en un salón acogedor, lejos del bullicio.',
       en: 'You brew fragrant tea in a cozy salon, away from the bustle.',
@@ -69,7 +69,7 @@ export const DATE_EVENTS: DateEventDefinition[] = [
     id: 'date_stargazing',
     requiredAffinity: 60,
     name: { es: 'Mirando las Estrellas', en: 'Stargazing' },
-    background: '/assets/img/bg.jpg',
+    background: '/assets/img/backgrounds/star_meadaw_bg.png',
     intro: {
       es: 'La noche está despejada. Se recuestan sobre una manta bajo el cielo estrellado.',
       en: 'The night is clear. You lie on a blanket beneath the starry sky.',
@@ -101,7 +101,7 @@ export const DATE_EVENTS: DateEventDefinition[] = [
     id: 'date_moon_promise',
     requiredAffinity: 80,
     name: { es: 'Promesa bajo la Luna', en: 'Promise under the Moon' },
-    background: '/assets/img/bg.jpg',
+    background: '/assets/img/backgrounds/eleanora_room_bg.png',
     intro: {
       es: 'La luna llena ilumina el claro del bosque. Es un momento especial.',
       en: 'The full moon lights the forest clearing. It is a special moment.',

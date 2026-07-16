@@ -26,22 +26,36 @@ export const SHOP_SETS: ShopSetDefinition[] = [
   {
     id: 'food_ingredients',
     name: { es: 'Ingredientes', en: 'Ingredients' },
-    itemIds: ['wheat', 'meat', 'eggs', 'avocado'],
+    itemIds: [
+      'wheat', 'meat', 'eggs', 'avocado', 'potato', 'carrot', 'sugar_cane',
+      'cocoa', 'seeds', 'apple', 'banana', 'tomato', 'onion', 'rice', 'chicken',
+    ],
   },
   {
     id: 'food_meals',
     name: { es: 'Comidas', en: 'Meals' },
-    itemIds: ['bread', 'grilled_steak', 'omelette', 'guacamole'],
+    itemIds: [
+      'bread', 'grilled_steak', 'omelette', 'guacamole', 'rice_bowl',
+      'vegetable_soup', 'chicken_rice', 'fried_potatoes', 'fruit_salad', 'chocolate_bar',
+    ],
   },
   {
     id: 'recipes',
     name: { es: 'Recetas', en: 'Recipes' },
-    itemIds: ['recipe_bread', 'recipe_steak', 'recipe_omelette', 'recipe_steel_sword'],
+    itemIds: [
+      'recipe_bread', 'recipe_steak', 'recipe_omelette', 'recipe_rice_bowl',
+      'recipe_vegetable_soup', 'recipe_chicken_rice', 'recipe_chocolate', 'recipe_fruit_salad',
+      'recipe_health_potion', 'recipe_strength_potion', 'recipe_agility_potion',
+      'recipe_energy_potion', 'recipe_master_elixir', 'recipe_steel_sword',
+    ],
   },
   {
     id: 'consumables',
     name: { es: 'Consumibles', en: 'Consumables' },
-    itemIds: ['energy_drink'],
+    itemIds: [
+      'energy_drink', 'health_potion', 'strength_potion', 'agility_potion',
+      'energy_potion', 'master_elixir',
+    ],
   },
   {
     id: 'weapons',

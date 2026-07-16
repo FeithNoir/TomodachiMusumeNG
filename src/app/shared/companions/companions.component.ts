@@ -4,6 +4,7 @@ import { STAT_KEYS, StatKey } from '@core/interfaces/character-stats.interface';
 import { IncubatingEgg, Pet, PetVisual } from '@core/interfaces/pet.interface';
 import { LocalizationService } from '@core/services/localization.service';
 import { PetService } from '@core/services/pet.service';
+import { TemporaryEffectService } from '@core/services/temporary-effect.service';
 
 @Component({
   selector: 'app-companions',
@@ -15,6 +16,7 @@ import { PetService } from '@core/services/pet.service';
 })
 export class CompanionsComponent {
   private petService = inject(PetService);
+  private tempEffects = inject(TemporaryEffectService);
   private localization = inject(LocalizationService);
 
   @Output() close = new EventEmitter<void>();
@@ -36,7 +38,8 @@ export class CompanionsComponent {
   }
 
   petTotalStat(pet: Pet, key: StatKey): number {
-    return (pet.baseStats[key] ?? 0) + (pet.bonusStats[key] ?? 0);
+    const temp = this.tempEffects.getPetTemporaryBonus(pet.id);
+    return (pet.baseStats[key] ?? 0) + (pet.bonusStats[key] ?? 0) + (temp[key] ?? 0);
   }
 
   incubationProgress(entry: IncubatingEgg): number {

@@ -1,3 +1,4 @@
+import { generatePetFoodPreferences } from '@core/utils/food-preferences.util';
 import { GameState } from '@core/interfaces/game-state.interface';
 import { ActiveMission } from '@core/interfaces/mission-definition.interface';
 import {
@@ -52,6 +53,7 @@ export const INITIAL_GAME_STATE: GameState = {
   runnerHighScoreMeters: 0,
   runnerEnduranceGranted: 0,
   trainingStatBonus: {},
+  characterTemporaryEffects: [],
   seenTutorials: [],
   missionBoardSeed: Date.now(),
   missionFlags: [],
@@ -76,7 +78,12 @@ export function normalizeGameState(raw: Partial<GameState> & { activeMission?: A
     expression: { ...defaults.expression, ...raw.expression },
     inventory: raw.inventory ?? defaults.inventory,
     knownRecipes: raw.knownRecipes ?? defaults.knownRecipes,
-    pets: raw.pets ?? defaults.pets,
+    pets: (raw.pets ?? defaults.pets).map(pet => ({
+      ...pet,
+      bond: pet.bond ?? 50,
+      foodPreferences: pet.foodPreferences ?? generatePetFoodPreferences(pet.id),
+      temporaryEffects: pet.temporaryEffects ?? [],
+    })),
     incubatingEggs: raw.incubatingEggs ?? defaults.incubatingEggs,
     petSlotCapacity: raw.petSlotCapacity ?? defaults.petSlotCapacity,
     inventorySlotCapacity: raw.inventorySlotCapacity ?? defaults.inventorySlotCapacity,
@@ -84,6 +91,7 @@ export function normalizeGameState(raw: Partial<GameState> & { activeMission?: A
     runnerHighScoreMeters: raw.runnerHighScoreMeters ?? defaults.runnerHighScoreMeters,
     runnerEnduranceGranted: raw.runnerEnduranceGranted ?? defaults.runnerEnduranceGranted,
     trainingStatBonus: raw.trainingStatBonus ?? defaults.trainingStatBonus,
+    characterTemporaryEffects: raw.characterTemporaryEffects ?? defaults.characterTemporaryEffects,
     seenTutorials: raw.seenTutorials ?? defaults.seenTutorials,
     missionBoardSeed: raw.missionBoardSeed ?? defaults.missionBoardSeed,
     missionFlags: raw.missionFlags ?? defaults.missionFlags,

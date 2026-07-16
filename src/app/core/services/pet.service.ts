@@ -11,6 +11,7 @@ import { CharacterStats, StatKey } from '@core/interfaces/character-stats.interf
 import { GameStateService } from '@core/services/game-state.service';
 import { LocalizationService } from '@core/services/localization.service';
 import { NotificationService } from '@core/services/notification.service';
+import { generatePetFoodPreferences } from '@core/utils/food-preferences.util';
 import { buildPetBaseStats, createEmptyBonusStats } from '@core/utils/pet-stats.util';
 
 @Injectable({
@@ -97,13 +98,17 @@ export class PetService {
       return;
     }
 
+    const petId = `pet_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const pet: Pet = {
-      id: `pet_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      id: petId,
       speciesId: species.id,
       name: this.localization.localized(species.name),
       visual: { ...species.defaultVisual },
       baseStats: buildPetBaseStats(species.baseStats),
       bonusStats: createEmptyBonusStats(),
+      bond: 50,
+      foodPreferences: generatePetFoodPreferences(petId),
+      temporaryEffects: [],
       hatchedAt: Date.now(),
     };
 
@@ -144,6 +149,21 @@ export class PetService {
   trainPet(petId: string, stat: StatKey, amount: number = 1): void {
     this.applyStatBonus(petId, { [stat]: amount });
     this.notifications.info(this.localization.t('petTrainedMsg', stat));
+  }
+
+  adjustBond(petId: string, delta: number): void {
+    this.gameState.updateState(state => ({
+      ...state,
+      pets: state.pets.map(pet => {
+        if (pet.id !== petId) {
+          return pet;
+        }
+        return {
+          ...pet,
+          bond: Math.max(0, Math.min(100, pet.bond + delta)),
+        };
+      }),
+    }));
   }
 
   feedPet(petId: string): void {

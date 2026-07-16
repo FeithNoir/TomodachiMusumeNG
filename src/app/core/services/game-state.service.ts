@@ -6,6 +6,7 @@ import { PersistenceService } from '@core/services/persistence.service';
 import { CharacterService } from '@core/services/character.service';
 import { ItemCatalogService } from '@core/services/item-catalog.service';
 import { calculateMaxEnergy } from '@core/utils/character-stats.util';
+import { sumTemporaryEffects } from '@core/utils/temporary-effect.util';
 
 @Injectable({
   providedIn: 'root',
@@ -119,9 +120,14 @@ export class GameStateService {
 
   private resolveMaxEnergy(): number {
     const state = this.gameState();
+    const tempBonus = sumTemporaryEffects(state.characterTemporaryEffects);
+    const trainingWithTemp = { ...state.trainingStatBonus };
+    for (const key of Object.keys(tempBonus) as (keyof typeof tempBonus)[]) {
+      trainingWithTemp[key] = (trainingWithTemp[key] ?? 0) + (tempBonus[key] ?? 0);
+    }
     return calculateMaxEnergy(
       state.equipped,
-      state.trainingStatBonus,
+      trainingWithTemp,
       id => this.itemCatalog.getItemStats(id)
     );
   }

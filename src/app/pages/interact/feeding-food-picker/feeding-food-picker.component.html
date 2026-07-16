@@ -1,0 +1,22 @@
+<div class="feeding-picker">
+  <p class="text-dim feeding-hint">{{ getText('feedingSelectFood', assignee.label) }}</p>
+
+  @if (feedableItems().length === 0) {
+    <p class="empty-state">{{ getText('feedingNoFoodInBag') }}</p>
+  } @else {
+    <div class="feeding-food-grid scroll-area">
+      @for (entry of feedableItems(); track entry.id) {
+        <button type="button" class="feeding-food-card interactive-card" (click)="selectFood(entry.id)">
+          <span class="feeding-food-emoji">{{ getItemEmoji(entry.id) ?? '🍽️' }}</span>
+          <span class="feeding-food-name">{{ getItemName(entry.id) }}</span>
+          <span [class]="preferenceClass(entry.id)">{{ preferenceLabel(entry.id) }}</span>
+          <span class="feeding-food-qty">x{{ entry.quantity }}</span>
+        </button>
+      }
+    </div>
+  }
+
+  <button type="button" class="btn-outline-gold feeding-back" (click)="back.emit()">
+    {{ getText('interactBack') }}
+  </button>
+</div>
